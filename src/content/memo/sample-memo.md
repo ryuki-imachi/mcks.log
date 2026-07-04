@@ -27,3 +27,12 @@ Qiita互換の `:::note` 記法が使えます。
 https://qiita.com/ryu-ki/items/0566e27e6c50b9fb399a
 
 :::
+
+Mermaid記法の図もブラウザ側でレンダリングされます。
+
+```mermaid
+flowchart LR
+    A["Markdownで<br>記事を書く"] --> B["git push"]
+    B --> C["Workers Builds<br>自動ビルド"]
+    C --> D["本番反映<br>（約2分）"]
+```

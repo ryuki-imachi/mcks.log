@@ -78,6 +78,17 @@ const ogImage = heroImage as ImageMetadata | undefined;
 				border-radius: 8px;
 			}
 		</style>
+		<style is:global>
+			.mermaid-diagram {
+				display: flex;
+				justify-content: center;
+				margin: 1.6em 0;
+			}
+			.mermaid-diagram svg {
+				max-width: 100%;
+				height: auto;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -118,5 +129,29 @@ const ogImage = heroImage as ImageMetadata | undefined;
 			</article>
 		</main>
 		<Footer />
+		<script>
+			// ```mermaid ブロックをブラウザ側でSVGに描画する。
+			// mermaid本体（重い）は図があるページでだけ遅延読み込みされる
+			const blocks = document.querySelectorAll('pre[data-language="mermaid"]');
+			if (blocks.length > 0) {
+				const { default: mermaid } = await import('mermaid');
+				const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'neutral' });
+				let i = 0;
+				for (const pre of blocks) {
+					const code = pre.textContent ?? '';
+					const container = document.createElement('div');
+					container.className = 'mermaid-diagram';
+					pre.replaceWith(container);
+					try {
+						const { svg } = await mermaid.render(`mermaid-diagram-${i++}`, code);
+						container.innerHTML = svg;
+					} catch {
+						// 描画に失敗したら元のコードブロックに戻す（記法ミス時の保険）
+						container.replaceWith(pre);
+					}
+				}
+			}
+		</script>
 	</body>
 </html>

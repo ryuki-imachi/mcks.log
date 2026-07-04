@@ -2,19 +2,19 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 export const SITE_TITLE = 'mcks.log';
-export const SITE_DESCRIPTION = '技術の学びと旅の記録';
+export const SITE_DESCRIPTION = '予定通り、フラフラしています。';
 
 // コレクションのキーと表示名・説明（ナビ・トップのカード・一覧ページで使う）
 export const SECTIONS = {
 	tech: 'Tech',
-	memo: 'Memo',
 	travel: 'Travel',
 	others: 'Others',
+	memo: 'Memo',
 } as const;
 
 export const SECTION_DESCRIPTIONS = {
-	tech: 'AWSと生成AIを中心にした技術の学び。Qiitaからの移行記事もここに入ります。',
-	memo: '技術メモと調査の走り書き。記事にするほどでもない小ネタの置き場。',
-	travel: '国内旅行とJAWS-UG各支部巡りの記録。',
-	others: '分類しない雑記。考えごとの垂れ流し。',
+	tech: 'AWSと生成AIを中心にした技術の学び（Qiitaからも移行予定）',
+	travel: 'JAWS-UG各支部巡り（と国内旅行）の記録',
+	others: 'その他考えごとのなど垂れ流し',
+	memo: '技術メモ / 調査の走り書き',
 } as const;

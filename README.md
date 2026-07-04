@@ -26,9 +26,9 @@ GitHubのmainブランチへpushすると、Workers Buildsが `npx astro build` 
 | コレクション | URL | 内容 |
 | :--- | :--- | :--- |
 | `tech` | `/tech/` | 技術記事（Qiitaからの移行分を含む） |
-| `memo` | `/memo/` | 技術メモ・調査メモ（記事にするほどではない小ネタ） |
 | `travel` | `/travel/` | 旅の記録（国内旅行・JAWS-UG各支部巡り） |
 | `others` | `/others/` | 上記に収まらないあれこれ |
+| `memo` | `/memo/` | 技術メモ・調査メモ（記事にするほどではない小ネタ） |
 
 各コレクションに一覧・記事ページ・RSS（`/tech/rss.xml` など）があり、サイト全体のRSSは `/rss.xml` です。
 

@@ -176,23 +176,41 @@ hr {
 	}
 }
 
-/* :::note 記法（remark-qiita-note）。Qiita風の色付きボックス */
+/* :::note 記法（remark-qiita-note）。Qiita風の色付きボックス + 文頭アイコン */
 .qiita-note {
+	position: relative;
 	margin: 1.6em 0;
-	padding: 0.85em 1.1em;
-	border-left: 4px solid var(--note-color, var(--note-info));
+	padding: 0.85em 1.1em 0.85em 2.7em;
 	border-radius: 6px;
 	background: color-mix(in srgb, var(--note-color, var(--note-info)) 9%, transparent);
 	font-size: 0.95em;
 }
+/* アイコンはmask + background-colorで描く（テーマ色に自動追従） */
+.qiita-note::before {
+	content: '';
+	position: absolute;
+	left: 0.95em;
+	top: 1.1em;
+	width: 1.15em;
+	height: 1.15em;
+	background-color: var(--note-color, var(--note-info));
+	-webkit-mask: var(--note-icon) no-repeat center / contain;
+	mask: var(--note-icon) no-repeat center / contain;
+}
 .qiita-note-info {
 	--note-color: var(--note-info);
+	/* 丸に i */
+	--note-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zM7 3.5h2v2H7v-2zm0 3.5h2v5.5H7V7z'/%3E%3C/svg%3E");
 }
 .qiita-note-warn {
 	--note-color: var(--note-warn);
+	/* 三角に ! */
+	--note-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M8 .8 15.8 14.6H.2L8 .8zM7.2 6h1.6v4H7.2V6zm0 5h1.6v1.7H7.2V11z'/%3E%3C/svg%3E");
 }
 .qiita-note-alert {
 	--note-color: var(--note-alert);
+	/* 丸に ! */
+	--note-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zM7 3.5h2V9H7V3.5zm0 7h2v2H7v-2z'/%3E%3C/svg%3E");
 }
 .qiita-note > :last-child {
 	margin-bottom: 0;

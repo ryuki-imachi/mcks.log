@@ -5,9 +5,8 @@ import HeaderLink from './HeaderLink.astro';
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<a class="logo" href="/">{SITE_TITLE}<span class="cursor" aria-hidden="true"></span></a>
 		<div class="internal-links">
-			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/tech">Tech</HeaderLink>
 			<HeaderLink href="/travel">Travel</HeaderLink>
 			<HeaderLink href="/others">Others</HeaderLink>
@@ -18,32 +17,80 @@ import HeaderLink from './HeaderLink.astro';
 <style>
 	header {
 		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-	}
-
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
+		border-bottom: 1px solid var(--line);
+		background: var(--bg);
 	}
 	nav {
+		width: 720px;
+		max-width: calc(100% - 2.5em);
+		margin: auto;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		gap: 1em;
+		padding: 0.9em 0;
 	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
+	.logo {
+		font-family: var(--font-mono);
+		font-weight: 700;
+		font-size: 1.15em;
+		color: var(--ink-strong);
+		text-decoration: none;
+		letter-spacing: -0.02em;
+	}
+	.logo:hover {
+		text-decoration: none;
+		color: var(--accent);
+	}
+	/* ターミナルのカーソル風。点滅は控えめに、motion設定を尊重する */
+	.cursor {
+		display: inline-block;
+		width: 0.5em;
+		height: 1em;
+		margin-left: 0.15em;
+		background: var(--accent);
+		vertical-align: -0.12em;
+		animation: blink 1.6s steps(1) infinite;
+	}
+	@keyframes blink {
+		50% {
+			opacity: 0;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.cursor {
+			animation: none;
+		}
+	}
+	.internal-links {
+		display: flex;
+		gap: 0.2em;
+	}
+	nav a:not(.logo) {
+		padding: 0.2em 0.55em;
+		color: var(--ink);
+		font-size: 0.92em;
+		border-radius: 5px;
+		text-decoration: none;
+	}
+	nav a:not(.logo):hover {
+		color: var(--accent);
+		background: var(--accent-soft);
 		text-decoration: none;
 	}
 	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
+		color: var(--accent);
+		font-weight: 700;
+	}
+	@media (max-width: 480px) {
+		nav {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.3em;
+			padding-bottom: 0.7em;
+		}
+		.internal-links {
+			margin-left: -0.55em;
+		}
 	}
 </style>

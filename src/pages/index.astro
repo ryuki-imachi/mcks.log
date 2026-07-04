@@ -4,7 +4,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import PostList from '../components/PostList.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SECTION_DESCRIPTIONS, SECTIONS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 // 3コレクションを横断して新着順に並べる
 const [tech, travel, others] = await Promise.all([
@@ -12,10 +12,15 @@ const [tech, travel, others] = await Promise.all([
 	getCollection('travel'),
 	getCollection('others'),
 ]);
-const posts = [...tech, ...travel, ...others]
-	.filter((post) => !post.data.draft)
+const published = {
+	tech: tech.filter((post) => !post.data.draft),
+	travel: travel.filter((post) => !post.data.draft),
+	others: others.filter((post) => !post.data.draft),
+};
+const posts = [...published.tech, ...published.travel, ...published.others]
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 10);
+const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 ---
 
 <!doctype html>
@@ -26,11 +31,96 @@ const posts = [...tech, ...travel, ...others]
 	<body>
 		<Header />
 		<main>
+			<section class="intro">
+				<p>
+					道草を食いながらの、{SITE_DESCRIPTION}。
+				</p>
+			</section>
+			<section class="sections">
+				{
+					sectionKeys.map((key) => (
+						<a class={`card card-${key}`} href={`/${key}/`}>
+							<span class="card-title">{key}/</span>
+							<span class="card-desc">{SECTION_DESCRIPTIONS[key]}</span>
+							<span class="card-count">posts: {published[key].length}</span>
+						</a>
+					))
+				}
+			</section>
 			<section>
-				<h1>新着</h1>
+				<h2 class="log-heading">$ tail -f mcks.log</h2>
 				<PostList posts={posts} />
 			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.intro p {
+		margin: 0.4em 0 1.8em;
+		color: var(--muted);
+	}
+	.sections {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.9em;
+		margin-bottom: 2.8em;
+	}
+	.card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3em;
+		padding: 0.9em 1em 0.8em;
+		border: 1px solid var(--line);
+		border-top: 3px solid var(--line);
+		border-radius: 8px;
+		text-decoration: none;
+		color: inherit;
+	}
+	.card:hover {
+		text-decoration: none;
+		background: var(--accent-soft);
+	}
+	.card-tech {
+		border-top-color: var(--c-tech);
+	}
+	.card-travel {
+		border-top-color: var(--c-travel);
+	}
+	.card-others {
+		border-top-color: var(--c-others);
+	}
+	.card-title {
+		font-family: var(--font-mono);
+		font-weight: 700;
+		font-size: 1.05em;
+		color: var(--ink-strong);
+	}
+	.card:hover .card-title {
+		color: var(--accent);
+	}
+	.card-desc {
+		font-size: 0.8em;
+		line-height: 1.7;
+		color: var(--muted);
+		flex-grow: 1;
+	}
+	.card-count {
+		font-family: var(--font-mono);
+		font-size: 0.75em;
+		color: var(--muted);
+	}
+	.log-heading {
+		font-family: var(--font-mono);
+		font-size: 1em;
+		font-weight: 700;
+		color: var(--muted);
+		margin: 0 0 0.6em;
+	}
+	@media (max-width: 600px) {
+		.sections {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

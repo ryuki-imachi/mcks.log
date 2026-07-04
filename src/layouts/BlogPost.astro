@@ -1,59 +1,77 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 
-type Props =
+type Props = (
 	| CollectionEntry<'tech'>['data']
 	| CollectionEntry<'travel'>['data']
-	| CollectionEntry<'others'>['data'];
+	| CollectionEntry<'others'>['data']
+) & {
+	// 呼び出し側([...slug].astro)が post.collection を渡すとセクションバッジを表示する
+	collection?: string;
+};
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags, collection } = Astro.props;
+const ogImage = heroImage as ImageMetadata | undefined;
 ---
 
-<html lang="en">
+<html lang="ja">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={title} description={description} image={ogImage} />
 		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
+			.post-header {
+				margin-bottom: 2em;
+				padding-bottom: 1.5em;
+				border-bottom: 1px solid var(--line);
+			}
+			.meta {
+				display: flex;
+				align-items: baseline;
+				gap: 0.9em;
+				font-family: var(--font-mono);
+				font-size: 0.82em;
+				color: var(--muted);
+			}
+			.section {
+				font-size: 0.88em;
+				padding: 0.05em 0.5em;
+				border: 1px solid currentColor;
+				border-radius: 999px;
+				text-decoration: none;
+			}
+			.section-tech {
+				color: var(--c-tech);
+			}
+			.section-travel {
+				color: var(--c-travel);
+			}
+			.section-others {
+				color: var(--c-others);
+			}
+			.post-header h1 {
+				font-size: 1.55em;
+				margin: 0.4em 0 0.5em;
+			}
+			.tags {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.6em;
+				font-family: var(--font-mono);
+				font-size: 0.8em;
+				color: var(--muted);
 			}
 			.hero-image {
-				width: 100%;
+				margin: 1.5em 0 0;
 			}
 			.hero-image img {
 				display: block;
 				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
+				border-radius: 8px;
 			}
 		</style>
 	</head>
@@ -62,24 +80,35 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		<Header />
 		<main>
 			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
+				<div class="post-header">
+					<div class="meta">
+						{collection && <a class={`section section-${collection}`} href={`/${collection}/`}>{collection}</a>}
+						<FormattedDate date={pubDate} />
+						{
+							updatedDate && (
+								<span class="last-updated-on">
+									(更新: <FormattedDate date={updatedDate} />)
+								</span>
+							)
+						}
+					</div>
+					<h1>{title}</h1>
+					{tags && tags.length > 0 && (
+						<div class="tags">
+							{tags.map((tag: string) => (
+								<span>#{tag}</span>
+							))}
+						</div>
+					)}
+					{
+						heroImage && (
+							<div class="hero-image">
+								<Image width={720} height={360} src={heroImage} alt="" />
+							</div>
+						)
+					}
 				</div>
 				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
 					<slot />
 				</div>
 			</article>

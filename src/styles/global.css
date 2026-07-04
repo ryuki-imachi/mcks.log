@@ -1,39 +1,65 @@
 /*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
+  mcks.log のグローバルスタイル。
+  コンセプト: 「道草」ののんびり感（生成りの紙 × 草色）と「.log」のターミナル感（等幅の日付・ログ行風リスト）。
+  日本語本文が主体のため、書体はシステムフォント、本文はやや小さめ・行間広め。
+*/
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+	--bg: #faf9f4;
+	--bg-subtle: #f1efe6;
+	--ink: #3a382f;
+	--ink-strong: #211f19;
+	--muted: #8b8678;
+	--line: #e4e1d4;
+	--accent: #4a7c59;
+	--accent-soft: rgba(74, 124, 89, 0.09);
+	/* セクションの識別色（バッジ・カードで使用） */
+	--c-tech: #4a7c59;
+	--c-travel: #b0713f;
+	--c-others: #6b7aa1;
+
+	--font-sans:
+		system-ui, -apple-system, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans',
+		'Noto Sans JP', Meiryo, sans-serif;
+	--font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono',
+		monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #1b1a15;
+		--bg-subtle: #24231c;
+		--ink: #cfccbf;
+		--ink-strong: #edeadf;
+		--muted: #918c7d;
+		--line: #343228;
+		--accent: #82b391;
+		--accent-soft: rgba(130, 179, 145, 0.12);
+		--c-tech: #82b391;
+		--c-travel: #cf9a6a;
+		--c-others: #93a3c8;
+	}
+}
+
+html {
+	background: var(--bg);
 }
 body {
-	font-family: var(--font-atkinson);
+	font-family: var(--font-sans);
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
+	color: var(--ink);
+	font-size: 17px;
+	line-height: 1.9;
 }
 main {
 	width: 720px;
-	max-width: calc(100% - 2em);
+	max-width: calc(100% - 2.5em);
 	margin: auto;
-	padding: 3em 1em;
+	padding: 2.5em 0 4em;
 }
 h1,
 h2,
@@ -41,84 +67,102 @@ h3,
 h4,
 h5,
 h6 {
-	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
-	line-height: 1.2;
+	margin: 2em 0 0.6em 0;
+	color: var(--ink-strong);
+	line-height: 1.4;
+	font-weight: 700;
 }
 h1 {
-	font-size: 3.052em;
+	font-size: 1.7em;
+	margin-top: 0;
 }
 h2 {
-	font-size: 2.441em;
+	font-size: 1.35em;
 }
 h3 {
-	font-size: 1.953em;
+	font-size: 1.15em;
 }
-h4 {
-	font-size: 1.563em;
-}
-h5 {
-	font-size: 1.25em;
+h4,
+h5,
+h6 {
+	font-size: 1em;
 }
 strong,
 b {
 	font-weight: 700;
+	color: var(--ink-strong);
 }
 a {
 	color: var(--accent);
+	text-decoration: none;
 }
 a:hover {
-	color: var(--accent);
+	text-decoration: underline;
+	text-underline-offset: 3px;
 }
 p {
-	margin-bottom: 1em;
+	margin: 0 0 1.4em;
 }
-.prose p {
-	margin-bottom: 2em;
+::selection {
+	background: var(--accent-soft);
 }
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
+textarea,
 input {
 	font-size: 16px;
 }
 table {
 	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.92em;
+}
+th,
+td {
+	border: 1px solid var(--line);
+	padding: 0.4em 0.7em;
+}
+th {
+	background: var(--bg-subtle);
 }
 img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
+	border-radius: 6px;
 }
 code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	font-family: var(--font-mono);
+	font-size: 0.86em;
+	padding: 0.15em 0.4em;
+	background-color: var(--bg-subtle);
+	border-radius: 4px;
 }
 pre {
-	padding: 1.5em;
+	padding: 1.2em 1.4em;
 	border-radius: 8px;
+	font-size: 0.86em;
+	line-height: 1.7;
+	overflow-x: auto;
 }
 pre > code {
 	all: unset;
+	font-family: var(--font-mono);
 }
 blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0;
-	font-size: 1.333em;
+	border-left: 3px solid var(--line);
+	padding: 0 0 0 1.2em;
+	margin: 0 0 1.4em;
+	color: var(--muted);
 }
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid var(--line);
+	margin: 2.5em 0;
 }
 @media (max-width: 720px) {
 	body {
-		font-size: 18px;
+		font-size: 16px;
 	}
 	main {
-		padding: 1em;
+		padding: 1.8em 0 3em;
 	}
 }
 
@@ -130,12 +174,8 @@ hr {
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
 	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
 	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }

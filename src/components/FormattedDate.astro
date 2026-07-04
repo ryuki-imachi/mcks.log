@@ -4,14 +4,9 @@ interface Props {
 }
 
 const { date } = Astro.props;
+
+// .logの世界観に合わせて YYYY-MM-DD 固定表記（pubDateは日付のみの想定なのでUTCでよい）
+const formatted = date.toISOString().slice(0, 10);
 ---
 
-<time datetime={date.toISOString()}>
-	{
-		date.toLocaleDateString('en-us', {
-			year: 'numeric',
-			month: 'short',
-			day: 'numeric',
-		})
-	}
-</time>
+<time datetime={date.toISOString()}>{formatted}</time>

@@ -25,7 +25,7 @@
 	--note-alert: #b04a4a;
 
 	/* 記事内画像の枠線色。ライトはサイトの黒を背景色で薄めた色、ダークは背景に埋もれない程度の淡色 */
-	--img-frame: color-mix(in srgb, var(--ink-strong) 60%, var(--bg));
+	--img-frame: color-mix(in srgb, var(--ink-strong) 30%, var(--bg));
 
 	--font-sans:
 		system-ui, -apple-system, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans',

@@ -1,11 +1,12 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import type { ImageMetadata } from 'astro';
+import type { ImageMetadata, MarkdownHeading } from 'astro';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 
 type Props = (
 	| CollectionEntry<'tech'>['data']
@@ -15,10 +16,16 @@ type Props = (
 ) & {
 	// 呼び出し側([...slug].astro)が post.collection を渡すとセクションバッジを表示する
 	collection?: string;
+	// render(post) が返す見出し一覧。渡すと広い画面でサイド目次を表示する
+	headings?: MarkdownHeading[];
 };
 
-const { title, description, pubDate, updatedDate, heroImage, tags, collection } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags, collection, headings = [] } =
+	Astro.props;
 const ogImage = heroImage as ImageMetadata | undefined;
+// 目次に載せるのはh2/h3まで（h4以下は細かすぎるので省く）
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const hasToc = tocHeadings.length > 0;
 ---
 
 <html lang="ja">
@@ -77,6 +84,32 @@ const ogImage = heroImage as ImageMetadata | undefined;
 				margin: 0 auto;
 				border-radius: 8px;
 			}
+			/* サイド目次は十分に広い画面のときだけ表示する。
+			   本文720px + 余白52px + 目次260px の2カラムグリッドに切り替える */
+			.toc-aside {
+				display: none;
+			}
+			@media (min-width: 1120px) {
+				main.has-toc {
+					width: 1032px;
+					display: grid;
+					grid-template-columns: 720px 260px;
+					gap: 52px;
+					align-items: start;
+				}
+				/* グリッド子要素のmin-widthはautoが既定値で、幅広のコードブロックが
+				   カラム幅を突き破るのを防ぐために明示的に0にする */
+				main.has-toc article {
+					min-width: 0;
+				}
+				.toc-aside {
+					display: block;
+					position: sticky;
+					top: 2.5em;
+					max-height: calc(100vh - 5em);
+					overflow-y: auto;
+				}
+			}
 		</style>
 		<style is:global>
 			.mermaid-diagram {
@@ -93,7 +126,7 @@ const ogImage = heroImage as ImageMetadata | undefined;
 
 	<body>
 		<Header />
-		<main>
+		<main class:list={{ 'has-toc': hasToc }}>
 			<article>
 				<div class="post-header">
 					<div class="meta">
@@ -127,6 +160,13 @@ const ogImage = heroImage as ImageMetadata | undefined;
 					<slot />
 				</div>
 			</article>
+			{
+				hasToc && (
+					<aside class="toc-aside">
+						<TableOfContents headings={tocHeadings} />
+					</aside>
+				)
+			}
 		</main>
 		<Footer />
 		<script>

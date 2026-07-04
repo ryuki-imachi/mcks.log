@@ -1,0 +1,104 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+// 記事ページのサイド目次。headings は render(post) が返す見出し一覧
+// （呼び出し側の BlogPost.astro で h2/h3 に絞り込み済み）
+interface Props {
+	headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+
+// 記事がh3始まりでも字下げが崩れないよう、最も浅い見出しを基準にする
+const minDepth = Math.min(...headings.map((h) => h.depth));
+---
+
+<!-- 見た目のラベルは置かない（罫線とリストで目次と分かる）。aria-labelで支援技術には伝える -->
+<nav class="toc" aria-label="目次">
+	<ul>
+		{
+			headings.map((h) => (
+				<li class:list={{ 'toc-sub': h.depth > minDepth }}>
+					<a href={`#${h.slug}`}>{h.text}</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>
+
+<style>
+	.toc {
+		font-size: 0.82rem;
+		line-height: 1.65;
+		border-left: 1px solid var(--line);
+		padding-left: 1.2em;
+	}
+	.toc ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.toc li {
+		margin: 0.5em 0;
+	}
+	.toc-sub {
+		padding-left: 1em;
+	}
+	.toc a {
+		display: block;
+		color: var(--muted);
+		text-decoration: none;
+	}
+	.toc a:hover {
+		color: var(--accent);
+		text-decoration: none;
+	}
+	.toc a.active {
+		color: var(--accent);
+		font-weight: 700;
+	}
+</style>
+
+<script>
+	// スクロール連動ハイライト（Zenn風）。
+	// 「画面上端から1/4の位置」を読んでいる場所とみなし、そこより上にある
+	// 最後の見出しを現在のセクションとして目次側の対応リンクを強調する
+	const links = document.querySelectorAll<HTMLAnchorElement>('.toc a');
+	const headings = [...document.querySelectorAll<HTMLElement>('.prose :is(h2, h3)[id]')];
+	if (links.length > 0 && headings.length > 0) {
+		// 日本語見出しのidはURL上ではエンコードされるため、デコードして突き合わせる
+		const linkById = new Map<string, HTMLAnchorElement>();
+		for (const link of links) linkById.set(decodeURIComponent(link.hash.slice(1)), link);
+
+		let activeLink: HTMLAnchorElement | undefined;
+		const update = () => {
+			const line = window.innerHeight * 0.25;
+			let current: HTMLElement | undefined;
+			for (const h of headings) {
+				if (h.getBoundingClientRect().top <= line) current = h;
+				else break;
+			}
+			const link = current && linkById.get(current.id);
+			if (link === activeLink) return;
+			activeLink?.classList.remove('active');
+			activeLink = link;
+			activeLink?.classList.add('active');
+		};
+
+		// scrollイベントは高頻度で発火するので、requestAnimationFrameで1フレーム1回に間引く
+		let ticking = false;
+		window.addEventListener(
+			'scroll',
+			() => {
+				if (ticking) return;
+				ticking = true;
+				requestAnimationFrame(() => {
+					ticking = false;
+					update();
+				});
+			},
+			{ passive: true }
+		);
+		update();
+	}
+</script>

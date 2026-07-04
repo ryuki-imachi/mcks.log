@@ -54,6 +54,16 @@
 html {
 	background: var(--bg);
 }
+/* 目次などのページ内リンクはなめらかにスクロールする（motion設定を尊重）。
+   scroll-margin-topはジャンプ先の見出しが画面上端に張り付かないための余白 */
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
+}
+.prose :is(h2, h3, h4)[id] {
+	scroll-margin-top: 1.5rem;
+}
 body {
 	font-family: var(--font-sans);
 	margin: 0;

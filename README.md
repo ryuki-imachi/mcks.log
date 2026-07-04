@@ -2,8 +2,7 @@
 
 個人ブログ mcks.log の記事とサイト本体を管理するリポジトリです。
 
-- サイト: https://blog.ryu-ki-learn.com （公開準備中）
-- サイト名の由来は「道草（michikusa）」の子音縮約です
+- サイト: https://blog.ryu-ki-learn.com
 
 ## 構成
 
@@ -11,7 +10,14 @@
 | :--- | :--- |
 | フレームワーク | [Astro](https://astro.build/) 7（静的出力、アダプター不使用） |
 | ホスティング | Cloudflare Workers（static assets） |
+| CI/CD | Workers Builds（mainへのpushで自動ビルド・デプロイ） |
 | 記事画像 | 外部CDN（images.ryu-ki-learn.com）を参照。リポジトリには置かない |
+
+## デプロイ
+
+GitHubのmainブランチへpushすると、Workers Buildsが `npx astro build` → `npx wrangler deploy` を自動実行して本番に反映されます。手動デプロイは不要です。
+
+カスタムドメイン（blog.ryu-ki-learn.com）とworkers.devの無効化は `wrangler.jsonc` で宣言しており、デプロイ時にDNSレコード・TLS証明書まで自動で構成されます。
 
 ## コンテンツ
 
@@ -20,7 +26,7 @@
 | コレクション | URL | 内容 |
 | :--- | :--- | :--- |
 | `tech` | `/tech/` | 技術記事（Qiitaからの移行分を含む） |
-| `travel` | `/travel/` | 旅の記録（国内旅行・JAWS地方支部巡り） |
+| `travel` | `/travel/` | 旅の記録（国内旅行・JAWS-UG各支部巡り） |
 | `others` | `/others/` | 上記に収まらないあれこれ |
 
 各コレクションに一覧・記事ページ・RSS（`/tech/rss.xml` など）があり、サイト全体のRSSは `/rss.xml` です。
@@ -45,18 +51,26 @@ eventUrl: https://...        # イベントのconnpass等（省略可）
 
 スキーマ定義の実体は `src/content.config.ts` にあります。
 
+### リンクカード
+
+Qiitaと同様に、本文中でURLだけの行を書くとビルド時にリンクカードへ展開されます（[remark-link-card-plus](https://github.com/okaryo/remark-link-card-plus) を使用）。`[テキスト](URL)` 形式のインラインリンクは変換されません。
+
 ## ディレクトリ
 
 ```text
-├── public/                  favicon等の静的ファイル
+├── public/                  favicon・OG画像などの静的ファイル
+├── scripts/
+│   └── generate-og.mjs      OG画像とfavicon PNGの生成（sharp）
 ├── src/
-│   ├── components/          共通部品（PostList = 記事一覧 など）
+│   ├── components/          共通部品（PostList = ログ行風の記事一覧 など）
+│   ├── consts.ts            サイト名・セクション定義
 │   ├── content/             記事本体（tech / travel / others）
 │   ├── content.config.ts    コレクションとfrontmatterスキーマの定義
 │   ├── layouts/             記事ページのレイアウト
-│   └── pages/               ルーティング（各コレクションの一覧・詳細・RSS）
-├── astro.config.mjs
-└── wrangler.jsonc           Cloudflare Workers の設定
+│   ├── pages/               ルーティング（各コレクションの一覧・詳細・RSS）
+│   └── styles/global.css    テーマ（CSS変数・ダークモード・リンクカード）
+├── astro.config.mjs         Astro設定（remarkプラグイン含む）
+└── wrangler.jsonc           Cloudflare Workers の設定（カスタムドメイン等）
 ```
 
 ## コマンド
@@ -67,4 +81,4 @@ eventUrl: https://...        # イベントのconnpass等（省略可）
 | `npm run dev` | 開発サーバー（ http://localhost:4321 ） |
 | `npm run build` | `./dist/` に本番ビルド |
 | `npm run preview` | ビルド結果のローカル確認 |
-| `npx wrangler deploy` | Cloudflare Workers へデプロイ（ビルド後） |
+| `node scripts/generate-og.mjs` | OG画像・faviconの再生成 |

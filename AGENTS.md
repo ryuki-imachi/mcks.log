@@ -14,6 +14,13 @@
 - 記事の投稿・修正のpushはいつでも自由に行ってよい
 - 開発作業（デザイン・機能・設定の変更）は、ローカルで `npm run build` と `npm run preview` で確認を済ませ、**意味のあるまとまり単位でpushする**。WIPのこまめなpushをしない
 - 複数の小さな変更が続きそうなときは、ローカルで積んでからまとめてpushする
+- **npmパッケージを追加・更新したら、pushする前に必ず次を実行する**（npmの既知問題で、Macでの `npm install` はLinux向けオプショナル依存をlockに書き込まないことがあり、CIの `npm ci` が落ちる。2026-07-04に2回発生）
+
+```bash
+rm -rf node_modules package-lock.json && npm install   # lockを完全再生成
+rm -rf node_modules && npm clean-install               # CIと同じ手順の再現確認
+npm run build
+```
 
 ## 記事の書き方
 
@@ -22,6 +29,7 @@
 - `draft: true` の間は一覧・RSS・ページ生成から除外される
 - Qiita互換の `:::note` / `:::note warn` / `:::note alert` 記法が使える（実装: src/lib/remark-qiita-note.mjs）
 - URLだけの行はリンクカードに展開される（note内でも可、URLの前後に空行が必要）。インラインリンクと画像URLは変換されない
+- ```mermaid ブロックはブラウザ側でSVGに描画される（記事ページ限定・図があるページだけmermaid.jsを遅延読み込み。実装: src/layouts/BlogPost.astro のscript）
 - 画像はリポジトリに置かず、外部CDN（images.ryu-ki-learn.com）のURLを `![説明](URL)` で参照する
 
 ## よく使うコマンド
@@ -41,7 +49,7 @@
 
 最終更新: 2026-07-04
 
-- 完了済み: サイト構築フェーズは完了。https://blog.ryu-ki-learn.com で公開中、push→自動デプロイ確立、デザイン（道草×.log）、Qiita互換の:::note記法、リンクカード、4コレクション（tech/travel/others/memo）、プロフィールサイトからのリンク（準備中表記）まで済み
+- 完了済み: サイト構築フェーズは完了。https://blog.ryu-ki-learn.com で公開中、push→自動デプロイ確立、デザイン（道草×.log）、Qiita互換の:::note記法、リンクカード、Mermaidレンダリング、4コレクション（tech/travel/others/memo）、プロフィールサイトからのリンク（準備中表記）まで済み
 - 残り（本運用開始時にやること）: サンプル記事4本の削除 / プロフィールサイトの「（準備中）」表記を外す / 1本目の記事公開
 - 継続検討: issues参照（#1 トップ表示改善、#2 Xポスト機能、#3 エージェントから簡単投稿できる仕組み）
 - 次の一歩: 構築解説記事の執筆（このブログの1本目 + Qiita併載を想定）と、Qiita過去記事の移行

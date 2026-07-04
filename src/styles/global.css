@@ -24,6 +24,9 @@
 	--note-warn: #a8842c;
 	--note-alert: #b04a4a;
 
+	/* 記事内画像の枠線色。ライトはサイトの黒を背景色で薄めた色、ダークは背景に埋もれない程度の淡色 */
+	--img-frame: color-mix(in srgb, var(--ink-strong) 60%, var(--bg));
+
 	--font-sans:
 		system-ui, -apple-system, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans',
 		'Noto Sans JP', Meiryo, sans-serif;
@@ -48,6 +51,7 @@
 		--note-info: #7fa8c8;
 		--note-warn: #c9a95e;
 		--note-alert: #c98080;
+		--img-frame: #4a473c;
 	}
 }
 
@@ -147,6 +151,12 @@ img {
 	max-width: 100%;
 	height: auto;
 	border-radius: 6px;
+}
+/* 記事内の画像は白背景のスクリーンショットが紙色と馴染みすぎるため細い枠線で囲む。
+   リンクカードのサムネイル等（クラス付きimg）には適用しない */
+.prose img:not([class]),
+.hero-image img {
+	border: 2px solid var(--img-frame);
 }
 code {
 	font-family: var(--font-mono);

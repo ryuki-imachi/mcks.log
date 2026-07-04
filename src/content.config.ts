@@ -40,9 +40,9 @@ const memo = defineCollection({
 });
 
 // 考えごとの垂れ流し
-const thoughts = defineCollection({
-	loader: glob({ base: './src/content/thoughts', pattern: '**/*.{md,mdx}' }),
+const stream = defineCollection({
+	loader: glob({ base: './src/content/stream', pattern: '**/*.{md,mdx}' }),
 	schema: baseSchema,
 });
 
-export const collections = { tech, memo, travel, thoughts };
+export const collections = { tech, memo, travel, stream };

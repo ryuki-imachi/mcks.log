@@ -3,18 +3,18 @@ import rss from '@astrojs/rss';
 import { SITE_TITLE } from '../../consts';
 
 export async function GET(context) {
-	const posts = (await getCollection('thoughts'))
+	const posts = (await getCollection('stream'))
 		.filter((post) => !post.data.draft)
 		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 	return rss({
-		title: `Thoughts | ${SITE_TITLE}`,
+		title: `Stream | ${SITE_TITLE}`,
 		description: '考えごとの垂れ流し',
 		site: context.site,
 		items: posts.map((post) => ({
 			title: post.data.title,
 			description: post.data.description,
 			pubDate: post.data.pubDate,
-			link: `/thoughts/${post.id}/`,
+			link: `/stream/${post.id}/`,
 		})),
 	});
 }

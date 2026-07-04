@@ -1,7 +1,7 @@
 ---
 import FormattedDate from './FormattedDate.astro';
 
-// どのコレクション（tech / travel / thoughts / memo）の記事も受け取れる一覧コンポーネント。
+// どのコレクション（tech / travel / memo / stream）の記事も受け取れる一覧コンポーネント。
 // ログ行風（日付 + セクションバッジ + タイトル）の表示。リンク先は post.collection から組み立てる。
 // showSection: false でバッジを消せる（セクション別一覧ページ用）
 const { posts, showSection = true } = Astro.props;
@@ -72,8 +72,8 @@ const { posts, showSection = true } = Astro.props;
 	.section-travel {
 		color: var(--c-travel);
 	}
-	.section-thoughts {
-		color: var(--c-thoughts);
+	.section-stream {
+		color: var(--c-stream);
 	}
 	.title {
 		color: var(--ink-strong);

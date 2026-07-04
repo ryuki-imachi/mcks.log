@@ -7,19 +7,19 @@ import PostList from '../components/PostList.astro';
 import { SECTION_DESCRIPTIONS, SECTIONS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 // 全コレクションを横断して新着順に並べる
-const [tech, memo, travel, thoughts] = await Promise.all([
+const [tech, memo, travel, stream] = await Promise.all([
 	getCollection('tech'),
 	getCollection('memo'),
 	getCollection('travel'),
-	getCollection('thoughts'),
+	getCollection('stream'),
 ]);
 const published = {
 	tech: tech.filter((post) => !post.data.draft),
 	memo: memo.filter((post) => !post.data.draft),
 	travel: travel.filter((post) => !post.data.draft),
-	thoughts: thoughts.filter((post) => !post.data.draft),
+	stream: stream.filter((post) => !post.data.draft),
 };
-const posts = [...published.tech, ...published.memo, ...published.travel, ...published.thoughts]
+const posts = [...published.tech, ...published.memo, ...published.travel, ...published.stream]
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 10);
 const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
@@ -90,8 +90,7 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 		font-family: var(--font-mono);
 		font-weight: 700;
 		font-size: 1em;
-		/* 最長の「thoughts/」（9文字）が折り返さない幅 */
-		width: 6.5em;
+		width: 5em;
 		flex-shrink: 0;
 	}
 	.card-tech .card-title {
@@ -100,11 +99,11 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 	.card-travel .card-title {
 		color: var(--c-travel);
 	}
-	.card-thoughts .card-title {
-		color: var(--c-thoughts);
-	}
 	.card-memo .card-title {
 		color: var(--c-memo);
+	}
+	.card-stream .card-title {
+		color: var(--c-stream);
 	}
 	.card-desc {
 		flex: 1;

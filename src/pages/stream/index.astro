@@ -6,7 +6,7 @@ import Header from '../../components/Header.astro';
 import PostList from '../../components/PostList.astro';
 import { SECTION_DESCRIPTIONS, SITE_TITLE } from '../../consts';
 
-const posts = (await getCollection('thoughts'))
+const posts = (await getCollection('stream'))
 	.filter((post) => !post.data.draft)
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
@@ -14,17 +14,17 @@ const posts = (await getCollection('thoughts'))
 <!doctype html>
 <html lang="ja">
 	<head>
-		<BaseHead title={`Thoughts | ${SITE_TITLE}`} description={SECTION_DESCRIPTIONS.thoughts} />
+		<BaseHead title={`Stream | ${SITE_TITLE}`} description={SECTION_DESCRIPTIONS.stream} />
 	</head>
 	<body>
 		<Header />
 		<main>
 			<section>
 				<div class="page-head">
-					<h1 class="page-title" style="color: var(--c-thoughts)">thoughts/</h1>
-					<a class="rss" href="/thoughts/rss.xml">RSS</a>
+					<h1 class="page-title" style="color: var(--c-stream)">stream/</h1>
+					<a class="rss" href="/stream/rss.xml">RSS</a>
 				</div>
-				<p class="page-desc">{SECTION_DESCRIPTIONS.thoughts}</p>
+				<p class="page-desc">{SECTION_DESCRIPTIONS.stream}</p>
 				<PostList posts={posts} showSection={false} />
 			</section>
 		</main>

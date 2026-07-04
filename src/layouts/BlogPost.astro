@@ -12,7 +12,7 @@ type Props = (
 	| CollectionEntry<'tech'>['data']
 	| CollectionEntry<'memo'>['data']
 	| CollectionEntry<'travel'>['data']
-	| CollectionEntry<'thoughts'>['data']
+	| CollectionEntry<'stream'>['data']
 ) & {
 	// 呼び出し側([...slug].astro)が post.collection を渡すとセクションバッジを表示する
 	collection?: string;
@@ -61,8 +61,8 @@ const hasToc = tocHeadings.length > 0;
 			.section-travel {
 				color: var(--c-travel);
 			}
-			.section-thoughts {
-				color: var(--c-thoughts);
+			.section-stream {
+				color: var(--c-stream);
 			}
 			.post-header h1 {
 				font-size: 1.55em;

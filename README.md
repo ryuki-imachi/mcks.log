@@ -21,7 +21,7 @@ GitHubのmainブランチへpushすると、Workers Buildsが `npx astro build` 
 
 ## コンテンツ
 
-記事は `src/content/` 配下の3コレクションで管理しています。
+記事は `src/content/` 配下の4コレクションで管理しています。
 
 | コレクション | URL | 内容 |
 | :--- | :--- | :--- |
@@ -74,9 +74,19 @@ Qiita互換の `:::note` 記法が使えます（自作プラグイン `src/lib/
 :::
 ```
 
+### Mermaid図
+
+` ```mermaid ` のコードブロックは、記事ページでブラウザ側でSVGに描画されます（図があるページだけmermaid.jsを遅延読み込み。実装は `src/layouts/BlogPost.astro`）。
+
+### 目次
+
+記事本文のh2/h3から自動生成され、幅1120px以上の画面で記事の右側に表示されます（スクロール追従・現在地ハイライト）。記事側での作業は不要です。
+
 ### 画像
 
 記事画像はリポジトリに置かず、外部CDNのURLを `![説明](https://images.ryu-ki-learn.com/...)` の形で参照します。
+
+記事ページでは本文の画像に薄い枠線が自動で付きます（色は `src/styles/global.css` の `--img-frame` で管理）。
 
 ## ディレクトリ
 
@@ -85,9 +95,9 @@ Qiita互換の `:::note` 記法が使えます（自作プラグイン `src/lib/
 ├── scripts/
 │   └── generate-og.mjs      OG画像とfavicon PNGの生成（sharp）
 ├── src/
-│   ├── components/          共通部品（PostList = ログ行風の記事一覧 など）
+│   ├── components/          共通部品（PostList = ログ行風の記事一覧、TableOfContents = サイド目次 など）
 │   ├── consts.ts            サイト名・セクション定義
-│   ├── content/             記事本体（tech / travel / others）
+│   ├── content/             記事本体（tech / travel / others / memo）
 │   ├── content.config.ts    コレクションとfrontmatterスキーマの定義
 │   ├── layouts/             記事ページのレイアウト
 │   ├── pages/               ルーティング（各コレクションの一覧・詳細・RSS）

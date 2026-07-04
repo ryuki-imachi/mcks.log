@@ -33,10 +33,16 @@ const travel = defineCollection({
 		}),
 });
 
+// 技術メモ・調査メモ（techにするほどではない小ネタ）
+const memo = defineCollection({
+	loader: glob({ base: './src/content/memo', pattern: '**/*.{md,mdx}' }),
+	schema: baseSchema,
+});
+
 // 考えの垂れ流し
 const others = defineCollection({
 	loader: glob({ base: './src/content/others', pattern: '**/*.{md,mdx}' }),
 	schema: baseSchema,
 });
 
-export const collections = { tech, travel, others };
+export const collections = { tech, memo, travel, others };

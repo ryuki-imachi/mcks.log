@@ -15,8 +15,14 @@
 	--accent-soft: rgba(74, 124, 89, 0.09);
 	/* セクションの識別色（バッジ・カードで使用） */
 	--c-tech: #4a7c59;
+	--c-memo: #567d84;
 	--c-travel: #b0713f;
 	--c-others: #6b7aa1;
+
+	/* :::note の識別色 */
+	--note-info: #4a7ca0;
+	--note-warn: #a8842c;
+	--note-alert: #b04a4a;
 
 	--font-sans:
 		system-ui, -apple-system, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans',
@@ -36,8 +42,12 @@
 		--accent: #82b391;
 		--accent-soft: rgba(130, 179, 145, 0.12);
 		--c-tech: #82b391;
+		--c-memo: #8db4bb;
 		--c-travel: #cf9a6a;
 		--c-others: #93a3c8;
+		--note-info: #7fa8c8;
+		--note-warn: #c9a95e;
+		--note-alert: #c98080;
 	}
 }
 
@@ -164,6 +174,31 @@ hr {
 	main {
 		padding: 1.8em 0 3em;
 	}
+}
+
+/* :::note 記法（remark-qiita-note）。Qiita風の色付きボックス */
+.qiita-note {
+	margin: 1.6em 0;
+	padding: 0.85em 1.1em;
+	border-left: 4px solid var(--note-color, var(--note-info));
+	border-radius: 6px;
+	background: color-mix(in srgb, var(--note-color, var(--note-info)) 9%, transparent);
+	font-size: 0.95em;
+}
+.qiita-note-info {
+	--note-color: var(--note-info);
+}
+.qiita-note-warn {
+	--note-color: var(--note-warn);
+}
+.qiita-note-alert {
+	--note-color: var(--note-alert);
+}
+.qiita-note > :last-child {
+	margin-bottom: 0;
+}
+.qiita-note p {
+	margin-bottom: 0.6em;
 }
 
 /* リンクカード（remark-link-card-plus）。Qiita風の横長カード + 右サムネイル */

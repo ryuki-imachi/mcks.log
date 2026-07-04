@@ -26,6 +26,7 @@ GitHubのmainブランチへpushすると、Workers Buildsが `npx astro build` 
 | コレクション | URL | 内容 |
 | :--- | :--- | :--- |
 | `tech` | `/tech/` | 技術記事（Qiitaからの移行分を含む） |
+| `memo` | `/memo/` | 技術メモ・調査メモ（記事にするほどではない小ネタ） |
 | `travel` | `/travel/` | 旅の記録（国内旅行・JAWS-UG各支部巡り） |
 | `others` | `/others/` | 上記に収まらないあれこれ |
 
@@ -53,7 +54,29 @@ eventUrl: https://...        # イベントのconnpass等（省略可）
 
 ### リンクカード
 
-Qiitaと同様に、本文中でURLだけの行を書くとビルド時にリンクカードへ展開されます（[remark-link-card-plus](https://github.com/okaryo/remark-link-card-plus) を使用）。`[テキスト](URL)` 形式のインラインリンクは変換されません。
+Qiitaと同様に、本文中でURLだけの行を書くとビルド時にリンクカードへ展開されます（[remark-link-card-plus](https://github.com/okaryo/remark-link-card-plus) を使用）。`[テキスト](URL)` 形式のインラインリンクと画像URL（.png/.jpg等）は変換されません。
+
+### noteボックス
+
+Qiita互換の `:::note` 記法が使えます（自作プラグイン `src/lib/remark-qiita-note.mjs`）。
+
+```
+:::note
+補足やメモ（info、既定）
+:::
+
+:::note warn
+注意
+:::
+
+:::note alert
+重要な警告
+:::
+```
+
+### 画像
+
+記事画像はリポジトリに置かず、外部CDNのURLを `![説明](https://images.ryu-ki-learn.com/...)` の形で参照します。
 
 ## ディレクトリ
 

@@ -6,18 +6,20 @@ import Header from '../components/Header.astro';
 import PostList from '../components/PostList.astro';
 import { SECTION_DESCRIPTIONS, SECTIONS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
-// 3コレクションを横断して新着順に並べる
-const [tech, travel, others] = await Promise.all([
+// 全コレクションを横断して新着順に並べる
+const [tech, memo, travel, others] = await Promise.all([
 	getCollection('tech'),
+	getCollection('memo'),
 	getCollection('travel'),
 	getCollection('others'),
 ]);
 const published = {
 	tech: tech.filter((post) => !post.data.draft),
+	memo: memo.filter((post) => !post.data.draft),
 	travel: travel.filter((post) => !post.data.draft),
 	others: others.filter((post) => !post.data.draft),
 };
-const posts = [...published.tech, ...published.travel, ...published.others]
+const posts = [...published.tech, ...published.memo, ...published.travel, ...published.others]
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 10);
 const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
@@ -63,7 +65,7 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 	}
 	.sections {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
 		gap: 0.9em;
 		margin-bottom: 2.8em;
 	}
@@ -84,6 +86,9 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 	}
 	.card-tech {
 		border-top-color: var(--c-tech);
+	}
+	.card-memo {
+		border-top-color: var(--c-memo);
 	}
 	.card-travel {
 		border-top-color: var(--c-travel);

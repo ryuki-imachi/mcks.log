@@ -9,6 +9,7 @@ import Header from '../components/Header.astro';
 
 type Props = (
 	| CollectionEntry<'tech'>['data']
+	| CollectionEntry<'memo'>['data']
 	| CollectionEntry<'travel'>['data']
 	| CollectionEntry<'others'>['data']
 ) & {
@@ -46,6 +47,9 @@ const ogImage = heroImage as ImageMetadata | undefined;
 			}
 			.section-tech {
 				color: var(--c-tech);
+			}
+			.section-memo {
+				color: var(--c-memo);
 			}
 			.section-travel {
 				color: var(--c-travel);

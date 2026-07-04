@@ -10,5 +10,9 @@
 	// DNSレコード(CNAME)と証明書が自動作成される
 	"routes": [
 		{ "pattern": "blog.ryu-ki-learn.com", "custom_domain": true }
-	]
+	],
+	// workers.dev URLは重複コンテンツ回避のため無効化（カスタムドメインに一本化）
+	"workers_dev": false,
+	// PRのプレビューURLは残す（workers_dev: false に連動してオフになるのを防ぐ）
+	"preview_urls": true
 }

@@ -12,3 +12,9 @@ echo "コードブロックはShikiでハイライトされます"
 ```
 
 frontmatterには `qiitaId` を書けるので、Qiita移行記事の元IDを記録できます。
+
+URLだけの行はQiitaと同じようにリンクカードに展開されます。
+
+https://qiita.com/ryu-ki/items/0566e27e6c50b9fb399a
+
+インラインの[テキストリンク](https://docs.astro.build/)はそのままです。

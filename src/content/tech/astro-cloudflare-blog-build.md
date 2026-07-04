@@ -1,5 +1,5 @@
 ---
-title: 'Astro + Cloudflare Workers で個人ブログを作ってみた'
+title: '【Cloudflare】Astro + Cloudflare Workers で個人ブログを作ってみた'
 description: 'pushするだけで公開される個人ブログを Astro 7 と Cloudflare Workers で構築した手順。カスタムドメインも証明書も wrangler.jsonc の宣言だけで自動構成、運用コストはほぼ0円。'
 pubDate: 2026-07-04
 tags: ['Astro', 'Cloudflare', 'CloudflareWorkers', 'ブログ']

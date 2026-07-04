@@ -1,63 +1,70 @@
-# Astro Starter Kit: Blog
+# mcks.log
 
-```sh
-npm create astro@latest -- --template blog
+個人ブログ mcks.log の記事とサイト本体を管理するリポジトリです。
+
+- サイト: https://blog.ryu-ki-learn.com （公開準備中）
+- サイト名の由来は「道草（michikusa）」の子音縮約です
+
+## 構成
+
+| 要素 | 採用 |
+| :--- | :--- |
+| フレームワーク | [Astro](https://astro.build/) 7（静的出力、アダプター不使用） |
+| ホスティング | Cloudflare Workers（static assets） |
+| 記事画像 | 外部CDN（images.ryu-ki-learn.com）を参照。リポジトリには置かない |
+
+## コンテンツ
+
+記事は `src/content/` 配下の3コレクションで管理しています。
+
+| コレクション | URL | 内容 |
+| :--- | :--- | :--- |
+| `tech` | `/tech/` | 技術記事（Qiitaからの移行分を含む） |
+| `travel` | `/travel/` | 旅の記録（国内旅行・JAWS地方支部巡り） |
+| `others` | `/others/` | 上記に収まらないあれこれ |
+
+各コレクションに一覧・記事ページ・RSS（`/tech/rss.xml` など）があり、サイト全体のRSSは `/rss.xml` です。
+
+### frontmatter
+
+```yaml
+# 共通
+title: 記事タイトル
+description: 一覧やOGPに使う説明文
+pubDate: 2026-07-04
+tags: [aws, astro]   # 省略可（既定: []）
+draft: true          # 省略可（既定: false）。trueの間は一覧・RSS・ページ生成から除外
+
+# tech のみ
+qiitaId: xxxxxxxx    # Qiita移行記事の元ID（省略可）
+
+# travel のみ
+location: 佐渡ヶ島            # 省略可
+eventUrl: https://...        # イベントのconnpass等（省略可）
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+スキーマ定義の実体は `src/content.config.ts` にあります。
 
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## ディレクトリ
 
 ```text
-├── public/
+├── public/                  favicon等の静的ファイル
 ├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
+│   ├── components/          共通部品（PostList = 記事一覧 など）
+│   ├── content/             記事本体（tech / travel / others）
+│   ├── content.config.ts    コレクションとfrontmatterスキーマの定義
+│   ├── layouts/             記事ページのレイアウト
+│   └── pages/               ルーティング（各コレクションの一覧・詳細・RSS）
 ├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+└── wrangler.jsonc           Cloudflare Workers の設定
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## コマンド
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+| コマンド | 動作 |
+| :--- | :--- |
+| `npm install` | 依存のインストール |
+| `npm run dev` | 開発サーバー（ http://localhost:4321 ） |
+| `npm run build` | `./dist/` に本番ビルド |
+| `npm run preview` | ビルド結果のローカル確認 |
+| `npx wrangler deploy` | Cloudflare Workers へデプロイ（ビルド後） |

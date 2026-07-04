@@ -27,7 +27,7 @@ GitHubのmainブランチへpushすると、Workers Buildsが `npx astro build` 
 | :--- | :--- | :--- |
 | `tech` | `/tech/` | 技術記事（Qiitaからの移行分を含む） |
 | `travel` | `/travel/` | 旅の記録（国内旅行・JAWS-UG各支部巡り） |
-| `others` | `/others/` | 上記に収まらないあれこれ |
+| `thoughts` | `/thoughts/` | 考えごとの垂れ流し |
 | `memo` | `/memo/` | 技術メモ・調査メモ（記事にするほどではない小ネタ） |
 
 各コレクションに一覧・記事ページ・RSS（`/tech/rss.xml` など）があり、サイト全体のRSSは `/rss.xml` です。
@@ -97,7 +97,7 @@ Qiita互換の `:::note` 記法が使えます（自作プラグイン `src/lib/
 ├── src/
 │   ├── components/          共通部品（PostList = ログ行風の記事一覧、TableOfContents = サイド目次 など）
 │   ├── consts.ts            サイト名・セクション定義
-│   ├── content/             記事本体（tech / travel / others / memo）
+│   ├── content/             記事本体（tech / travel / thoughts / memo）
 │   ├── content.config.ts    コレクションとfrontmatterスキーマの定義
 │   ├── layouts/             記事ページのレイアウト
 │   ├── pages/               ルーティング（各コレクションの一覧・詳細・RSS）

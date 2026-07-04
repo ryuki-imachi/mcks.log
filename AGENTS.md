@@ -24,7 +24,7 @@ npm run build
 
 ## 記事の書き方
 
-- 記事は `src/content/<コレクション>/` に .md で置く。コレクションは tech / travel / others / memo（詳細はREADME）
+- 記事は `src/content/<コレクション>/` に .md で置く。コレクションは tech / travel / thoughts / memo（詳細はREADME）
 - frontmatterのスキーマは `src/content.config.ts` が正
 - `draft: true` の間は一覧・RSS・ページ生成から除外される
 - Qiita互換の `:::note` / `:::note warn` / `:::note alert` 記法が使える（実装: src/lib/remark-qiita-note.mjs）
@@ -49,7 +49,7 @@ npm run build
 
 最終更新: 2026-07-04（本運用開始）
 
-- 完了済み: サイト構築フェーズ完了、本運用開始。1本目の記事「Astro + Cloudflare Workers で個人ブログを作ってみた」（tech/astro-cloudflare-blog-build）を公開し、サンプル記事4本を削除。機能はpush→自動デプロイ、Qiita互換:::note記法、リンクカード、Mermaidレンダリング、4コレクション（tech/travel/others/memo）、スクロール追従サイド目次（1120px以上のみ表示）、記事内画像の枠線（色は --img-frame で管理）
+- 完了済み: サイト構築フェーズ完了、本運用開始。1本目の記事「Astro + Cloudflare Workers で個人ブログを作ってみた」（tech/astro-cloudflare-blog-build）を公開し、サンプル記事4本を削除。機能はpush→自動デプロイ、Qiita互換:::note記法、リンクカード、Mermaidレンダリング、4コレクション（tech/travel/thoughts/memo。othersは2026-07-04にthoughtsへリネーム）、スクロール追従サイド目次（1120px以上のみ表示）、記事内画像の枠線（色は --img-frame で管理）
 - 継続検討: issues参照（#1 トップ表示改善、#2 Xポスト機能、#3 エージェントから簡単投稿できる仕組み）
 - 次の一歩: Qiita過去記事の移行（変換スクリプト）
 - 関連リソース: 記事の下書き・構築ログ・設計書はリポジトリ外の作業ディレクトリで管理（Discordの #garage / #記事の種 スレッドで進行）

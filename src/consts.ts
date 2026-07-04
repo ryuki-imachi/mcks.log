@@ -8,13 +8,13 @@ export const SITE_DESCRIPTION = '予定通り、フラフラしています。';
 export const SECTIONS = {
 	tech: 'Tech',
 	travel: 'Travel',
-	others: 'Others',
+	thoughts: 'Thoughts',
 	memo: 'Memo',
 } as const;
 
 export const SECTION_DESCRIPTIONS = {
 	tech: 'AWSと生成AIを中心にした技術の学び（Qiitaからも移行予定）',
 	travel: 'JAWS-UG各支部巡り（と国内旅行）の記録',
-	others: 'その他考えごとのなど垂れ流し',
+	thoughts: '考えごとの垂れ流し',
 	memo: '技術メモ / 調査の走り書き',
 } as const;

@@ -17,7 +17,7 @@
 	--c-tech: #4a7c59;
 	--c-memo: #567d84;
 	--c-travel: #b0713f;
-	--c-others: #6b7aa1;
+	--c-thoughts: #6b7aa1;
 
 	/* :::note の識別色 */
 	--note-info: #4a7ca0;
@@ -47,7 +47,7 @@
 		--c-tech: #82b391;
 		--c-memo: #8db4bb;
 		--c-travel: #cf9a6a;
-		--c-others: #93a3c8;
+		--c-thoughts: #93a3c8;
 		--note-info: #7fa8c8;
 		--note-warn: #c9a95e;
 		--note-alert: #c98080;

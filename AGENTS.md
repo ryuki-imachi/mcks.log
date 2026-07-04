@@ -47,7 +47,7 @@ npm run build
 
 ## 現在の状況
 
-最終更新: 2026-07-04（本運用開始）
+最終更新: 2026-07-05（サイド目次・画像枠線・streamリネーム）
 
 - 完了済み: サイト構築フェーズ完了、本運用開始。1本目の記事「Astro + Cloudflare Workers で個人ブログを作ってみた」（tech/astro-cloudflare-blog-build）を公開し、サンプル記事4本を削除。機能はpush→自動デプロイ、Qiita互換:::note記法、リンクカード、Mermaidレンダリング、4コレクション（tech/travel/memo/stream。旧othersを2026-07-05にstreamへリネーム）、スクロール追従サイド目次（1120px以上のみ表示）、記事内画像の枠線（色は --img-frame で管理）
 - 継続検討: issues参照（#1 トップ表示改善、#2 Xポスト機能、#3 エージェントから簡単投稿できる仕組み）

@@ -5,5 +5,10 @@
 	"compatibility_date": "2026-07-04",
 	"assets": {
 		"directory": "./dist"
-	}
+	},
+	// カスタムドメイン。同一アカウントのActiveゾーンなら deploy 時に
+	// DNSレコード(CNAME)と証明書が自動作成される
+	"routes": [
+		{ "pattern": "blog.ryu-ki-learn.com", "custom_domain": true }
+	]
 }

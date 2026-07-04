@@ -1,0 +1,9 @@
+{
+	// Cloudflare Workers (static assets) の設定
+	// デプロイ: npx astro build && npx wrangler deploy
+	"name": "mcks-log",
+	"compatibility_date": "2026-07-04",
+	"assets": {
+		"directory": "./dist"
+	}
+}

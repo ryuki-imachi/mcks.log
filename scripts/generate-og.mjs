@@ -10,7 +10,7 @@ const og = `<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
         fill="#211f19" text-anchor="middle">mcks.log</text>
   <rect x="928" y="228" width="34" height="104" fill="#4a7c59"/>
   <text x="600" y="430" font-family="Hiragino Sans, Noto Sans JP, sans-serif" font-size="38"
-        fill="#8b8678" text-anchor="middle">技術の学びと旅の記録</text>
+        fill="#8b8678" text-anchor="middle">予定通り、フラフラしています。</text>
   <text x="600" y="560" font-family="Menlo, Consolas, monospace" font-size="26"
         fill="#8b8678" text-anchor="middle">blog.ryu-ki-learn.com</text>
 </svg>`;

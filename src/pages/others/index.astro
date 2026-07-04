@@ -6,7 +6,7 @@ import Header from '../../components/Header.astro';
 import PostList from '../../components/PostList.astro';
 import { SITE_TITLE } from '../../consts';
 
-const posts = (await getCollection('notes'))
+const posts = (await getCollection('others'))
 	.filter((post) => !post.data.draft)
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
@@ -14,13 +14,13 @@ const posts = (await getCollection('notes'))
 <!doctype html>
 <html lang="ja">
 	<head>
-		<BaseHead title={`Notes | ${SITE_TITLE}`} description="考えごとの記録" />
+		<BaseHead title={`Others | ${SITE_TITLE}`} description="考えごとの記録" />
 	</head>
 	<body>
 		<Header />
 		<main>
 			<section>
-				<h1>Notes</h1>
+				<h1>Others</h1>
 				<PostList posts={posts} />
 			</section>
 		</main>

@@ -34,9 +34,9 @@ const travel = defineCollection({
 });
 
 // 考えの垂れ流し
-const notes = defineCollection({
-	loader: glob({ base: './src/content/notes', pattern: '**/*.{md,mdx}' }),
+const others = defineCollection({
+	loader: glob({ base: './src/content/others', pattern: '**/*.{md,mdx}' }),
 	schema: baseSchema,
 });
 
-export const collections = { tech, travel, notes };
+export const collections = { tech, travel, others };

@@ -8,5 +8,5 @@ export const SITE_DESCRIPTION = '技術の学びと旅の記録';
 export const SECTIONS = {
 	tech: 'Tech',
 	travel: 'Travel',
-	notes: 'Notes',
+	others: 'Others',
 } as const;

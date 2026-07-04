@@ -7,12 +7,12 @@ import PostList from '../components/PostList.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 // 3コレクションを横断して新着順に並べる
-const [tech, travel, notes] = await Promise.all([
+const [tech, travel, others] = await Promise.all([
 	getCollection('tech'),
 	getCollection('travel'),
-	getCollection('notes'),
+	getCollection('others'),
 ]);
-const posts = [...tech, ...travel, ...notes]
+const posts = [...tech, ...travel, ...others]
 	.filter((post) => !post.data.draft)
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 10);

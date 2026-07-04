@@ -9,7 +9,7 @@ import Header from '../components/Header.astro';
 type Props =
 	| CollectionEntry<'tech'>['data']
 	| CollectionEntry<'travel'>['data']
-	| CollectionEntry<'notes'>['data'];
+	| CollectionEntry<'others'>['data'];
 
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---

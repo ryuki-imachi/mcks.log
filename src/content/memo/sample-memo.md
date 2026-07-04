@@ -20,3 +20,10 @@ Qiita互換の `:::note` 記法が使えます。
 :::note alert
 重要な警告は alert で書きます。
 :::
+
+:::note
+ノートの中でもリンクカードが使えます（URLの前後に空行を入れるのがポイント）。
+
+https://qiita.com/ryu-ki/items/0566e27e6c50b9fb399a
+
+:::

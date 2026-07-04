@@ -12,12 +12,13 @@ export default defineConfig({
 	site: 'https://blog.ryu-ki-learn.com',
 	integrations: [mdx(), sitemap()],
 	markdown: {
-		// remarkQiitaNote: Qiita互換の :::note 記法（src/lib/remark-qiita-note.mjs）
 		// remarkLinkCard: Qiitaと同様に「URLだけの行」をビルド時にリンクカード化する。
 		// インラインリンク（[text](url)）は変換されない。画像URLはカード化せず素通しする。
+		// remarkQiitaNote: Qiita互換の :::note 記法（src/lib/remark-qiita-note.mjs）
+		// 順序が重要: リンクカードは「親がrootの段落」しか変換しないため、
+		// noteで包む前にカード化を済ませる（= note内のURL行もカードになる）
 		// 見た目はどちらもglobal.css参照
 		remarkPlugins: [
-			remarkQiitaNote,
 			[
 				remarkLinkCard,
 				{
@@ -26,6 +27,7 @@ export default defineConfig({
 					ignoreExtensions: ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'],
 				},
 			],
+			remarkQiitaNote,
 		],
 	},
 });

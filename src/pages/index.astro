@@ -38,7 +38,9 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 					{SITE_DESCRIPTION}
 				</p>
 			</section>
-			<section class="sections">
+			<section>
+				<h2 class="log-heading">$ ls mcks.log</h2>
+				<div class="sections">
 				{
 					sectionKeys.map((key) => (
 						<a class={`card card-${key}`} href={`/${key}/`}>
@@ -48,6 +50,7 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 						</a>
 					))
 				}
+				</div>
 			</section>
 			<section>
 				<h2 class="log-heading">$ tail -f mcks.log</h2>
@@ -64,18 +67,17 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 		color: var(--muted);
 	}
 	.sections {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
-		gap: 0.9em;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6em;
 		margin-bottom: 2.8em;
 	}
 	.card {
 		display: flex;
-		flex-direction: column;
-		gap: 0.3em;
-		padding: 0.9em 1em 0.8em;
+		align-items: baseline;
+		gap: 1em;
+		padding: 0.7em 1em;
 		border: 1px solid var(--line);
-		border-top: 3px solid var(--line);
 		border-radius: 8px;
 		text-decoration: none;
 		color: inherit;
@@ -84,37 +86,46 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 		text-decoration: none;
 		background: var(--accent-soft);
 	}
-	.card-tech {
-		border-top-color: var(--c-tech);
-	}
-	.card-memo {
-		border-top-color: var(--c-memo);
-	}
-	.card-travel {
-		border-top-color: var(--c-travel);
-	}
-	.card-others {
-		border-top-color: var(--c-others);
-	}
 	.card-title {
 		font-family: var(--font-mono);
 		font-weight: 700;
-		font-size: 1.05em;
-		color: var(--ink-strong);
+		font-size: 1em;
+		width: 5em;
+		flex-shrink: 0;
 	}
-	.card:hover .card-title {
-		color: var(--accent);
+	.card-tech .card-title {
+		color: var(--c-tech);
+	}
+	.card-travel .card-title {
+		color: var(--c-travel);
+	}
+	.card-others .card-title {
+		color: var(--c-others);
+	}
+	.card-memo .card-title {
+		color: var(--c-memo);
 	}
 	.card-desc {
-		font-size: 0.8em;
+		flex: 1;
+		font-size: 0.85em;
 		line-height: 1.7;
 		color: var(--muted);
-		flex-grow: 1;
 	}
 	.card-count {
 		font-family: var(--font-mono);
 		font-size: 0.75em;
 		color: var(--muted);
+		flex-shrink: 0;
+	}
+	@media (max-width: 600px) {
+		.card {
+			flex-wrap: wrap;
+			gap: 0.2em 1em;
+		}
+		.card-desc {
+			width: 100%;
+			flex: none;
+		}
 	}
 	.log-heading {
 		font-family: var(--font-mono);

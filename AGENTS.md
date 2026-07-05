@@ -9,10 +9,11 @@
 
 ## push の運用ルール（重要）
 
-**push = 本番デプロイ**。1回のpushで約2分のビルドが走る（無料枠は月3,000分）。
+**mainへのpush = 本番デプロイ**。1回のpushで約2分のビルドが走る（無料枠は月3,000分）。
 
 - 記事の投稿・修正のpushはいつでも自由に行ってよい
-- 開発作業（デザイン・機能・設定の変更）は、ローカルで `npm run build` と `npm run preview` で確認を済ませ、**意味のあるまとまり単位でpushする**。WIPのこまめなpushをしない
+- **Issue対応（機能追加・デザイン変更などの開発作業）は作業ブランチを切ってPRを出す**。mainへ直接pushしない（2026-07-05リュウキ指定）。マージはリュウキのレビュー後
+- 開発作業は、ローカルで `npm run build` と `npm run preview` で確認を済ませ、**意味のあるまとまり単位でpushする**。WIPのこまめなpushをしない
 - 複数の小さな変更が続きそうなときは、ローカルで積んでからまとめてpushする
 - **npmパッケージを追加・更新したら、pushする前に必ず次を実行する**（npmの既知問題で、Macでの `npm install` はLinux向けオプショナル依存をlockに書き込まないことがあり、CIの `npm ci` が落ちる。2026-07-04に2回発生）
 
@@ -31,6 +32,7 @@ npm run build
 - URLだけの行はリンクカードに展開される（note内でも可、URLの前後に空行が必要）。インラインリンクと画像URLは変換されない
 - ```mermaid ブロックはブラウザ側でSVGに描画される（記事ページ限定・図があるページだけmermaid.jsを遅延読み込み。実装: src/layouts/BlogPost.astro のscript）
 - 画像はリポジトリに置かず、外部CDN（images.ryu-ki-learn.com）のURLを `![説明](URL)` で参照する
+- 記事ごとのOG画像（SNSシェア時のサムネ）はビルド時に自動生成される（`/og/<コレクション>/<id>.png`、実装: src/lib/og-image.ts + src/pages/og/）。frontmatterで `heroImage` を設定した記事はそちらが優先。記事以外のページはサイト共通の og-default.png
 
 ## よく使うコマンド
 

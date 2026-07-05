@@ -16,13 +16,27 @@ type Props = (
 ) & {
 	// 呼び出し側([...slug].astro)が post.collection を渡すとセクションバッジを表示する
 	collection?: string;
+	// 記事のid（自動生成OG画像のURL組み立てに使う）
+	postId?: string;
 	// render(post) が返す見出し一覧。渡すと広い画面でサイド目次を表示する
 	headings?: MarkdownHeading[];
 };
 
-const { title, description, pubDate, updatedDate, heroImage, tags, collection, headings = [] } =
-	Astro.props;
-const ogImage = heroImage as ImageMetadata | undefined;
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+	tags,
+	collection,
+	postId,
+	headings = [],
+} = Astro.props;
+// heroImageがあればそれを優先し、なければビルド時に自動生成した記事別OG画像を使う
+const ogImage =
+	(heroImage as ImageMetadata | undefined) ??
+	(collection && postId ? `/og/${collection}/${postId}.png` : undefined);
 // 目次に載せるのはh2/h3まで（h4以下は細かすぎるので省く）
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const hasToc = tocHeadings.length > 0;

@@ -19,6 +19,19 @@ const SECTION_COLORS: Record<string, string> = {
 	stream: '#6b7aa1',
 };
 
+// 背景はセクション色に生成りを25%混ぜた薄めの単色（2026-07-05リュウキ選定）
+const BG_LIGHTEN_RATIO = 0.25;
+
+// セクション色に生成り(#faf9f4)を混ぜて薄くする
+function lighten(hex: string, ratio: number): string {
+	const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+	const cream = [250, 249, 244];
+	return `#${[r, g, b]
+		.map((v, i) => Math.round(v * (1 - ratio) + cream[i] * ratio))
+		.map((v) => v.toString(16).padStart(2, '0'))
+		.join('')}`;
+}
+
 const FONT_DIR = path.resolve('./src/assets/og-fonts');
 
 type Font = { name: string; data: Buffer; weight: 400 | 700; style: 'normal' };
@@ -64,7 +77,7 @@ export async function renderOgImage({ title, collection, pubDate }: OgImageInput
 			width: '100%',
 			height: '100%',
 			padding: '44px',
-			backgroundImage: `linear-gradient(135deg, ${sectionColor} 0%, ${INK_STRONG} 130%)`,
+			backgroundColor: lighten(sectionColor, BG_LIGHTEN_RATIO),
 			fontFamily: 'Noto Sans JP',
 		},
 		// 角丸カード
@@ -78,6 +91,7 @@ export async function renderOgImage({ title, collection, pubDate }: OgImageInput
 				backgroundColor: CARD_BG,
 				borderRadius: 28,
 				padding: '56px 60px 48px 60px',
+				boxShadow: '0 10px 36px rgba(33, 31, 25, 0.25)',
 			},
 			[
 				// タイトル（最大3行）

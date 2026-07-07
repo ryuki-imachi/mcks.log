@@ -99,13 +99,20 @@ const hasToc = tocHeadings.length > 0;
 				border-radius: 8px;
 			}
 			/* サイド目次は十分に広い画面のときだけ表示する。
-			   本文720px + 余白52px + 目次260px の2カラムグリッドに切り替える */
+			   本文720px + 余白52px + 目次260px の2カラムグリッドに切り替える。
+			   本文カラムの左端をヘッダー（720px中央寄せ）と揃えるため、グリッド全体を
+			   margin:autoで中央寄せするのではなく、通常時のmainと同じ左端位置
+			   (50% - 360px) に固定している。ブレークポイントは、その位置から
+			   目次+余白ぶん右にはみ出さない最小幅 720+2*(260+52)=1344px に
+			   安全マージンを足した値 */
 			.toc-aside {
 				display: none;
 			}
-			@media (min-width: 1120px) {
+			@media (min-width: 1360px) {
 				main.has-toc {
 					width: 1032px;
+					margin-left: calc((100% - 720px) / 2);
+					margin-right: auto;
 					display: grid;
 					grid-template-columns: 720px 260px;
 					gap: 52px;

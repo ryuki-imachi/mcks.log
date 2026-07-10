@@ -240,23 +240,21 @@ hr {
 }
 
 /* 対話ログ形式（remark-dialogue、format: dialogue のstream記事）。
-   発言者ラベル（等幅・@付き）+ 左ボーダー + speaker色の薄い背景。
+   発言者ラベル行 + 本文のぶら下げインデントによるフラット表示（ボックスなし）。
+   装飾は発言ごとに繰り返されて圧になるため最小限にしている。
    speakerごとの色は --dialogue-color で切り替える（未定義speakerはmuted） */
 .dialogue-turn {
-	margin: 1.6em 0;
+	margin: 1.7em 0;
 }
 .dialogue-speaker {
 	font-family: var(--font-mono);
-	font-size: 0.8em;
+	font-size: 0.82em;
 	font-weight: 700;
 	color: var(--dialogue-color, var(--muted));
-	margin-bottom: 0.4em;
+	margin-bottom: 0.1em;
 }
 .dialogue-body {
-	padding: 0.85em 1.1em;
-	border-left: 3px solid var(--dialogue-color, var(--muted));
-	border-radius: 0 8px 8px 0;
-	background: color-mix(in srgb, var(--dialogue-color, var(--muted)) 7%, transparent);
+	padding-left: 1.2em;
 }
 .dialogue-body > :last-child {
 	margin-bottom: 0;
@@ -271,12 +269,8 @@ hr {
 .dialogue-turn[data-speaker='claude'] {
 	--dialogue-color: var(--c-stream);
 }
-/* @note: は対話の合間の地の文（ナレーション）。ボックスにせず控えめに */
+/* @note: は対話の合間の地の文（ナレーション）。控えめに */
 .dialogue-turn[data-speaker='note'] .dialogue-body {
-	padding: 0 0.5em;
-	border-left: none;
-	border-radius: 0;
-	background: none;
 	color: var(--muted);
 	font-size: 0.92em;
 }

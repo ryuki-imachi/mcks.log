@@ -239,6 +239,48 @@ hr {
 	margin-bottom: 0.6em;
 }
 
+/* 対話ログ形式（remark-dialogue、format: dialogue のstream記事）。
+   発言者ラベル（等幅・@付き）+ 左ボーダー + speaker色の薄い背景。
+   speakerごとの色は --dialogue-color で切り替える（未定義speakerはmuted） */
+.dialogue-turn {
+	margin: 1.6em 0;
+}
+.dialogue-speaker {
+	font-family: var(--font-mono);
+	font-size: 0.8em;
+	font-weight: 700;
+	color: var(--dialogue-color, var(--muted));
+	margin-bottom: 0.4em;
+}
+.dialogue-body {
+	padding: 0.85em 1.1em;
+	border-left: 3px solid var(--dialogue-color, var(--muted));
+	border-radius: 0 8px 8px 0;
+	background: color-mix(in srgb, var(--dialogue-color, var(--muted)) 7%, transparent);
+}
+.dialogue-body > :last-child {
+	margin-bottom: 0;
+}
+.dialogue-body p {
+	margin-bottom: 0.9em;
+}
+/* 既知speakerの色割り当て。増えたらここに足す */
+.dialogue-turn[data-speaker='ryuki'] {
+	--dialogue-color: var(--accent);
+}
+.dialogue-turn[data-speaker='claude'] {
+	--dialogue-color: var(--c-stream);
+}
+/* @note: は対話の合間の地の文（ナレーション）。ボックスにせず控えめに */
+.dialogue-turn[data-speaker='note'] .dialogue-body {
+	padding: 0 0.5em;
+	border-left: none;
+	border-radius: 0;
+	background: none;
+	color: var(--muted);
+	font-size: 0.92em;
+}
+
 /* リンクカード（remark-link-card-plus）。Qiita風の横長カード + 右サムネイル */
 .remark-link-card-plus__container {
 	margin: 1.6em 0;

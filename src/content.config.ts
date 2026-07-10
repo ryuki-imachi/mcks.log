@@ -42,7 +42,11 @@ const memo = defineCollection({
 // 考えごとの垂れ流し
 const stream = defineCollection({
 	loader: glob({ base: './src/content/stream', pattern: '**/*.{md,mdx}' }),
-	schema: baseSchema,
+	schema: (ctx: any) =>
+		baseSchema(ctx).extend({
+			// dialogue にすると @speaker: 記法の対話ログ形式で表示される（src/lib/remark-dialogue.mjs）
+			format: z.enum(['plain', 'dialogue']).default('plain'),
+		}),
 });
 
 export const collections = { tech, memo, travel, stream };

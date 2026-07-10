@@ -29,6 +29,7 @@ npm run build
 - frontmatterのスキーマは `src/content.config.ts` が正
 - `draft: true` の間は一覧・RSS・ページ生成から除外される
 - Qiita互換の `:::note` / `:::note warn` / `:::note alert` 記法が使える（実装: src/lib/remark-qiita-note.mjs）
+- streamコレクションはfrontmatterに `format: dialogue` を書くと `@speaker: ` 記法の対話ログ形式で表示される。地の文は `@note:`（記法の見本: src/content/stream/dialogue-format-sample.md、実装: src/lib/remark-dialogue.mjs、経緯: issue #12 / PR #13）
 - URLだけの行はリンクカードに展開される（note内でも可、URLの前後に空行が必要）。インラインリンクと画像URLは変換されない
 - ```mermaid ブロックはブラウザ側でSVGに描画される（記事ページ限定・図があるページだけmermaid.jsを遅延読み込み。実装: src/layouts/BlogPost.astro のscript）
 - 画像はリポジトリに置かず、外部CDN（images.ryu-ki-learn.com）のURLを `![説明](URL)` で参照する
@@ -49,11 +50,11 @@ npm run build
 
 ## 現在の状況
 
-最終更新: 2026-07-05（記事別OG画像の自動生成を追加）
+最終更新: 2026-07-11（stream対話ログ形式を追加）
 
-- 完了済み: サイト構築フェーズ完了、本運用開始。1本目の記事「Astro + Cloudflare Workers で個人ブログを作ってみた」（tech/astro-cloudflare-blog-build）を公開し、サンプル記事4本を削除。機能はpush→自動デプロイ、Qiita互換:::note記法、リンクカード、Mermaidレンダリング、4コレクション（tech/travel/memo/stream。旧othersを2026-07-05にstreamへリネーム）、スクロール追従サイド目次（1120px以上のみ表示）、記事内画像の枠線（色は --img-frame で管理）、記事別OG画像のビルド時自動生成（PR #6、詳細は「記事の書き方」参照）
+- 完了済み: サイト構築フェーズ完了、本運用開始。1本目の記事「Astro + Cloudflare Workers で個人ブログを作ってみた」（tech/astro-cloudflare-blog-build）を公開し、サンプル記事4本を削除。機能はpush→自動デプロイ、Qiita互換:::note記法、リンクカード、Mermaidレンダリング、4コレクション（tech/travel/memo/stream。旧othersを2026-07-05にstreamへリネーム）、スクロール追従サイド目次（1120px以上のみ表示）、記事内画像の枠線（色は --img-frame で管理）、記事別OG画像のビルド時自動生成（PR #6、詳細は「記事の書き方」参照）、stream対話ログ形式（format: dialogue、@speaker:記法。issue #12 / PR #13、詳細は「記事の書き方」参照。デザイン経緯と改善余地はissue #12に記録）
 - 継続検討: issues参照（#1 トップ表示改善、#2 Xポスト機能（方針・文面はissueで確定済み）、#3 エージェントから簡単投稿できる仕組み、#4 検索インデックス、#7 記事ページの左端ズレ（原因はissueに記載）、#8 Tech以外のカジュアル執筆フロー（#3の要件定義を兼ねる））
-- 次の一歩: issue #7 / #8+#3 への着手、または Qiita過去記事の移行（変換スクリプト）
+- 次の一歩: stream対話ログ形式での1本目の記事（題材候補: CB特典クレジットの使い道）、issue #7 / #8+#3 への着手、または Qiita過去記事の移行（変換スクリプト）
 - 運用メモ: Issue対応はブランチ+PR（「pushの運用ルール」参照）
 - 関連リソース: 記事の下書き・構築ログ・設計書はリポジトリ外の作業ディレクトリで管理（Discordの #garage / #記事の種 スレッドで進行）
 

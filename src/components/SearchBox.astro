@@ -52,15 +52,30 @@
 		resultsBox.hidden = false;
 		for (const el of toHide) el.style.display = 'none';
 		try {
-			const { search } = await load();
+			const { search, toWords, toFragments, makeSnippet } = await load();
 			const hits = await search(query);
 			if (mySeq !== seq) return; // 入力が進んでいたら古い結果は捨てる
-			status.textContent = hits.length > 0 ? `${hits.length}件` : '見つかりませんでした';
+			const words = toWords(query);
+			status.textContent = hits.length > 0 ? `${hits.length}件（新しい順）` : '見つかりませんでした';
 			list.textContent = '';
+			// Fragment配列を、ヒット部分だけ<mark>にしたDOMとして組み立てる
+			const renderFragments = (parent: HTMLElement, fragments: { text: string; hit: boolean }[]) => {
+				for (const f of fragments) {
+					if (f.hit) {
+						const mark = document.createElement('mark');
+						mark.textContent = f.text;
+						parent.append(mark);
+					} else {
+						parent.append(f.text);
+					}
+				}
+			};
 			for (const hit of hits) {
 				const li = document.createElement('li');
 				const a = document.createElement('a');
 				a.href = `/${hit.collection}/${hit.slug}/`;
+				const line = document.createElement('span');
+				line.className = 'hit-line';
 				const date = document.createElement('span');
 				date.className = 'date';
 				date.textContent = hit.pubDate;
@@ -69,8 +84,12 @@
 				badge.textContent = hit.collection;
 				const title = document.createElement('span');
 				title.className = 'title';
-				title.textContent = hit.title;
-				a.append(date, badge, title);
+				renderFragments(title, toFragments(hit.title, words));
+				line.append(date, badge, title);
+				const snippet = document.createElement('span');
+				snippet.className = 'snippet';
+				renderFragments(snippet, makeSnippet(hit.body, words));
+				a.append(line, snippet);
 				li.append(a);
 				list.append(li);
 			}

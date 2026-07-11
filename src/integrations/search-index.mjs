@@ -68,6 +68,7 @@ function collectRecords() {
 				description: fm.description ?? '',
 				pubDate: String(fm.pubDate).slice(0, 10),
 				tags,
+				body: plain, // スニペット表示用の原文プレーンテキスト
 				n_title: normalize(fm.title),
 				n_tags: normalize(tags),
 				n_body: normalize(plain),

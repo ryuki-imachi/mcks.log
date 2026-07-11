@@ -48,6 +48,9 @@ qiitaId: xxxxxxxx    # Qiita移行記事の元ID（省略可）
 # travel のみ
 location: 佐渡ヶ島            # 省略可
 eventUrl: https://...        # イベントのconnpass等（省略可）
+
+# stream のみ
+format: dialogue             # 省略可（既定: plain）。対話ログ形式で表示する
 ```
 
 スキーマ定義の実体は `src/content.config.ts` にあります。
@@ -73,6 +76,22 @@ Qiita互換の `:::note` 記法が使えます（自作プラグイン `src/lib/
 重要な警告
 :::
 ```
+
+### 対話ログ形式（stream）
+
+streamの記事はfrontmatterに `format: dialogue` を書くと、`@speaker: ` で始まる段落を発言として表示する対話ログ形式になります（自作プラグイン `src/lib/remark-dialogue.mjs`）。
+
+```
+導入文（最初の発言より前は通常のMarkdown）。
+
+@ryuki: 発言はこう書く。次の発言行までが1つの発言になる。
+
+複数の段落やコードブロック・箇条書きも同じ発言に含められる。
+
+@note: 対話の合間に挟む地の文（ナレーション）はこれ。
+```
+
+記法の見本は `src/content/stream/dialogue-format-sample.md`（draft）にあります。
 
 ### Mermaid図
 

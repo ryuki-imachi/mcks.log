@@ -1,0 +1,41 @@
+{
+	"drop": [
+		"初心者",
+		"やってみた",
+		"アウトプット",
+		"ポエム",
+		"tips",
+		"ハンズオン",
+		"インフラエンジニア"
+	],
+	"rename": {
+		"bedrock": "Bedrock",
+		"AmazonBedrock": "Bedrock",
+		"lambda": "Lambda",
+		"duckdb": "DuckDB",
+		"rag": "RAG",
+		"route53": "Route53",
+		"ollama": "Ollama",
+		"opentelemetry": "OpenTelemetry",
+		"langfuse": "Langfuse",
+		"iceberg": "Iceberg",
+		"discord": "Discord",
+		"dns": "DNS",
+		"stepfunctions": "StepFunctions",
+		"serverless": "Serverless",
+		"codex": "Codex",
+		"canva": "Canva",
+		"astro": "Astro",
+		"cloudflare": "Cloudflare",
+		"BedrockAgentCore": "AgentCore",
+		"Strands": "StrandsAgents",
+		"AIDLC": "AI-DLC",
+		"AWSCDK": "CDK",
+		"AIAgent": "AIエージェント",
+		"AmazonQCLI": "AmazonQ",
+		"AI": "生成AI",
+		"勉強会": "イベントレポート",
+		"記事作成": "ブログ",
+		"記事の書き方": "ブログ"
+	}
+}

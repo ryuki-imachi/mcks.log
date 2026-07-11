@@ -25,12 +25,12 @@ qiitaStats:
 - 生成AI　など... 
 
 ### 目次
-- [ITインフラSummit 2025](https://qiita.com/drafts/fee0c9447bc72631485e/edit#it%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9summit-2025)
-- [おこしやす！DevOps×AIで実現する新ステージへ](https://qiita.com/drafts/fee0c9447bc72631485e/edit#%E3%81%8A%E3%81%93%E3%81%97%E3%82%84%E3%81%99devopsai%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E6%96%B0%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B8%E3%81%B8)
-- [ObservabilityCON on the Road](https://qiita.com/drafts/fee0c9447bc72631485e/edit#observabilitycon-on-the-road)
-- [DevOpsDays Tokyo 2025](https://qiita.com/drafts/fee0c9447bc72631485e/edit#devopsdays-tokyo-2025)
-- [@IT 開発変革セミナー 2025春](https://qiita.com/drafts/fee0c9447bc72631485e/edit#it-%E9%96%8B%E7%99%BA%E5%A4%89%E9%9D%A9%E3%82%BB%E3%83%9F%E3%83%8A%E3%83%BC-2025%E6%98%A5)
-- [AWS Summit 2025](https://qiita.com/drafts/fee0c9447bc72631485e/edit#aws-summit-2025)
+- [ITインフラSummit 2025](#itインフラsummit-2025)
+- [おこしやす！DevOps×AIで実現する新ステージへ](#おこしやすdevopsaiで実現する新ステージへ)
+- [ObservabilityCON on the Road](#observabilitycon-on-the-road)
+- [DevOpsDays Tokyo 2025](#devopsdays-tokyo-2025)
+- [@IT 開発変革セミナー 2025春](#it-開発変革セミナー-2025春)
+- [AWS Summit 2025](#aws-summit-2025)
 
 # [ITインフラSummit 2025](https://www.nikkeibp.co.jp/ad/atcl/material/24/07/10/02828/250219_ki_NXT_itinfrastructureSummit2025.pdf)
 日時：2025/2/19(水)・20(木)

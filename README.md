@@ -35,7 +35,7 @@ GitHubのmainブランチへpushすると、Workers Buildsが `npx astro build` 
 
 ### 記事検索
 
-一覧ページとトップの検索窓から、全コレクション横断の全文検索ができます（タイトル・タグ・本文。スペース区切りでAND検索）。仕組みはビルド時に全記事を `search-index.parquet` に書き出し（`src/integrations/search-index.mjs`）、ブラウザ上のDuckDB Wasmが直接SQLで検索するサーバーレス構成です。エンジン本体は検索窓に触れたときだけ遅延ロードされます（`src/lib/search-client.ts` / `src/components/SearchBox.astro`）。
+一覧ページとトップの検索窓から、全コレクション横断の全文検索ができます（タイトル・タグ・本文。スペース区切りでAND検索）。仕組みはビルド時に全記事を `search-index.parquet` に書き出し（`src/integrations/search-index.mjs`）、ブラウザ上のDuckDB Wasmが直接SQLで検索するサーバーレス構成です。エンジン本体（DuckDB Wasm、30MB超でWorkersの静的アセット上限25MBを超えるため）は公式配布のjsDelivr CDNから、検索窓に触れたときだけ遅延ロードされます（`src/lib/search-client.ts` / `src/components/SearchBox.astro`）。
 
 ### frontmatter
 

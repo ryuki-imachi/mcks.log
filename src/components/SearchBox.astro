@@ -34,6 +34,8 @@
 
 	let timer: number | undefined;
 	let seq = 0;
+	// 初回はエンジン（30MB超）のダウンロード+初期化で時間がかかるため、表示を分ける
+	let engineReady = false;
 	input.addEventListener('input', () => {
 		clearTimeout(timer);
 		timer = window.setTimeout(run, 250);
@@ -48,12 +50,15 @@
 			return;
 		}
 		const mySeq = ++seq;
-		status.textContent = '検索中…';
+		status.textContent = engineReady
+			? '検索中…'
+			: '検索エンジンを読み込んでいます…（初回だけ少し時間がかかります）';
 		resultsBox.hidden = false;
 		for (const el of toHide) el.style.display = 'none';
 		try {
 			const { search, toWords, toFragments, makeSnippet } = await load();
 			const hits = await search(query);
+			engineReady = true;
 			if (mySeq !== seq) return; // 入力が進んでいたら古い結果は捨てる
 			const words = toWords(query);
 			status.textContent = hits.length > 0 ? `${hits.length}件（新しい順）` : '見つかりませんでした';

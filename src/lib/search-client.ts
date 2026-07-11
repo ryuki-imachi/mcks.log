@@ -1,6 +1,8 @@
 // 記事検索のクライアント側エンジン（issue #14）。SearchBox.astroから動的importされる。
 //
-// DuckDB Wasmをセルフホスト（Viteの?url importでバンドルに同梱）で初期化し、
+// DuckDB Wasm本体（30MB超）はCloudflare Workersの静的アセット1ファイル25MB制限を
+// 超えるためセルフホストできず、公式配布のjsDelivr CDNからロードする。
+// 検索インデックス（記事データ）は自サイト配信のまま。
 // ビルド時に生成された /search-index.parquet をSQLで検索する。
 // Parquetは列指向なので、DuckDBはHTTPレンジリクエストで必要な列だけを読む。
 //
@@ -29,20 +31,20 @@ let connPromise: Promise<AsyncDuckDBConnection> | null = null;
 function initConnection(): Promise<AsyncDuckDBConnection> {
 	connPromise ??= (async () => {
 		const duckdb = await import('@duckdb/duckdb-wasm');
-		const [wasmMvp, workerMvp, wasmEh, workerEh] = await Promise.all([
-			import('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url'),
-			import('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?url'),
-			import('@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url'),
-			import('@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?url'),
-		]);
-		const bundle = await duckdb.selectBundle({
-			mvp: { mainModule: wasmMvp.default, mainWorker: workerMvp.default },
-			eh: { mainModule: wasmEh.default, mainWorker: workerEh.default },
-		});
-		const worker = new Worker(bundle.mainWorker!);
-		const db = new duckdb.AsyncDuckDB(new duckdb.VoidLogger(), worker);
-		await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
-		return db.connect();
+		const bundle = await duckdb.selectBundle(duckdb.getJsDelivrBundles());
+		// クロスオリジンのworker URLは直接 new Worker() できないため、
+		// blob URL経由のimportScriptsでラップする（duckdb-wasm公式のworkaround）
+		const workerUrl = URL.createObjectURL(
+			new Blob([`importScripts("${bundle.mainWorker}");`], { type: 'text/javascript' }),
+		);
+		try {
+			const worker = new Worker(workerUrl);
+			const db = new duckdb.AsyncDuckDB(new duckdb.VoidLogger(), worker);
+			await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
+			return db.connect();
+		} finally {
+			URL.revokeObjectURL(workerUrl);
+		}
 	})();
 	return connPromise;
 }

@@ -12,6 +12,7 @@
 | ホスティング | Cloudflare Workers（static assets） |
 | CI/CD | Workers Builds（mainへのpushで自動ビルド・デプロイ） |
 | 記事画像 | 外部CDN（images.ryu-ki-learn.com）を参照。リポジトリには置かない |
+| アクセス解析 | Cloudflare Web Analytics（`BaseHead.astro` のビーコン、閲覧はCloudflareダッシュボード） |
 
 ## デプロイ
 
@@ -30,7 +31,7 @@ GitHubのmainブランチへpushすると、Workers Buildsが `npx astro build` 
 | `memo` | `/memo/` | 技術メモ・調査メモ（記事にするほどではない小ネタ） |
 | `stream` | `/stream/` | 考えごとの垂れ流し |
 
-各コレクションに一覧・記事ページ・RSS（`/tech/rss.xml` など）があり、サイト全体のRSSは `/rss.xml` です。
+各コレクションに一覧・記事ページ・RSS（`/tech/rss.xml` など）があり、サイト全体のRSSは `/rss.xml` です。一覧は1ページ20件でページ分けされます（`src/components/Pagination.astro`、10ページ以上で省略記号表示）。
 
 ### frontmatter
 
@@ -42,8 +43,14 @@ pubDate: 2026-07-04
 tags: [aws, astro]   # 省略可（既定: []）
 draft: true          # 省略可（既定: false）。trueの間は一覧・RSS・ページ生成から除外
 
-# tech のみ
-qiitaId: xxxxxxxx    # Qiita移行記事の元ID（省略可）
+# tech / stream 共通（Qiita移行記事にだけ付く。すべて省略可）
+qiitaId: xxxxxxxx            # Qiita記事の元ID
+importedDate: 2026-07-11     # mcks.logへ移植した日
+qiitaStats:                  # 移植時点のスナップショット（表示しない内部データ）
+  views: 12345
+  likes: 42
+  stocks: 30
+  fetchedAt: 2026-07-11
 
 # travel のみ
 location: 佐渡ヶ島            # 省略可
@@ -112,7 +119,8 @@ streamの記事はfrontmatterに `format: dialogue` を書くと、`@speaker: ` 
 ```text
 ├── public/                  favicon・OG画像などの静的ファイル
 ├── scripts/
-│   └── generate-og.mjs      OG画像とfavicon PNGの生成（sharp）
+│   ├── generate-og.mjs      OG画像とfavicon PNGの生成（sharp）
+│   └── qiita-migration/     Qiita記事の一括移植スクリプト一式（実行方法はmigrate.mjs冒頭を参照）
 ├── src/
 │   ├── components/          共通部品（PostList = ログ行風の記事一覧、TableOfContents = サイド目次 など）
 │   ├── consts.ts            サイト名・セクション定義

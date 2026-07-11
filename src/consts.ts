@@ -13,7 +13,7 @@ export const SECTIONS = {
 } as const;
 
 export const SECTION_DESCRIPTIONS = {
-	tech: 'AWSと生成AIを中心にした技術の学び（Qiitaからも移行予定）',
+	tech: 'AWSと生成AIを中心にした技術の学び',
 	travel: 'JAWS-UG各支部巡り（と国内旅行）の記録',
 	memo: '技術メモ / 調査の走り書き',
 	stream: '考えごとの垂れ流し',

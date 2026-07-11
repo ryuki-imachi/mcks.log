@@ -14,13 +14,24 @@ const baseSchema = ({ image }: any) =>
 		draft: z.boolean().default(false),
 	});
 
+// Qiita移行記事用の共通フィールド（issue #16）。qiitaStatsは移植時点のスナップショットで表示しない内部データ
+const qiitaFields = {
+	qiitaId: z.string().optional(),
+	importedDate: z.coerce.date().optional(),
+	qiitaStats: z
+		.object({
+			views: z.number(),
+			likes: z.number(),
+			stocks: z.number(),
+			fetchedAt: z.coerce.date(),
+		})
+		.optional(),
+};
+
 // 技術記事（Qiita移行分を含む）
 const tech = defineCollection({
 	loader: glob({ base: './src/content/tech', pattern: '**/*.{md,mdx}' }),
-	schema: (ctx: any) =>
-		baseSchema(ctx).extend({
-			qiitaId: z.string().optional(),
-		}),
+	schema: (ctx: any) => baseSchema(ctx).extend(qiitaFields),
 });
 
 // 旅の記録（国内旅行・JAWS地方支部巡り）
@@ -46,6 +57,7 @@ const stream = defineCollection({
 		baseSchema(ctx).extend({
 			// dialogue にすると @speaker: 記法の対話ログ形式で表示される（src/lib/remark-dialogue.mjs）
 			format: z.enum(['plain', 'dialogue']).default('plain'),
+			...qiitaFields,
 		}),
 });
 

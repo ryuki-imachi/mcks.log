@@ -51,9 +51,9 @@ npm run build
 
 ## 現在の状況
 
-最終更新: 2026-07-11（Qiita記事116本を一括移植）
+最終更新: 2026-07-11（Qiita記事116本を一括移植、一覧にページネーション追加）
 
-- 完了済み: サイト構築フェーズ完了、本運用開始。機能はpush→自動デプロイ、Qiita互換:::note記法、リンクカード、Mermaidレンダリング、4コレクション（tech/travel/memo/stream。旧othersを2026-07-05にstreamへリネーム）、スクロール追従サイド目次（1120px以上のみ表示）、記事内画像の枠線（色は --img-frame で管理）、記事別OG画像のビルド時自動生成（PR #6、詳細は「記事の書き方」参照）、stream対話ログ形式（format: dialogue、@speaker:記法。issue #12 / PR #13、詳細は「記事の書き方」参照。デザイン経緯と改善余地はissue #12に記録）、**Qiita過去記事の一括移植完了（issue #16 / PR #17、2026-07-11）**: 116本（tech 108 / stream 8）、画像337枚を自CDNへ移行、スクリプトは scripts/qiita-migration/（未公開4本はQiita側で公開後に `--only <basename>` で個別移植する）
+- 完了済み: サイト構築フェーズ完了、本運用開始。機能はpush→自動デプロイ、Qiita互換:::note記法、リンクカード、Mermaidレンダリング、4コレクション（tech/travel/memo/stream。旧othersを2026-07-05にstreamへリネーム）、スクロール追従サイド目次（1120px以上のみ表示）、記事内画像の枠線（色は --img-frame で管理）、記事別OG画像のビルド時自動生成（PR #6、詳細は「記事の書き方」参照）、stream対話ログ形式（format: dialogue、@speaker:記法。issue #12 / PR #13、詳細は「記事の書き方」参照。デザイン経緯と改善余地はissue #12に記録）、**Qiita過去記事の一括移植完了（issue #16 / PR #17、2026-07-11）**: 116本（tech 108 / stream 8）、画像337枚を自CDNへ移行、スクリプトは scripts/qiita-migration/（未公開4本はQiita側で公開後に `--only <basename>` で個別移植する）、**一覧のページネーション（issue #19 / PR #20、2026-07-11）**: 1ページ20件、Qiita/Zenn風の数字並び+現在ページ円形塗り、10ページ以上で省略記号（実装: src/components/Pagination.astro + 各 [...page].astro）
 - 継続検討: issues参照（#1 トップ表示改善、#2 Xポスト機能（方針・文面はissueで確定済み）、#3 エージェントから簡単投稿できる仕組み、#4 検索インデックス、#7 記事ページの左端ズレ（原因はissueに記載）、#8 Tech以外のカジュアル執筆フロー（#3の要件定義を兼ねる）、#14 DuckDB Wasmでの記事検索構想、#15 Cloudflare Web Analytics導入（トークン発行待ち）、#18 非mainブランチpushで本番デプロイされる問題（要ダッシュボード設定変更））
 - 次の一歩: issue #18 のビルド設定見直し、stream対話ログ形式での1本目の記事（題材候補: CB特典クレジットの使い道）、issue #7 / #8+#3 への着手
 - 運用メモ: Issue対応はブランチ+PR（「pushの運用ルール」参照）

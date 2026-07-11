@@ -33,6 +33,10 @@ GitHubのmainブランチへpushすると、Workers Buildsが `npx astro build` 
 
 各コレクションに一覧・記事ページ・RSS（`/tech/rss.xml` など）があり、サイト全体のRSSは `/rss.xml` です。一覧は1ページ20件でページ分けされます（`src/components/Pagination.astro`、10ページ以上で省略記号表示）。
 
+### 記事検索
+
+一覧ページとトップの検索窓から、全コレクション横断の全文検索ができます（タイトル・タグ・本文。スペース区切りでAND検索）。仕組みはビルド時に全記事を `search-index.parquet` に書き出し（`src/integrations/search-index.mjs`）、ブラウザ上のDuckDB Wasmが直接SQLで検索するサーバーレス構成です。エンジン本体は検索窓に触れたときだけ遅延ロードされます（`src/lib/search-client.ts` / `src/components/SearchBox.astro`）。
+
 ### frontmatter
 
 ```yaml
@@ -126,6 +130,8 @@ streamの記事はfrontmatterに `format: dialogue` を書くと、`@speaker: ` 
 │   ├── consts.ts            サイト名・セクション定義
 │   ├── content/             記事本体（tech / travel / memo / stream）
 │   ├── content.config.ts    コレクションとfrontmatterスキーマの定義
+│   ├── integrations/        自作integration（search-index = 検索インデックス生成）
+│   ├── lib/                 remarkプラグイン・検索クライアント・OG画像生成
 │   ├── layouts/             記事ページのレイアウト
 │   ├── pages/               ルーティング（各コレクションの一覧・詳細・RSS）
 │   └── styles/global.css    テーマ（CSS変数・ダークモード・リンクカード）

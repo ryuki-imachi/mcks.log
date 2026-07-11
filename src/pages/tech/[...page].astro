@@ -4,6 +4,7 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import Pagination from '../../components/Pagination.astro';
+import SearchBox from '../../components/SearchBox.astro';
 import PostList from '../../components/PostList.astro';
 import { SECTION_DESCRIPTIONS, SITE_TITLE } from '../../consts';
 
@@ -33,6 +34,7 @@ const pageSuffix = page.currentPage > 1 ? ` (${page.currentPage}/${page.lastPage
 					<a class="rss" href="/tech/rss.xml">RSS</a>
 				</div>
 				<p class="page-desc">{SECTION_DESCRIPTIONS.tech}</p>
+				<SearchBox />
 				<PostList posts={page.data} showSection={false} />
 				<Pagination page={page} basePath="/tech" />
 			</section>

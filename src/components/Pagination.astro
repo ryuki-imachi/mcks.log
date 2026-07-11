@@ -1,17 +1,38 @@
 ---
-// 一覧ページのページ送りUI（issue #19）。paginate()のpageオブジェクトを受け取る。
+// 一覧ページのページ送りUI（issue #19）。paginate()のpageオブジェクトと
+// コレクションのベースパス（例: "/tech"）を受け取り、前後リンク+全ページ番号を表示する。
+// 任意ページへ直接飛べること・タップしやすい大きさを優先（2026-07-11リュウキ指定）。
 // 1ページに収まっている場合は何も表示しない
-const { page } = Astro.props;
+const { page, basePath } = Astro.props;
+
+const pageUrl = (n: number) => (n === 1 ? `${basePath}/` : `${basePath}/${n}/`);
+const numbers = Array.from({ length: page.lastPage }, (_, i) => i + 1);
 ---
 
 {
 	page.lastPage > 1 && (
 		<nav class="pagination" aria-label="ページ送り">
-			{page.url.prev ? <a href={page.url.prev}>← 新しい記事</a> : <span aria-hidden="true" />}
-			<span class="current">
-				{page.currentPage} / {page.lastPage}
-			</span>
-			{page.url.next ? <a href={page.url.next}>古い記事 →</a> : <span aria-hidden="true" />}
+			{page.url.prev && (
+				<a class="nav" href={page.url.prev}>
+					← 新しい
+				</a>
+			)}
+			{numbers.map((n) =>
+				n === page.currentPage ? (
+					<span class="num current" aria-current="page">
+						{n}
+					</span>
+				) : (
+					<a class="num" href={pageUrl(n)}>
+						{n}
+					</a>
+				),
+			)}
+			{page.url.next && (
+				<a class="nav" href={page.url.next}>
+					古い →
+				</a>
+			)}
 		</nav>
 	)
 }
@@ -19,17 +40,36 @@ const { page } = Astro.props;
 <style>
 	.pagination {
 		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		margin-top: 1.8em;
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.45em;
+		margin-top: 2em;
 		font-family: var(--font-mono);
-		font-size: 0.85em;
-		color: var(--muted);
+		font-size: 0.95em;
 	}
-	.pagination a {
-		color: var(--muted);
+	.num,
+	.nav {
+		display: inline-block;
+		min-width: 2.3em;
+		padding: 0.4em 0.65em;
+		text-align: center;
+		border: 1px solid var(--line);
+		border-radius: 6px;
+		color: var(--ink);
+		text-decoration: none;
 	}
-	.pagination a:hover {
+	a.num:hover,
+	a.nav:hover {
+		border-color: var(--accent);
 		color: var(--accent);
+		background: var(--accent-soft);
+		text-decoration: none;
+	}
+	.current {
+		background: var(--accent);
+		border-color: var(--accent);
+		color: var(--bg);
+		font-weight: 700;
 	}
 </style>

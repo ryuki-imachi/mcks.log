@@ -7,12 +7,12 @@ import Pagination from '../../components/Pagination.astro';
 import PostList from '../../components/PostList.astro';
 import { SECTION_DESCRIPTIONS, SITE_TITLE } from '../../consts';
 
-// 1ページ30件でページ分けする（/travel/ が1ページ目、/travel/2/ 以降が続き。issue #19）
+// 1ページ20件でページ分けする（/travel/ が1ページ目、/travel/2/ 以降が続き。issue #19）
 export async function getStaticPaths({ paginate }: any) {
 	const posts = (await getCollection('travel'))
 		.filter((post) => !post.data.draft)
 		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-	return paginate(posts, { pageSize: 30 });
+	return paginate(posts, { pageSize: 20 });
 }
 
 const { page } = Astro.props;
@@ -34,7 +34,7 @@ const pageSuffix = page.currentPage > 1 ? ` (${page.currentPage}/${page.lastPage
 				</div>
 				<p class="page-desc">{SECTION_DESCRIPTIONS.travel}</p>
 				<PostList posts={page.data} showSection={false} />
-				<Pagination page={page} />
+				<Pagination page={page} basePath="/travel" />
 			</section>
 		</main>
 		<Footer />

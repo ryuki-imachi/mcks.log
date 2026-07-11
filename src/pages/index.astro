@@ -4,6 +4,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import PostList from '../components/PostList.astro';
+import SearchBox from '../components/SearchBox.astro';
 import { SECTION_DESCRIPTIONS, SECTIONS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 // 全コレクションを横断して新着順に並べる
@@ -54,6 +55,7 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 			</section>
 			<section>
 				<h2 class="log-heading">$ tail -f mcks.log</h2>
+				<SearchBox />
 				<PostList posts={posts} />
 			</section>
 		</main>

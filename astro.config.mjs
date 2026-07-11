@@ -6,12 +6,13 @@ import { defineConfig } from 'astro/config';
 import remarkLinkCard from 'remark-link-card-plus';
 import remarkDialogue from './src/lib/remark-dialogue.mjs';
 import remarkQiitaNote from './src/lib/remark-qiita-note.mjs';
+import searchIndex from './src/integrations/search-index.mjs';
 
 // https://astro.build/config
 // 日本語主体のサイトのためWebフォントは使わず、システムフォントで配信する（global.css参照）
 export default defineConfig({
 	site: 'https://blog.ryu-ki-learn.com',
-	integrations: [mdx(), sitemap()],
+	integrations: [mdx(), sitemap(), searchIndex()],
 	markdown: {
 		// remarkLinkCard: Qiitaと同様に「URLだけの行」をビルド時にリンクカード化する。
 		// インラインリンク（[text](url)）は変換されない。画像URLはカード化せず素通しする。

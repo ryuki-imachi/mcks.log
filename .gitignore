@@ -23,3 +23,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 dist/
+
+# devサーバー用に生成される検索インデックス（本番はdist/に生成）
+public/search-index.parquet

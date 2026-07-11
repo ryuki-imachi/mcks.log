@@ -1,0 +1,107 @@
+---
+// 記事検索窓（issue #14）。全コレクション横断の全文検索で、入力すると
+// ページ遷移せずその場の記事一覧が検索結果に置き換わる。
+// 検索エンジン（DuckDB Wasm、数MB）は窓に触れたときだけ遅延ロードする。
+// 結果リストはJSで生成するためスタイルはglobal.cssの .search-* にある
+---
+
+<div class="search-box">
+	<input
+		id="search-input"
+		type="search"
+		placeholder="記事をさがす（全文検索）"
+		autocomplete="off"
+		aria-label="記事をさがす"
+	/>
+</div>
+<div id="search-results" hidden>
+	<p id="search-status" class="search-status" role="status"></p>
+	<ul id="search-list" class="search-list"></ul>
+</div>
+
+<script>
+	const input = document.getElementById('search-input') as HTMLInputElement;
+	const resultsBox = document.getElementById('search-results')!;
+	const list = document.getElementById('search-list')!;
+	const status = document.getElementById('search-status')!;
+	// 検索中に隠す既存の一覧とページ送り
+	const toHide = [...document.querySelectorAll('.post-list, .pagination')] as HTMLElement[];
+
+	let mod: Promise<typeof import('../lib/search-client')> | null = null;
+	const load = () => (mod ??= import('../lib/search-client'));
+	// 触れた時点でエンジンの読み込みを始めておく（初回検索の待ちを減らす）
+	input.addEventListener('focus', () => void load(), { once: true });
+
+	let timer: number | undefined;
+	let seq = 0;
+	input.addEventListener('input', () => {
+		clearTimeout(timer);
+		timer = window.setTimeout(run, 250);
+	});
+
+	async function run() {
+		const query = input.value.trim();
+		if (!query) {
+			seq++;
+			resultsBox.hidden = true;
+			for (const el of toHide) el.style.display = '';
+			return;
+		}
+		const mySeq = ++seq;
+		status.textContent = '検索中…';
+		resultsBox.hidden = false;
+		for (const el of toHide) el.style.display = 'none';
+		try {
+			const { search } = await load();
+			const hits = await search(query);
+			if (mySeq !== seq) return; // 入力が進んでいたら古い結果は捨てる
+			status.textContent = hits.length > 0 ? `${hits.length}件` : '見つかりませんでした';
+			list.textContent = '';
+			for (const hit of hits) {
+				const li = document.createElement('li');
+				const a = document.createElement('a');
+				a.href = `/${hit.collection}/${hit.slug}/`;
+				const date = document.createElement('span');
+				date.className = 'date';
+				date.textContent = hit.pubDate;
+				const badge = document.createElement('span');
+				badge.className = `section section-${hit.collection}`;
+				badge.textContent = hit.collection;
+				const title = document.createElement('span');
+				title.className = 'title';
+				title.textContent = hit.title;
+				a.append(date, badge, title);
+				li.append(a);
+				list.append(li);
+			}
+		} catch (err) {
+			if (mySeq === seq) status.textContent = '検索エンジンの読み込みに失敗しました（再読み込みで直ることがあります）';
+			console.error(err);
+		}
+	}
+</script>
+
+<style>
+	.search-box {
+		margin: 0 0 1.4em;
+	}
+	#search-input {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.55em 0.9em;
+		font-family: var(--font-mono);
+		font-size: 0.95em;
+		color: var(--ink);
+		background: var(--bg-subtle);
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		outline: none;
+	}
+	#search-input:focus {
+		border-color: var(--accent);
+		background: var(--bg);
+	}
+	#search-input::placeholder {
+		color: var(--muted);
+	}
+</style>

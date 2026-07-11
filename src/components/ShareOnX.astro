@@ -1,0 +1,40 @@
+---
+// 記事をXでシェアするボタン（issue #2）。Web Intentへの静的リンクだけで実現していて、
+// APIキーもJavaScriptも不要。開いた投稿画面では文面を自由に編集できるので、
+// 自分の記事の告知に使うときは冒頭の一文と一言コメントを手で足す運用。
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+// BaseHeadのcanonical URLと同じ組み立て方
+const url = new URL(Astro.url.pathname, Astro.site);
+const text = `${title}\n${url}\n\n#mckslog`;
+const intentUrl = `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
+---
+
+<div class="post-share">
+	<a href={intentUrl} target="_blank" rel="noopener noreferrer">Xでシェア</a>
+</div>
+
+<style>
+	.post-share {
+		margin-top: 3em;
+		padding-top: 1.4em;
+		border-top: 1px solid var(--line);
+		display: flex;
+		justify-content: flex-end;
+		font-family: var(--font-mono);
+		font-size: 0.82em;
+	}
+	.post-share a {
+		color: var(--muted);
+		border: 1px solid currentColor;
+		border-radius: 999px;
+		padding: 0.2em 0.85em;
+		text-decoration: none;
+	}
+	.post-share a:hover {
+		color: var(--accent);
+	}
+</style>

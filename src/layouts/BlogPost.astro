@@ -47,10 +47,6 @@ const hasToc = tocHeadings.length > 0;
 	<head>
 		<BaseHead title={title} description={description} image={ogImage} />
 		<style>
-			/* シェアレール（ShareOnX.astro）のposition:absoluteの基準にする */
-			article {
-				position: relative;
-			}
 			.post-header {
 				margin-bottom: 2em;
 				padding-bottom: 1.5em;
@@ -90,6 +86,7 @@ const hasToc = tocHeadings.length > 0;
 			.tags {
 				display: flex;
 				flex-wrap: wrap;
+				align-items: center;
 				gap: 0.6em;
 				font-family: var(--font-mono);
 				font-size: 0.8em;
@@ -167,13 +164,13 @@ const hasToc = tocHeadings.length > 0;
 						}
 					</div>
 					<h1>{title}</h1>
-					{tags && tags.length > 0 && (
-						<div class="tags">
-							{tags.map((tag: string) => (
-								<span>#{tag}</span>
-							))}
-						</div>
-					)}
+					{/* タグが無い記事でもシェアボタンだけ右端に出すため、行自体は常に描画する */}
+					<div class="tags">
+						{tags && tags.length > 0 && tags.map((tag: string) => (
+							<span>#{tag}</span>
+						))}
+						<ShareOnX title={title} />
+					</div>
 					{
 						heroImage && (
 							<div class="hero-image">
@@ -185,7 +182,6 @@ const hasToc = tocHeadings.length > 0;
 				<div class="prose">
 					<slot />
 				</div>
-				<ShareOnX title={title} />
 			</article>
 			{
 				hasToc && (

@@ -153,10 +153,12 @@ img {
 	border-radius: 6px;
 }
 /* 記事内の画像は白背景のスクリーンショットが紙色と馴染みすぎるため細い枠線で囲む。
-   リンクカードのサムネイル等（クラス付きimg）には適用しない */
+   リンクカードのサムネイル等（クラス付きimg）には適用しない。
+   box-sizing: border-boxはmax-width:100%に枠線分を含め、本文カラムからのはみ出しを防ぐ */
 .prose img:not([class]),
 .hero-image img {
 	border: 2px solid var(--img-frame);
+	box-sizing: border-box;
 }
 code {
 	font-family: var(--font-mono);

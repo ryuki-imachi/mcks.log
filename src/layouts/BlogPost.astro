@@ -100,23 +100,24 @@ const hasToc = tocHeadings.length > 0;
 				margin: 0 auto;
 				border-radius: 8px;
 			}
-			/* サイド目次は十分に広い画面のときだけ表示する。
-			   本文720px + 余白52px + 目次260px の2カラムグリッドに切り替える。
+			/* サイド目次はQiita/Zenn方式の可変幅レイアウトで表示する（issue #10）。
 			   本文カラムの左端をヘッダー（720px中央寄せ）と揃えるため、グリッド全体を
 			   margin:autoで中央寄せするのではなく、通常時のmainと同じ左端位置
-			   (50% - 360px) に固定している。ブレークポイントは、その位置から
-			   目次+余白ぶん右にはみ出さない最小幅 720+2*(260+52)=1344px に
-			   安全マージンを足した値 */
+			   (50% - 360px) に固定し、そこから右端の余白(1.25em)までを使える幅とする。
+			   本文カラムを minmax(0, 720px) にすることで、画面が狭くなっても
+			   目次(260px)と余白(52px)は固定のまま、本文だけがじわっと縮む。
+			   ブレークポイント960px時点の本文幅は約507px。それ未満では目次を消して
+			   本文を通常の中央寄せ(720px上限)に戻す */
 			.toc-aside {
 				display: none;
 			}
-			@media (min-width: 1360px) {
+			@media (min-width: 960px) {
 				main.has-toc {
-					width: 1032px;
+					width: min(1032px, calc(50% + 360px - 1.25em));
 					margin-left: calc((100% - 720px) / 2);
 					margin-right: auto;
 					display: grid;
-					grid-template-columns: 720px 260px;
+					grid-template-columns: minmax(0, 720px) 260px;
 					gap: 52px;
 					align-items: start;
 				}

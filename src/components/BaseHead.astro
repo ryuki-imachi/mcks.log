@@ -50,3 +50,10 @@ const imageURL = new URL(imagePath, Astro.url);
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
+
+<!-- Cloudflare Web Analytics（issue #15）。is:inlineでAstroのバンドル処理を回避してそのまま出力する -->
+<script
+	is:inline
+	type="module"
+	src="https://static.cloudflareinsights.com/beacon.min.js"
+	data-cf-beacon='{"token": "e21658806e314de89020873159197b25"}'></script>

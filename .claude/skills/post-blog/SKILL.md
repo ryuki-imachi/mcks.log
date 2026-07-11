@@ -40,7 +40,7 @@ tech以外のコレクション（travel / memo / stream）の記事を、カジ
 
 ### Step 1. 本文の取り込み
 
-- **Discord**: フォーラムチャンネルなので、Discord連携ツールで対象スレッドを特定（`list_threads` → スレッド名で選択、迷ったらユーザーに確認）し、`fetch_messages` でリュウキの投稿を取得。複数メッセージは投稿順に連結して本文とする。添付画像は `download_attachment` で取得し、元メッセージの位置関係を保って本文に差し込む
+- **Discord**: フォーラムチャンネルなので、まず対象スレッドを特定する。スレッド一覧はdiscord-server-admin MCPの `list_threads`、本文・添付はdiscordプラグインの `fetch_messages` / `download_attachment` を使う（サーバー構成によって使えるツールは変わるため、ツール名は決め打ちにせず利用可能なもので代替してよい）。スレッドを特定できない場合は、ユーザーにスレッドのリンクまたはIDをもらう。複数メッセージは投稿順に連結して本文とし、添付画像は元メッセージの位置関係を保って本文に差し込む
 - **obsidian / ファイル**: そのファイルをReadする。Wikilinks（`[[...]]`）やCalloutはブログで使える形（通常リンク、`:::note`）に変換する
 - **会話テキスト**: 会話中でユーザーが示した本文をそのまま使う
 
@@ -63,8 +63,9 @@ tech以外のコレクション（travel / memo / stream）の記事を、カジ
 
 ### Step 4. 画像の準備（この時点ではアップロードしない）
 
-- ファイル名は内容が分かる英語名（例: `wakayama-castle.jpg`）にリネームする
-- 長辺1600pxを超える画像は `sips -Z 1600 <file>` で縮小、HEICは `sips -s format jpeg <in> --out <out>.jpg` でJPEGに変換する
+- 画像は必ず一時作業ディレクトリ（セッションのscratchpad等）へ**コピーしてから**加工する。obsidian Vault内などの元ファイルは絶対に変更しない（Discord添付はダウンロードした時点でコピーなのでそのまま加工してよい）
+- コピーのファイル名を内容が分かる英語名（例: `wakayama-castle.jpg`）にする
+- 長辺1600pxを超える画像は `sips -Z 1600 <コピー>` で縮小、HEICは `sips -s format jpeg <in> --out <out>.jpg` でJPEGに変換する
 - 本文には確定後のURL `https://images.ryu-ki-learn.com/<slug>/<filename>` を `![説明](URL)` で差し込んでおく（altは内容から簡潔に）
 
 ### Step 5. 一括確認（唯一の確認ポイント）

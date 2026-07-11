@@ -1,0 +1,35 @@
+---
+// 一覧ページのページ送りUI（issue #19）。paginate()のpageオブジェクトを受け取る。
+// 1ページに収まっている場合は何も表示しない
+const { page } = Astro.props;
+---
+
+{
+	page.lastPage > 1 && (
+		<nav class="pagination" aria-label="ページ送り">
+			{page.url.prev ? <a href={page.url.prev}>← 新しい記事</a> : <span aria-hidden="true" />}
+			<span class="current">
+				{page.currentPage} / {page.lastPage}
+			</span>
+			{page.url.next ? <a href={page.url.next}>古い記事 →</a> : <span aria-hidden="true" />}
+		</nav>
+	)
+}
+
+<style>
+	.pagination {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-top: 1.8em;
+		font-family: var(--font-mono);
+		font-size: 0.85em;
+		color: var(--muted);
+	}
+	.pagination a {
+		color: var(--muted);
+	}
+	.pagination a:hover {
+		color: var(--accent);
+	}
+</style>

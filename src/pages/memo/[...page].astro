@@ -3,29 +3,38 @@ import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
+import Pagination from '../../components/Pagination.astro';
 import PostList from '../../components/PostList.astro';
 import { SECTION_DESCRIPTIONS, SITE_TITLE } from '../../consts';
 
-const posts = (await getCollection('tech'))
-	.filter((post) => !post.data.draft)
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+// 1ページ20件でページ分けする（/memo/ が1ページ目、/memo/2/ 以降が続き。issue #19）
+export async function getStaticPaths({ paginate }: any) {
+	const posts = (await getCollection('memo'))
+		.filter((post) => !post.data.draft)
+		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+	return paginate(posts, { pageSize: 20 });
+}
+
+const { page } = Astro.props;
+const pageSuffix = page.currentPage > 1 ? ` (${page.currentPage}/${page.lastPage})` : '';
 ---
 
 <!doctype html>
 <html lang="ja">
 	<head>
-		<BaseHead title={`Tech | ${SITE_TITLE}`} description={SECTION_DESCRIPTIONS.tech} />
+		<BaseHead title={`Memo${pageSuffix} | ${SITE_TITLE}`} description={SECTION_DESCRIPTIONS.memo} />
 	</head>
 	<body>
 		<Header />
 		<main>
 			<section>
 				<div class="page-head">
-					<h1 class="page-title" style="color: var(--c-tech)">tech/</h1>
-					<a class="rss" href="/tech/rss.xml">RSS</a>
+					<h1 class="page-title" style="color: var(--c-memo)">memo/</h1>
+					<a class="rss" href="/memo/rss.xml">RSS</a>
 				</div>
-				<p class="page-desc">{SECTION_DESCRIPTIONS.tech}</p>
-				<PostList posts={posts} showSection={false} />
+				<p class="page-desc">{SECTION_DESCRIPTIONS.memo}</p>
+				<PostList posts={page.data} showSection={false} />
+				<Pagination page={page} basePath="/memo" />
 			</section>
 		</main>
 		<Footer />

@@ -118,9 +118,14 @@ streamの記事はfrontmatterに `format: dialogue` を書くと、`@speaker: ` 
 
 記事ページでは本文の画像に薄い枠線が自動で付きます（色は `src/styles/global.css` の `--img-frame` で管理）。
 
+### Xシェアボタン
+
+記事ヘッダーのタグ行右端に「シェア」ボタンが表示され、押すとタイトル・記事URL・`#mckslog` が入ったXの投稿画面が開きます（Web Intentへの静的リンク方式でAPIキー・JavaScriptとも不要。実装は `src/components/ShareOnX.astro`）。
+
 ## ディレクトリ
 
 ```text
+├── .claude/skills/          Claude Code用スキル（post-blog = tech以外の記事のカジュアル投稿パイプライン）
 ├── public/                  favicon・OG画像などの静的ファイル
 ├── scripts/
 │   ├── generate-og.mjs      OG画像とfavicon PNGの生成（sharp）

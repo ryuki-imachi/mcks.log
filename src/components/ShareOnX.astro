@@ -2,6 +2,8 @@
 // 記事をXでシェアするボタン（issue #2）。Web Intentへの静的リンクだけで実現していて、
 // APIキーもJavaScriptも不要。開いた投稿画面では文面を自由に編集できるので、
 // 自分の記事の告知に使うときは冒頭の一文と一言コメントを手で足す運用。
+// 広い画面ではQiita/Zenn風に記事の左側でスクロール追従するレール表示、
+// レールを置く余白がない狭い画面では本文末尾のインラインリンクに切り替える。
 interface Props {
 	title: string;
 }
@@ -13,11 +15,25 @@ const text = `${title}\n${url}\n\n#mckslog`;
 const intentUrl = `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
 ---
 
+<div class="share-rail">
+	<a href={intentUrl} target="_blank" rel="noopener noreferrer" aria-label="Xでシェア" title="Xでシェア">
+		<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+			<path
+				d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"
+			/>
+		</svg>
+	</a>
+</div>
+
 <div class="post-share">
 	<a href={intentUrl} target="_blank" rel="noopener noreferrer">Xでシェア</a>
 </div>
 
 <style>
+	/* 狭い画面: 本文末尾のインラインリンク */
+	.share-rail {
+		display: none;
+	}
 	.post-share {
 		margin-top: 3em;
 		padding-top: 1.4em;
@@ -36,5 +52,38 @@ const intentUrl = `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
 	}
 	.post-share a:hover {
 		color: var(--accent);
+	}
+
+	/* 広い画面: 記事左側のスクロール追従レール。本文720pxの左に
+	   ボタン40px+余白24pxが収まる最小幅 720+2*64=848px に余裕を足した880pxから */
+	@media (min-width: 880px) {
+		.post-share {
+			display: none;
+		}
+		.share-rail {
+			display: block;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: -64px;
+			width: 40px;
+		}
+		.share-rail a {
+			position: sticky;
+			top: 40vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 40px;
+			height: 40px;
+			border: 1px solid var(--line);
+			border-radius: 50%;
+			color: var(--muted);
+			background: var(--bg);
+		}
+		.share-rail a:hover {
+			color: var(--accent);
+			border-color: currentColor;
+		}
 	}
 </style>

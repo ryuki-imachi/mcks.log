@@ -47,6 +47,10 @@ const hasToc = tocHeadings.length > 0;
 	<head>
 		<BaseHead title={title} description={description} image={ogImage} />
 		<style>
+			/* シェアレール（ShareOnX.astro）のposition:absoluteの基準にする */
+			article {
+				position: relative;
+			}
 			.post-header {
 				margin-bottom: 2em;
 				padding-bottom: 1.5em;

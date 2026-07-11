@@ -1,8 +1,8 @@
 ---
 // 一覧ページのページ送りUI（issue #19）。paginate()のpageオブジェクトと
-// コレクションのベースパス（例: "/tech"）を受け取り、前後リンク+全ページ番号を表示する。
-// 任意ページへ直接飛べること・タップしやすい大きさを優先（2026-07-11リュウキ指定）。
-// 1ページに収まっている場合は何も表示しない
+// コレクションのベースパス（例: "/tech"）を受け取り、前後シェブロン+全ページ番号を表示する。
+// Qiita/Zenn風: 枠線なしのフラットな数字並び、現在ページだけ円形にアクセント色で塗る
+// （2026-07-11リュウキ指定）。1ページに収まっている場合は何も表示しない
 const { page, basePath } = Astro.props;
 
 const pageUrl = (n: number) => (n === 1 ? `${basePath}/` : `${basePath}/${n}/`);
@@ -13,24 +13,24 @@ const numbers = Array.from({ length: page.lastPage }, (_, i) => i + 1);
 	page.lastPage > 1 && (
 		<nav class="pagination" aria-label="ページ送り">
 			{page.url.prev && (
-				<a class="nav" href={page.url.prev}>
-					← 新しい
+				<a class="cell nav" href={page.url.prev} aria-label="前のページ">
+					‹
 				</a>
 			)}
 			{numbers.map((n) =>
 				n === page.currentPage ? (
-					<span class="num current" aria-current="page">
+					<span class="cell current" aria-current="page">
 						{n}
 					</span>
 				) : (
-					<a class="num" href={pageUrl(n)}>
+					<a class="cell" href={pageUrl(n)}>
 						{n}
 					</a>
 				),
 			)}
 			{page.url.next && (
-				<a class="nav" href={page.url.next}>
-					古い →
+				<a class="cell nav" href={page.url.next} aria-label="次のページ">
+					›
 				</a>
 			)}
 		</nav>
@@ -43,33 +43,34 @@ const numbers = Array.from({ length: page.lastPage }, (_, i) => i + 1);
 		justify-content: center;
 		align-items: center;
 		flex-wrap: wrap;
-		gap: 0.45em;
-		margin-top: 2em;
+		gap: 0.35em;
+		margin-top: 2.2em;
 		font-family: var(--font-mono);
-		font-size: 0.95em;
+		font-size: 1em;
 	}
-	.num,
-	.nav {
-		display: inline-block;
-		min-width: 2.3em;
-		padding: 0.4em 0.65em;
-		text-align: center;
-		border: 1px solid var(--line);
-		border-radius: 6px;
+	.cell {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5em;
+		height: 2.5em;
+		border-radius: 50%;
 		color: var(--ink);
 		text-decoration: none;
 	}
-	a.num:hover,
-	a.nav:hover {
-		border-color: var(--accent);
-		color: var(--accent);
+	a.cell:hover {
 		background: var(--accent-soft);
+		color: var(--accent);
 		text-decoration: none;
 	}
 	.current {
 		background: var(--accent);
-		border-color: var(--accent);
 		color: var(--bg);
 		font-weight: 700;
+	}
+	.nav {
+		color: var(--muted);
+		font-size: 1.4em;
+		padding-bottom: 0.15em; /* ‹›の光学的な上ズレ補正 */
 	}
 </style>

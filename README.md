@@ -66,6 +66,22 @@ format: dialogue             # 省略可（既定: plain）。対話ログ形式
 
 スキーマ定義の実体は `src/content.config.ts` にあります。
 
+### ローカル下書き（private/）
+
+公開前の記事を実サイトの見た目でプレビューしたいときは、各コレクション直下の `private/` サブディレクトリに置きます（`src/content/*/private/` は gitignore 済み）。
+
+```text
+src/content/tech/
+├── xxx.md            公開記事（git管理、本番に出る）
+└── private/
+    └── yyy.md        ローカル下書き（gitに載らない、ローカルのみ）
+```
+
+- `npm run dev` や `npm run build` + `npm run preview` で、`/tech/private/yyy/` として一覧・記事ページ・OG画像込みの通常記事と同じ扱いでプレビューできます
+- 記事検索の検索窓にだけは出ません（インデックス生成 `src/integrations/search-index.mjs` がコレクション直下のファイルのみを読むため）
+- gitにファイル自体が存在しないため、本番ビルド（Workers Builds）に混ざる余地はありません。publicリポジトリでも下書きの中身が漏れない、`draft: true` より確実な運用です
+- 公開するときはファイルを `private/` からコレクション直下へ移動するだけです（URLが `/tech/private/yyy/` → `/tech/yyy/` に変わる点だけ注意）
+
 ### リンクカード
 
 Qiitaと同様に、本文中でURLだけの行を書くとビルド時にリンクカードへ展開されます（[remark-link-card-plus](https://github.com/okaryo/remark-link-card-plus) を使用）。`[テキスト](URL)` 形式のインラインリンクと画像URL（.png/.jpg等）は変換されません。

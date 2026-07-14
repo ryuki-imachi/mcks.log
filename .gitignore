@@ -26,3 +26,6 @@ dist/
 
 # devサーバー用に生成される検索インデックス（本番はdist/に生成）
 public/search-index.parquet
+
+# ローカル下書き（サイトの見た目でプレビューする用。本番ビルドには含まれない。issue #31）
+src/content/*/private/

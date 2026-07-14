@@ -29,6 +29,7 @@ npm run build
 - 記事は `src/content/<コレクション>/` に .md で置く。コレクションは tech / travel / memo / stream（詳細はREADME）
 - frontmatterのスキーマは `src/content.config.ts` が正
 - `draft: true` の間は一覧・RSS・ページ生成から除外される
+- **ローカル下書きは `src/content/<コレクション>/private/` に置く**（gitignore済み、issue #31）。dev・ローカルビルドでは `/tech/private/<basename>/` として一覧・記事ページ・OG画像込みで実サイトの見た目でプレビューできるが、gitに載らないため本番には出ない（publicリポジトリなのでdraft運用より確実）。検索窓にだけは出ない（search-index.mjsがコレクション直下のみ読むため）。公開時はファイルをコレクション直下へ移動するだけ
 - Qiita互換の `:::note` / `:::note warn` / `:::note alert` 記法が使える（実装: src/lib/remark-qiita-note.mjs）
 - streamコレクションはfrontmatterに `format: dialogue` を書くと `@speaker: ` 記法の対話ログ形式で表示される。地の文は `@note:`（記法の見本: src/content/stream/dialogue-format-sample.md、実装: src/lib/remark-dialogue.mjs、経緯: issue #12 / PR #13）
 - URLだけの行はリンクカードに展開される（note内でも可、URLの前後に空行が必要）。インラインリンクと画像URLは変換されない

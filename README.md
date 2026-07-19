@@ -141,6 +141,7 @@ streamの記事はfrontmatterに `format: dialogue` を書くと、`@speaker: ` 
 ## ディレクトリ
 
 ```text
+├── .agents/skills/          Codex用スキル（.claude側の正本へのシンボリックリンク）
 ├── .claude/skills/          Claude Code用スキル（post-blog = tech以外の記事のカジュアル投稿パイプライン）
 ├── public/                  favicon・OG画像などの静的ファイル
 ├── scripts/

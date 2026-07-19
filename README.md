@@ -161,15 +161,6 @@ streamの記事はfrontmatterに `format: dialogue` を書くと、`@speaker: ` 
 └── wrangler.jsonc           Cloudflare Workers の設定（カスタムドメイン等）
 ```
 
-## AI開発アシスタント
-
-プロジェクト共通の開発ルールは、リポジトリルートの `AGENTS.md` にまとめています。Codexはこのファイルを自動で読み込みます。
-
-プロジェクト固有の `post-blog` スキルは `.claude/skills/post-blog` を正本とし、Codexが探索する `.agents/skills/post-blog` から相対シンボリックリンクで参照しています。ワークフローを変更するときは正本だけを編集してください。
-
-- Claude Code: `/post-blog`
-- Codex: `$post-blog`（依頼内容がdescriptionに一致する場合は自動選択も可能）
-
 ## コマンド
 
 | コマンド | 動作 |

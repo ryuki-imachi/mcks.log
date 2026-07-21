@@ -2,10 +2,13 @@
 //
 //   node scripts/qiita-migration/migrate.mjs --dry-run          全件ドライラン（書き込み・画像転送なし）
 //   node scripts/qiita-migration/migrate.mjs --only <basename>  指定記事だけ本実行
+//   node scripts/qiita-migration/migrate.mjs --only <basename> --pub-date YYYY-MM-DD
+//                                                               本公開日を指定して個別移植（issue #35）
 //   node scripts/qiita-migration/migrate.mjs                    全件本実行
 //
 // 変換内容:
-//   - frontmatter: pubDate=Qiita初出日(created_at) / importedDate=実行日 /
+//   - frontmatter: pubDate=Qiita初出日(created_at)。限定共有→本公開の記事はcreated_atが
+//     限定公開日になるため、--pub-date で本公開日を上書きする（issue #35）/ importedDate=実行日 /
 //     qiitaStats{views,likes,stocks,fetchedAt}（内部保持のみ）/ タグ変換表適用
 //   - コレクション振り分け: 元タグに「ポエム」あり → stream、なし → tech
 //   - 画像: qiita-image-store の画像をDL → s3://ryu-ki-learn-blog-assets/<slug>/ へアップ →
@@ -35,8 +38,55 @@ const tagMap = JSON.parse(fs.readFileSync(path.join(HERE, 'tag-map.json'), 'utf8
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
-const onlyIdx = args.indexOf('--only');
-const only = onlyIdx >= 0 ? args[onlyIdx + 1] : null;
+
+// フラグ直後の値を取り出す。値の書き忘れで次のフラグ（--始まり）を拾わないようガードする
+function argValue(flag) {
+	const idx = args.indexOf(flag);
+	if (idx < 0) return null;
+	if (args.lastIndexOf(flag) !== idx) {
+		console.error(`${flag} が複数回指定されている`);
+		process.exit(1);
+	}
+	const val = args[idx + 1];
+	if (!val || val.startsWith('--')) {
+		console.error(`${flag} の値が指定されていない`);
+		process.exit(1);
+	}
+	return val;
+}
+const only = argValue('--only');
+const pubDateOverride = argValue('--pub-date');
+
+// 既知フラグ以外はエラーにする（--pub-dtae のような打ち間違いや --pub-date=値 形式が
+// 黙って無視されると、上書きされないまま created_at で移植が成功してしまうため）
+for (let i = 0; i < args.length; i++) {
+	const a = args[i];
+	if (a === '--dry-run') continue;
+	if (a === '--only' || a === '--pub-date') {
+		i++; // 直後の値はargValueで検証済みなので読み飛ばす
+		continue;
+	}
+	console.error(`不明な引数: ${a}（使えるのは --dry-run / --only <basename> / --pub-date <YYYY-MM-DD>）`);
+	process.exit(1);
+}
+
+if (pubDateOverride) {
+	// 形式に加えて実在する日付かを往復変換で確認する
+	// （JSのDateは 2026-02-30 のような不正な日を黙って 3/2 に繰り上げるため、isNaNでは検出できない）
+	const parsed = new Date(`${pubDateOverride}T00:00:00Z`);
+	const valid =
+		/^\d{4}-\d{2}-\d{2}$/.test(pubDateOverride) &&
+		!Number.isNaN(parsed.getTime()) &&
+		parsed.toISOString().slice(0, 10) === pubDateOverride;
+	if (!valid) {
+		console.error('--pub-date は実在する日付を YYYY-MM-DD 形式で指定する');
+		process.exit(1);
+	}
+	if (!only) {
+		console.error('--pub-date は --only と併用する（一括実行では記事ごとの本公開日を区別できない）');
+		process.exit(1);
+	}
+}
 
 // Qiita CLIの認証情報からアクセストークンを取り出す
 function qiitaToken() {
@@ -184,8 +234,9 @@ for (const file of files) {
 
 		const item = await fetchQiitaItem(fm.id, token);
 		const collection = (fm.tags ?? []).includes('ポエム') ? 'stream' : 'tech';
-		const pubDate = toDate(item.created_at);
-		const updatedDate = toDate(item.updated_at) !== pubDate ? toDate(item.updated_at) : null;
+		const pubDate = pubDateOverride ?? toDate(item.created_at);
+		// 本公開日を上書きした場合、それ以前のupdated_at（限定公開中の編集や公開切替の痕跡）は捨てる
+		const updatedDate = toDate(item.updated_at) > pubDate ? toDate(item.updated_at) : null;
 
 		const newBody = await migrateImages(body, slug, report);
 		const frontmatter = buildFrontmatter({
@@ -213,6 +264,12 @@ for (const file of files) {
 		summary.failed.push(`${base}: ${e.message}`);
 		console.error(`NG  ${base}: ${e.message}`);
 	}
+}
+
+// --only の打ち間違い等で1件も処理されなかった場合は成功に見せず終了コード1にする
+if (only && summary.done.length + summary.skipped.length + summary.failed.length === 0) {
+	console.error(`--only ${only} に一致する記事が ${QIITA_DIR} に無い`);
+	process.exit(1);
 }
 
 console.log('\n=== サマリー ===');

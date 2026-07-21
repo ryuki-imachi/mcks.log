@@ -46,8 +46,10 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 					sectionKeys.map((key) => (
 						<a class={`card card-${key}`} href={`/${key}/`}>
 							<span class="card-title">{key}/</span>
+							<span class={`card-count${published[key].length === 0 ? ' is-empty' : ''}`}>
+								{published[key].length === 0 ? 'empty' : `${published[key].length} posts`}
+							</span>
 							<span class="card-desc">{SECTION_DESCRIPTIONS[key]}</span>
-							<span class="card-count">posts: {published[key].length}</span>
 						</a>
 					))
 				}
@@ -71,16 +73,14 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 	.sections {
 		display: flex;
 		flex-direction: column;
-		gap: 0.6em;
 		margin-bottom: 2.8em;
 	}
 	.card {
 		display: flex;
 		align-items: baseline;
-		gap: 1em;
-		padding: 0.7em 1em;
-		border: 1px solid var(--line);
-		border-radius: 8px;
+		gap: 1.1em;
+		padding: 0.55em 0.4em;
+		border-bottom: 1px solid var(--line);
 		text-decoration: none;
 		color: inherit;
 	}
@@ -115,9 +115,15 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 	}
 	.card-count {
 		font-family: var(--font-mono);
-		font-size: 0.75em;
+		font-size: 0.78em;
 		color: var(--muted);
+		width: 6.5em;
+		text-align: right;
+		font-variant-numeric: tabular-nums;
 		flex-shrink: 0;
+	}
+	.card-count.is-empty {
+		opacity: 0.55;
 	}
 	@media (max-width: 600px) {
 		.card {
@@ -135,10 +141,5 @@ const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
 		font-weight: 700;
 		color: var(--muted);
 		margin: 0 0 0.6em;
-	}
-	@media (max-width: 600px) {
-		.sections {
-			grid-template-columns: 1fr;
-		}
 	}
 </style>

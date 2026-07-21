@@ -1,8 +1,7 @@
 ---
 title: "【Bedrock】Amazon Bedrock Mantleとは？"
 description: "2025 年 12 月、Amazon Bedrock に Mantle という新しい推論エンジンが追加されました。re:Invent 2025 のキーノート（Infrastruct…"
-pubDate: 2026-07-04
-updatedDate: 2026-07-20
+pubDate: 2026-07-20
 tags: ['AWS', 'OpenAI', 'Bedrock', '生成AI']
 qiitaId: 17fa3462d4c619e4fea5
 importedDate: 2026-07-22

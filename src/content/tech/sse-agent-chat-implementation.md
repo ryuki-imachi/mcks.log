@@ -1,8 +1,7 @@
 ---
 title: "【SSE】FastAPI + Strands Agents で SSE ストリーミングチャットを作ってみる"
 description: "以前、SSE（Server-Sent Events）の仕様を整理しました。フィールドは4種類のみで、フォーマットは data: と \\n\\n が基本、AI チャットでは JSON …"
-pubDate: 2026-07-02
-updatedDate: 2026-07-13
+pubDate: 2026-07-13
 tags: ['SSE', 'FastAPI', 'Bedrock', 'StrandsAgents']
 qiitaId: 367972d6c82f35e22b92
 importedDate: 2026-07-22

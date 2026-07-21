@@ -38,13 +38,30 @@ const tagMap = JSON.parse(fs.readFileSync(path.join(HERE, 'tag-map.json'), 'utf8
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
-const onlyIdx = args.indexOf('--only');
-const only = onlyIdx >= 0 ? args[onlyIdx + 1] : null;
-const pubDateIdx = args.indexOf('--pub-date');
-const pubDateOverride = pubDateIdx >= 0 ? (args[pubDateIdx + 1] ?? null) : null;
-if (pubDateIdx >= 0) {
-	if (!pubDateOverride || !/^\d{4}-\d{2}-\d{2}$/.test(pubDateOverride)) {
-		console.error('--pub-date は YYYY-MM-DD 形式で指定する');
+
+// フラグ直後の値を取り出す。値の書き忘れで次のフラグ（--始まり）を拾わないようガードする
+function argValue(flag) {
+	const idx = args.indexOf(flag);
+	if (idx < 0) return null;
+	const val = args[idx + 1];
+	if (!val || val.startsWith('--')) {
+		console.error(`${flag} の値が指定されていない`);
+		process.exit(1);
+	}
+	return val;
+}
+const only = argValue('--only');
+const pubDateOverride = argValue('--pub-date');
+if (pubDateOverride) {
+	// 形式に加えて実在する日付かを往復変換で確認する
+	// （JSのDateは 2026-02-30 のような不正な日を黙って 3/2 に繰り上げるため、isNaNでは検出できない）
+	const parsed = new Date(`${pubDateOverride}T00:00:00Z`);
+	const valid =
+		/^\d{4}-\d{2}-\d{2}$/.test(pubDateOverride) &&
+		!Number.isNaN(parsed.getTime()) &&
+		parsed.toISOString().slice(0, 10) === pubDateOverride;
+	if (!valid) {
+		console.error('--pub-date は実在する日付を YYYY-MM-DD 形式で指定する');
 		process.exit(1);
 	}
 	if (!only) {
@@ -229,6 +246,12 @@ for (const file of files) {
 		summary.failed.push(`${base}: ${e.message}`);
 		console.error(`NG  ${base}: ${e.message}`);
 	}
+}
+
+// --only の打ち間違い等で1件も処理されなかった場合は成功に見せず終了コード1にする
+if (only && summary.done.length + summary.skipped.length + summary.failed.length === 0) {
+	console.error(`--only ${only} に一致する記事が ${QIITA_DIR} に無い`);
+	process.exit(1);
 }
 
 console.log('\n=== サマリー ===');

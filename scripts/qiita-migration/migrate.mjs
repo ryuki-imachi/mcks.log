@@ -52,6 +52,20 @@ function argValue(flag) {
 }
 const only = argValue('--only');
 const pubDateOverride = argValue('--pub-date');
+
+// 既知フラグ以外はエラーにする（--pub-dtae のような打ち間違いや --pub-date=値 形式が
+// 黙って無視されると、上書きされないまま created_at で移植が成功してしまうため）
+for (let i = 0; i < args.length; i++) {
+	const a = args[i];
+	if (a === '--dry-run') continue;
+	if (a === '--only' || a === '--pub-date') {
+		i++; // 直後の値はargValueで検証済みなので読み飛ばす
+		continue;
+	}
+	console.error(`不明な引数: ${a}（使えるのは --dry-run / --only <basename> / --pub-date <YYYY-MM-DD>）`);
+	process.exit(1);
+}
+
 if (pubDateOverride) {
 	// 形式に加えて実在する日付かを往復変換で確認する
 	// （JSのDateは 2026-02-30 のような不正な日を黙って 3/2 に繰り上げるため、isNaNでは検出できない）

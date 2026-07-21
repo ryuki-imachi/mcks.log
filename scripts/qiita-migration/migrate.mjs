@@ -2,10 +2,13 @@
 //
 //   node scripts/qiita-migration/migrate.mjs --dry-run          全件ドライラン（書き込み・画像転送なし）
 //   node scripts/qiita-migration/migrate.mjs --only <basename>  指定記事だけ本実行
+//   node scripts/qiita-migration/migrate.mjs --only <basename> --pub-date YYYY-MM-DD
+//                                                               本公開日を指定して個別移植（issue #35）
 //   node scripts/qiita-migration/migrate.mjs                    全件本実行
 //
 // 変換内容:
-//   - frontmatter: pubDate=Qiita初出日(created_at) / importedDate=実行日 /
+//   - frontmatter: pubDate=Qiita初出日(created_at)。限定共有→本公開の記事はcreated_atが
+//     限定公開日になるため、--pub-date で本公開日を上書きする（issue #35）/ importedDate=実行日 /
 //     qiitaStats{views,likes,stocks,fetchedAt}（内部保持のみ）/ タグ変換表適用
 //   - コレクション振り分け: 元タグに「ポエム」あり → stream、なし → tech
 //   - 画像: qiita-image-store の画像をDL → s3://ryu-ki-learn-blog-assets/<slug>/ へアップ →
@@ -37,6 +40,18 @@ const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const onlyIdx = args.indexOf('--only');
 const only = onlyIdx >= 0 ? args[onlyIdx + 1] : null;
+const pubDateIdx = args.indexOf('--pub-date');
+const pubDateOverride = pubDateIdx >= 0 ? (args[pubDateIdx + 1] ?? null) : null;
+if (pubDateIdx >= 0) {
+	if (!pubDateOverride || !/^\d{4}-\d{2}-\d{2}$/.test(pubDateOverride)) {
+		console.error('--pub-date は YYYY-MM-DD 形式で指定する');
+		process.exit(1);
+	}
+	if (!only) {
+		console.error('--pub-date は --only と併用する（一括実行では記事ごとの本公開日を区別できない）');
+		process.exit(1);
+	}
+}
 
 // Qiita CLIの認証情報からアクセストークンを取り出す
 function qiitaToken() {
@@ -184,8 +199,9 @@ for (const file of files) {
 
 		const item = await fetchQiitaItem(fm.id, token);
 		const collection = (fm.tags ?? []).includes('ポエム') ? 'stream' : 'tech';
-		const pubDate = toDate(item.created_at);
-		const updatedDate = toDate(item.updated_at) !== pubDate ? toDate(item.updated_at) : null;
+		const pubDate = pubDateOverride ?? toDate(item.created_at);
+		// 本公開日を上書きした場合、それ以前のupdated_at（限定公開中の編集や公開切替の痕跡）は捨てる
+		const updatedDate = toDate(item.updated_at) > pubDate ? toDate(item.updated_at) : null;
 
 		const newBody = await migrateImages(body, slug, report);
 		const frontmatter = buildFrontmatter({

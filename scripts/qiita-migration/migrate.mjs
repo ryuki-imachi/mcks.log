@@ -43,6 +43,10 @@ const dryRun = args.includes('--dry-run');
 function argValue(flag) {
 	const idx = args.indexOf(flag);
 	if (idx < 0) return null;
+	if (args.lastIndexOf(flag) !== idx) {
+		console.error(`${flag} が複数回指定されている`);
+		process.exit(1);
+	}
 	const val = args[idx + 1];
 	if (!val || val.startsWith('--')) {
 		console.error(`${flag} の値が指定されていない`);

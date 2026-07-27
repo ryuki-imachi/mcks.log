@@ -27,11 +27,11 @@ tags: ['学習', '生成AI']
 
 1つは、認知心理学者5人が学習テクニック10個を系統的に審査した2013年のレビュー論文です。このレビューでは、高い実用性が認められたのは「検索練習（思い出す練習）」と「分散学習（間隔を空けた復習）」の2つだけで、逆に再読やハイライトのような定番の勉強法は低実用性と格付けされています。
 
-[Dunlosky et al. (2013) Improving Students' Learning With Effective Learning Techniques](https://journals.sagepub.com/doi/abs/10.1177/1529100612453266)
+https://journals.sagepub.com/doi/abs/10.1177/1529100612453266
 
 もう1つは、米国教育省の研究機関が2007年に出したプラクティスガイドです。専門家パネルがエビデンスの強さ付きで7つの推奨を出しています。
 
-[IES Practice Guide (2007) Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/Docs/PracticeGuide/20072004.pdf)
+https://ies.ed.gov/ncee/wwc/Docs/PracticeGuide/20072004.pdf
 
 「専門家パネルが実証を審査して実践推奨したか」を基準にすることで、AIの（そして私の）好みが入る余地を減らしています。
 
@@ -57,21 +57,21 @@ Ebbinghausが1885年に示した、いわゆる忘却曲線の話です。記憶
 本記事における画像引用のルールについて。論文の図は、再配布が許可されたライセンス（CC BY 4.0）で公開されているもののみ、出典とライセンスの明記・無改変という条件に則って転載しています。上の図の掲載誌であるPLOS ONEは、全掲載論文にCC BY 4.0を適用しており、著者と出典を明記すれば複製・再配布が許可されています（記載元: [PLOSのライセンスポリシー](https://journals.plos.org/plosone/s/licenses-and-copyright) / [CC BY 4.0の条件（日本語）](https://creativecommons.org/licenses/by/4.0/deed.ja)）。それ以外の研究（有料誌のもの）については図を転載せず、「イメージ図」と記載した私の自作図で傾向のみを示しています。自作図は実験データのプロットではありません。
 :::
 
-[Murre & Dros (2015) Replication and Analysis of Ebbinghaus' Forgetting Curve](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0120644)
+https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0120644
 
 対策としてもっとも実証されているのが分散学習で、同じ学習時間でも一度に詰め込むより間隔を空けて復習するほうが長期的に残ります（先ほどのイメージ図の破線のほうです）。184論文・317実験をまとめたメタ分析があり、先ほどのレビューで高実用性と格付けされた2つのうちの1つです。
 
-[Cepeda et al. (2006) Distributed Practice in Verbal Recall Tasks](https://augmentingcognition.com/assets/Cepeda2006.pdf)
+https://augmentingcognition.com/assets/Cepeda2006.pdf
 
 ## 2. 一度に処理できる量は少ない
 
 Millerが1956年に示した「マジカルナンバー7±2」です。短期記憶に一度に保持できるのは7個前後の塊（チャンク）まで、という話で、後の研究では「実質4個程度」に修正されています。
 
-[Miller (1956) The Magical Number Seven, Plus or Minus Two（現代の再評価込みの概観）](https://journalofcognition.org/articles/10.5334/joc.387)
+https://journalofcognition.org/articles/10.5334/joc.387
 
 この制約から出発したのが認知負荷理論で、「問題を自力で解くこと自体が頭のリソースを食い潰して、学習を妨げる場合がある」ことを示しました。初心者はいきなり自力で解くより、良い例題を読み解くほうが学習効率がよいという、少し意外な実践帰結につながります。
 
-[Sweller (1988) Cognitive Load During Problem Solving](https://onlinelibrary.wiley.com/doi/10.1207/s15516709cog1202_4)
+https://onlinelibrary.wiley.com/doi/10.1207/s15516709cog1202_4
 
 ## 3. 思い出す・自分で作ると定着する
 
@@ -79,13 +79,13 @@ Millerが1956年に示した「マジカルナンバー7±2」です。短期記
 
 ![テスト効果の逆転のイメージ](https://images.ryu-ki-learn.com/learning-science-for-ai-study/testing-effect-concept.png)
 
-[Roediger & Karpicke (2006) Test-Enhanced Learning](https://journals.sagepub.com/doi/abs/10.1111/j.1467-9280.2006.01693.x)
+https://journals.sagepub.com/doi/abs/10.1111/j.1467-9280.2006.01693.x
 
 仲間として、読むより自分で生成したほうが残る生成効果と、解法を自分の言葉で説明する学習者ほど成績が良いという自己説明効果があります。
 
-[Slamecka & Graf (1978) The Generation Effect](https://psycnet.apa.org/record/1980-20399-001)
+https://psycnet.apa.org/record/1980-20399-001
 
-[Chi et al. (1989) Self-Explanations](https://onlinelibrary.wiley.com/doi/abs/10.1207/s15516709cog1302_1)
+https://onlinelibrary.wiley.com/doi/abs/10.1207/s15516709cog1302_1
 
 この項目の効果群は、複数の大規模メタ分析で確認された、学習科学でもっとも頑健な効果とされています。
 
@@ -95,7 +95,7 @@ Millerが1956年に示した「マジカルナンバー7±2」です。短期記
 
 間隔を空けて復習する、テストで思い出す。こうしたやり方は、やっている最中は面倒で、成績もなかなか上がらず、遠回りに感じられます。一気に詰め込んだり読み返したりするほうが、直後の手応えはずっと良いです。ところが時間を置いてから比べると、面倒なやり方のほうがよく残っていることが繰り返し示されています。Bjorkはこの「あえて残すべき面倒さ」を望ましい困難（desirable difficulties）と名付けました。
 
-[Bjork (1994) Memory and Metamemory Considerations in the Training of Human Beings](https://gwern.net/doc/psychology/spaced-repetition/1994-bjork.pdf)
+https://gwern.net/doc/psychology/spaced-repetition/1994-bjork.pdf
 
 1つ目の分散学習も3つ目のテスト効果も、この「望ましい困難」の代表例です。手応えの良さで学習方法を選ぶと、身につかない方法を選んでしまう。直感に反しますが、覚えておきたい知見だと思います。
 

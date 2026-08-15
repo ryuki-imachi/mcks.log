@@ -11,6 +11,11 @@
 	"routes": [
 		{ "pattern": "blog.ryu-ki-learn.com", "custom_domain": true }
 	],
+	// Workers Observability（ログ・メトリクス収集）。無料プランは20万イベント/日・保持3日、
+	// 超過は課金でなくサンプリング。ダッシュボードでなくここで宣言管理する（2026-08-16）
+	"observability": {
+		"enabled": true
+	},
 	// workers.dev URLは重複コンテンツ回避のため無効化（カスタムドメインに一本化）
 	"workers_dev": false,
 	// PRのプレビューURLは残す（workers_dev: false に連動してオフになるのを防ぐ）

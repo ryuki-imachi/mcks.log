@@ -22,10 +22,14 @@ const published = {
 	stream: stream.filter((post) => !post.data.draft),
 	slides: slides.filter((post) => !post.data.draft),
 };
-const posts = [...published.tech, ...published.memo, ...published.travel, ...published.stream, ...published.slides]
+// slidesは入口をいったん非表示中（記事内埋め込みのみ運用、2026-08-15リュウキ判断。
+// 再表示するときは下のfilterとHeader.astroのナビを戻す）
+const posts = [...published.tech, ...published.memo, ...published.travel, ...published.stream]
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 10);
-const sectionKeys = Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>;
+const sectionKeys = (Object.keys(SECTIONS) as Array<keyof typeof SECTIONS>).filter(
+	(key) => key !== 'slides',
+);
 ---
 
 <!doctype html>

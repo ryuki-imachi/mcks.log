@@ -27,7 +27,7 @@ npm run build
 ## 記事の書き方
 
 - 記事は `src/content/<コレクション>/` に .md で置く。コレクションは tech / travel / memo / stream / slides（詳細はREADME）
-- 登壇スライドは slides コレクションに置く（frontmatter: `speakerdeckId` 必須、`event` / `eventUrl` / `pdfUrl` 任意。Speaker Deckの共有画面にある `speakerdeck.com/player/<ID>` の32桁英数字がID）。プレイヤーURLを本文に単独行で書くと任意の記事内でもiframe展開される。通常のデッキURLは従来どおりリンクカード（実装: src/lib/remark-speaker-deck.mjs、経緯: issue #38 / PR #39）
+- 登壇スライドは slides コレクションに置く（frontmatter: `speakerdeckId` 必須、`event` / `eventUrl` / `pdfUrl` 任意。Speaker Deckの共有画面にある `speakerdeck.com/player/<ID>` の32桁英数字がID）。プレイヤーURLを本文に単独行で書くと任意の記事内でもiframe展開される。通常のデッキURLは従来どおりリンクカード（実装: src/lib/remark-speaker-deck.mjs、経緯: issue #38 / PR #39）。**ただしslidesの入口（ヘッダーのナビ・トップのls -l行）はいったん非表示中**（2026-08-15リュウキ判断、当面は記事内埋め込みのみ運用。/slides/ 自体は生成される。再表示は Header.astro と index.astro の2箇所を戻すだけで、そのときの定位置はナビ・ls -l行とも最後尾＝Streamの後ろ、2026-08-15リュウキ指定）
 - frontmatterのスキーマは `src/content.config.ts` が正
 - `draft: true` の間は一覧・RSS・ページ生成から除外される
 - **ローカル下書きは `src/content/<コレクション>/private/` に置く**（gitignore済み、issue #31）。dev・ローカルビルドでは `/tech/private/<basename>/` として一覧・記事ページ・OG画像込みで実サイトの見た目でプレビューできるが、gitに載らないため本番には出ない（publicリポジトリなのでdraft運用より確実）。検索窓にだけは出ない（search-index.mjsがコレクション直下のみ読むため）。公開時はファイルをコレクション直下へ移動するだけ。削除した下書きが「幻のページ」としてローカルビルドに残り続けたら、Astroのcontent layerキャッシュが原因なので `rm -rf node_modules/.astro` で解消（2026-08-15に発生）

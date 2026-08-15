@@ -62,6 +62,7 @@ npm run build
 - 継続検討: issues参照（#4 検索エンジン未インデックス、#26 検索エンジンの初回ロード時間改善。#26はドラフトPR #30（feature/search-engine-warmup）を2026-07-13から保留中——現状の本番挙動で困っていないためマージせずopenのまま。実測値・設計判断の記録はPR #30本文参照）
 - 次の一歩: stream対話ログ形式での1本目の記事を post-blog スキルで投稿（題材候補: CB特典クレジットの使い道、Discordでの相談返事待ち）
 - 運用メモ: Issue対応はブランチ+PR（「pushの運用ルール」参照）
+- Cloudflare設定の2層管理: **Worker設定**（observability等）はwrangler.jsoncで宣言管理（ダッシュボードで変えない。デプロイで上書きされるため）。**ゾーン設定**（ドメイン側: Caching / Security / Email等）はwranglerの管轄外なのでダッシュボード操作とし、変更したらここに記録する。有効化済み: Workers Observability（2026-08-16、PR #41）、Crawler Hints（2026-08-16、issue #4対応の一部。IndexNow対応エンジンへ更新を自動通知）
 - 関連リソース: 記事の下書き・構築ログ・設計書はリポジトリ外の作業ディレクトリで管理（Discordの #garage / #記事の種 スレッドで進行）
 
 ## Astroドキュメント

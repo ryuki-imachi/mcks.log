@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import Pagination from '../../components/Pagination.astro';
+import SearchBox from '../../components/SearchBox.astro';
+import PostList from '../../components/PostList.astro';
+import { SECTION_DESCRIPTIONS, SITE_TITLE } from '../../consts';
+
+const pageSize = 20;
+const posts = (await getCollection('slides'))
+	.filter((post) => !post.data.draft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const lastPage = Math.max(1, Math.ceil(posts.length / pageSize));
+const page = {
+	data: posts.slice(0, pageSize),
+	currentPage: 1,
+	lastPage,
+	url: {
+		current: '/slides/',
+		next: lastPage > 1 ? '/slides/2/' : undefined,
+	},
+};
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead title={`Slides | ${SITE_TITLE}`} description={SECTION_DESCRIPTIONS.slides} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section>
+				<div class="page-head">
+					<h1 class="page-title" style="color: var(--c-slides)">slides/</h1>
+					<a class="rss" href="/slides/rss.xml">RSS</a>
+				</div>
+				<p class="page-desc">{SECTION_DESCRIPTIONS.slides}</p>
+				<SearchBox />
+				<PostList posts={page.data} showSection={false} />
+				{page.data.length === 0 && <p class="empty">まだスライドはありません。</p>}
+				<Pagination page={page} basePath="/slides" />
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.page-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+	}
+	.page-title {
+		font-family: var(--font-mono);
+		font-size: 1.4em;
+		margin: 0;
+	}
+	.rss {
+		font-family: var(--font-mono);
+		font-size: 0.8em;
+		color: var(--muted);
+	}
+	.rss:hover {
+		color: var(--accent);
+	}
+	.page-desc {
+		margin: 0.3em 0 1.6em;
+		font-size: 0.9em;
+		color: var(--muted);
+	}
+	.empty {
+		margin: 1.4em 0;
+		color: var(--muted);
+	}
+</style>

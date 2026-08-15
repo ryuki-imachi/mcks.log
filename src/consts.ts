@@ -10,6 +10,7 @@ export const SECTIONS = {
 	travel: 'Travel',
 	memo: 'Memo',
 	stream: 'Stream',
+	slides: 'Slides',
 } as const;
 
 export const SECTION_DESCRIPTIONS = {
@@ -17,4 +18,5 @@ export const SECTION_DESCRIPTIONS = {
 	travel: 'JAWS-UG各支部巡り（と国内旅行）の記録',
 	memo: '技術メモ / 調査の走り書き',
 	stream: '考えごとの垂れ流し',
+	slides: 'LT・登壇で使ったスライド',
 } as const;

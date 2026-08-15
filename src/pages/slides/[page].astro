@@ -1,0 +1,90 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import Pagination from '../../components/Pagination.astro';
+import SearchBox from '../../components/SearchBox.astro';
+import PostList from '../../components/PostList.astro';
+import { SECTION_DESCRIPTIONS, SITE_TITLE } from '../../consts';
+
+export async function getStaticPaths() {
+	const pageSize = 20;
+	const posts = (await getCollection('slides'))
+		.filter((post) => !post.data.draft)
+		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+	const lastPage = Math.ceil(posts.length / pageSize);
+	const paths = [];
+
+	for (let currentPage = 2; currentPage <= lastPage; currentPage++) {
+		paths.push({
+			params: { page: String(currentPage) },
+			props: {
+				page: {
+					data: posts.slice((currentPage - 1) * pageSize, currentPage * pageSize),
+					currentPage,
+					lastPage,
+					url: {
+						current: `/slides/${currentPage}/`,
+						prev: currentPage === 2 ? '/slides/' : `/slides/${currentPage - 1}/`,
+						next: currentPage < lastPage ? `/slides/${currentPage + 1}/` : undefined,
+					},
+				},
+			},
+		});
+	}
+	return paths;
+}
+
+const { page } = Astro.props;
+const pageSuffix = ` (${page.currentPage}/${page.lastPage})`;
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead title={`Slides${pageSuffix} | ${SITE_TITLE}`} description={SECTION_DESCRIPTIONS.slides} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section>
+				<div class="page-head">
+					<h1 class="page-title" style="color: var(--c-slides)">slides/</h1>
+					<a class="rss" href="/slides/rss.xml">RSS</a>
+				</div>
+				<p class="page-desc">{SECTION_DESCRIPTIONS.slides}</p>
+				<SearchBox />
+				<PostList posts={page.data} showSection={false} />
+				<Pagination page={page} basePath="/slides" />
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.page-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+	}
+	.page-title {
+		font-family: var(--font-mono);
+		font-size: 1.4em;
+		margin: 0;
+	}
+	.rss {
+		font-family: var(--font-mono);
+		font-size: 0.8em;
+		color: var(--muted);
+	}
+	.rss:hover {
+		color: var(--accent);
+	}
+	.page-desc {
+		margin: 0.3em 0 1.6em;
+		font-size: 0.9em;
+		color: var(--muted);
+	}
+</style>

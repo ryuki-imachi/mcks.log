@@ -22,7 +22,7 @@ GitHubのmainブランチへpushすると、Workers Buildsが `npx astro build` 
 
 ## コンテンツ
 
-記事は `src/content/` 配下の4コレクションで管理しています。
+記事は `src/content/` 配下の5コレクションで管理しています。
 
 | コレクション | URL | 内容 |
 | :--- | :--- | :--- |
@@ -30,6 +30,7 @@ GitHubのmainブランチへpushすると、Workers Buildsが `npx astro build` 
 | `travel` | `/travel/` | 旅の記録（国内旅行・JAWS-UG各支部巡り） |
 | `memo` | `/memo/` | 技術メモ・調査メモ（記事にするほどではない小ネタ） |
 | `stream` | `/stream/` | 考えごとの垂れ流し |
+| `slides` | `/slides/` | LT・登壇で使ったスライド |
 
 各コレクションに一覧・記事ページ・RSS（`/tech/rss.xml` など）があり、サイト全体のRSSは `/rss.xml` です。一覧は1ページ20件でページ分けされます（`src/components/Pagination.astro`、10ページ以上で省略記号表示）。
 
@@ -62,6 +63,12 @@ eventUrl: https://...        # イベントのconnpass等（省略可）
 
 # stream のみ
 format: dialogue             # 省略可（既定: plain）。対話ログ形式で表示する
+
+# slides のみ
+speakerdeckId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  # Speaker DeckのプレイヤーID
+event: JAWS-UG ○○支部 LT                  # 省略可（登壇イベント名）
+eventUrl: https://example.com/event         # 省略可（イベントページ）
+pdfUrl: https://images.example.com/slide.pdf # 省略可（PDF原本のダウンロード先）
 ```
 
 スキーマ定義の実体は `src/content.config.ts` にあります。
@@ -85,6 +92,16 @@ src/content/tech/
 ### リンクカード
 
 Qiitaと同様に、本文中でURLだけの行を書くとビルド時にリンクカードへ展開されます（[remark-link-card-plus](https://github.com/okaryo/remark-link-card-plus) を使用）。`[テキスト](URL)` 形式のインラインリンクと画像URL（.png/.jpg等）は変換されません。
+
+### Speaker Deck埋め込み
+
+Speaker Deckの共有画面に表示されるプレイヤーURLを単独行で書くと、iframeのプレイヤーに展開されます。通常のデッキURL（`/ユーザー名/スラッグ`）は既存のリンクカードのままです。
+
+```text
+https://speakerdeck.com/player/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+`slides` コレクションでは、frontmatterの `speakerdeckId` にプレイヤーIDを指定すると、記事ページの先頭にプレイヤーが表示されます。必要に応じて `pdfUrl` でPDF原本へのリンクも追加できます。
 
 ### noteボックス
 
@@ -150,7 +167,7 @@ streamの記事はfrontmatterに `format: dialogue` を書くと、`@speaker: ` 
 ├── src/
 │   ├── components/          共通部品（PostList = ログ行風の記事一覧、TableOfContents = サイド目次 など）
 │   ├── consts.ts            サイト名・セクション定義
-│   ├── content/             記事本体（tech / travel / memo / stream）
+│   ├── content/             記事本体（tech / travel / memo / stream / slides）
 │   ├── content.config.ts    コレクションとfrontmatterスキーマの定義
 │   ├── integrations/        自作integration（search-index = 検索インデックス生成）
 │   ├── lib/                 remarkプラグイン・検索クライアント・OG画像生成

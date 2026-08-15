@@ -18,6 +18,7 @@
 	--c-memo: #567d84;
 	--c-travel: #b0713f;
 	--c-stream: #6b7aa1;
+	--c-slides: #8b6f9e;
 
 	/* :::note の識別色 */
 	--note-info: #4a7ca0;
@@ -48,6 +49,7 @@
 		--c-memo: #8db4bb;
 		--c-travel: #cf9a6a;
 		--c-stream: #93a3c8;
+		--c-slides: #b59acb;
 		--note-info: #7fa8c8;
 		--note-warn: #c9a95e;
 		--note-alert: #c98080;
@@ -159,6 +161,28 @@ img {
 .hero-image img {
 	border: 2px solid var(--img-frame);
 	box-sizing: border-box;
+}
+
+/* Speaker Deck埋め込み（remark-speaker-deck / SpeakerDeckEmbed）。
+   プレイヤーが返す標準比率を保ちつつ、本文カラムの幅に合わせて縮小する */
+.speakerdeck-embed {
+	width: 100%;
+	aspect-ratio: 710 / 399;
+	margin: 1.6em 0;
+	background: var(--bg-subtle);
+	border-radius: 6px;
+	overflow: hidden;
+}
+.speakerdeck-embed iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+.speakerdeck-source {
+	margin: -1em 0 1.4em;
+	font-family: var(--font-mono);
+	font-size: 0.78em;
 }
 code {
 	font-family: var(--font-mono);

@@ -19,7 +19,7 @@ import { fileURLToPath } from 'node:url';
 import YAML from 'yaml';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const COLLECTIONS = ['tech', 'travel', 'memo', 'stream'];
+const COLLECTIONS = ['tech', 'travel', 'memo', 'stream', 'slides'];
 
 // frontmatter（--- ... ---）と本文に分割する
 function splitFrontmatter(raw) {

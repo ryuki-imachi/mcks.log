@@ -17,6 +17,7 @@ const SECTION_COLORS: Record<string, string> = {
 	memo: '#567d84',
 	travel: '#b0713f',
 	stream: '#6b7aa1',
+	slides: '#8b6f9e',
 };
 
 // 背景はセクション色に生成りを25%混ぜた薄めの単色（2026-07-05リュウキ選定）

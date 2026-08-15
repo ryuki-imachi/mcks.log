@@ -8,26 +8,22 @@ import SearchBox from '../../components/SearchBox.astro';
 import PostList from '../../components/PostList.astro';
 import { SECTION_DESCRIPTIONS, SITE_TITLE } from '../../consts';
 
-const pageSize = 20;
-const posts = (await getCollection('slides'))
-	.filter((post) => !post.data.draft)
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const lastPage = Math.max(1, Math.ceil(posts.length / pageSize));
-const page = {
-	data: posts.slice(0, pageSize),
-	currentPage: 1,
-	lastPage,
-	url: {
-		current: '/slides/',
-		next: lastPage > 1 ? '/slides/2/' : undefined,
-	},
-};
+// 1ページ20件でページ分けする（/slides/ が1ページ目、/slides/2/ 以降が続く）
+export async function getStaticPaths({ paginate }: any) {
+	const posts = (await getCollection('slides'))
+		.filter((post) => !post.data.draft)
+		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+	return paginate(posts, { pageSize: 20 });
+}
+
+const { page } = Astro.props;
+const pageSuffix = page.currentPage > 1 ? ` (${page.currentPage}/${page.lastPage})` : '';
 ---
 
 <!doctype html>
 <html lang="ja">
 	<head>
-		<BaseHead title={`Slides | ${SITE_TITLE}`} description={SECTION_DESCRIPTIONS.slides} />
+		<BaseHead title={`Slides${pageSuffix} | ${SITE_TITLE}`} description={SECTION_DESCRIPTIONS.slides} />
 	</head>
 	<body>
 		<Header />

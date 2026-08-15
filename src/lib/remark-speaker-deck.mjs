@@ -42,7 +42,7 @@ function text(value) {
 }
 
 function makeEmbed(sourceUrl, playerUrl) {
-	return {
+	const embed = {
 		type: 'speakerDeckEmbed',
 		data: {
 			hName: 'div',
@@ -63,22 +63,23 @@ function makeEmbed(sourceUrl, playerUrl) {
 				},
 				children: [],
 			},
+		],
+	};
+	const source = {
+		type: 'speakerDeckSource',
+		data: {
+			hName: 'p',
+			hProperties: { className: ['speakerdeck-source'] },
+		},
+		children: [
 			{
-				type: 'speakerDeckSource',
-				data: {
-					hName: 'p',
-					hProperties: { className: ['speakerdeck-source'] },
-				},
-				children: [
-					{
-						type: 'link',
-						url: sourceUrl,
-						children: [text('Speaker Deckで開く')],
-					},
-				],
+				type: 'link',
+				url: sourceUrl,
+				children: [text('Speaker Deckで開く')],
 			},
 		],
 	};
+	return [embed, source];
 }
 
 export default function remarkSpeakerDeck() {
@@ -89,7 +90,8 @@ export default function remarkSpeakerDeck() {
 			if (!sourceUrl) continue;
 			const playerUrl = playerUrlFrom(sourceUrl);
 			if (!playerUrl) continue;
-			tree.children[i] = makeEmbed(sourceUrl, playerUrl);
+			tree.children.splice(i, 1, ...makeEmbed(sourceUrl, playerUrl));
+			i++;
 		}
 	};
 }

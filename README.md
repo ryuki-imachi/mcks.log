@@ -34,6 +34,8 @@ GitHubのmainブランチへpushすると、Workers Buildsが `npx astro build` 
 
 各コレクションに一覧・記事ページ・RSS（`/tech/rss.xml` など）があり、サイト全体のRSSは `/rss.xml` です。一覧は1ページ20件でページ分けされます（`src/components/Pagination.astro`、10ページ以上で省略記号表示）。
 
+`slides` は当面、セクションの入口（ヘッダーのナビ・トップの一覧）を非表示にした記事内埋め込み中心の運用です（`/slides/` のページ自体は生成されます。後述「Speaker Deck埋め込み」参照）。
+
 ### 記事検索
 
 一覧ページとトップの検索窓から、全コレクション横断の全文検索ができます（タイトル・タグ・本文。スペース区切りでAND検索）。仕組みはビルド時に全記事を `search-index.parquet` に書き出し（`src/integrations/search-index.mjs`）、ブラウザ上のDuckDB Wasmが直接SQLで検索するサーバーレス構成です。エンジン本体（DuckDB Wasm、30MB超でWorkersの静的アセット上限25MBを超えるため）は公式配布のjsDelivr CDNから、検索窓に触れたときだけ遅延ロードされます（`src/lib/search-client.ts` / `src/components/SearchBox.astro`）。
@@ -150,6 +152,10 @@ streamの記事はfrontmatterに `format: dialogue` を書くと、`@speaker: ` 
 記事画像はリポジトリに置かず、外部CDNのURLを `![説明](https://images.ryu-ki-learn.com/...)` の形で参照します。
 
 記事ページでは本文の画像に薄い枠線が自動で付きます（色は `src/styles/global.css` の `--img-frame` で管理）。
+
+### OG画像
+
+記事ごとのOG画像（SNSシェア時のサムネイル）はビルド時に自動生成されます（`/og/<コレクション>/<id>.png`、実装は `src/lib/og-image.ts` + `src/pages/og/`）。frontmatterで `heroImage` を指定した記事はそちらが優先され、記事以外のページはサイト共通の `og-default.png` を使います。
 
 ### Xシェアボタン
 

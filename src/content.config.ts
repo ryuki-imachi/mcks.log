@@ -61,4 +61,16 @@ const stream = defineCollection({
 		}),
 });
 
-export const collections = { tech, memo, travel, stream };
+// 登壇スライド（Speaker Deckのプレイヤーを埋め込む）
+const slides = defineCollection({
+	loader: glob({ base: './src/content/slides', pattern: '**/*.{md,mdx}' }),
+	schema: (ctx: any) =>
+		baseSchema(ctx).extend({
+			event: z.string().optional(),
+			eventUrl: z.string().url().optional(),
+			speakerdeckId: z.string().min(1),
+			pdfUrl: z.string().url().optional(),
+		}),
+});
+
+export const collections = { tech, memo, travel, stream, slides };

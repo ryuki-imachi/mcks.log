@@ -4,13 +4,14 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 // 全コレクション横断のRSS
 export async function GET(context) {
-	const [tech, memo, travel, stream] = await Promise.all([
+	const [tech, memo, travel, stream, slides] = await Promise.all([
 		getCollection('tech'),
 		getCollection('memo'),
 		getCollection('travel'),
 		getCollection('stream'),
+		getCollection('slides'),
 	]);
-	const posts = [...tech, ...memo, ...travel, ...stream]
+	const posts = [...tech, ...memo, ...travel, ...stream, ...slides]
 		.filter((post) => !post.data.draft)
 		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 	return rss({

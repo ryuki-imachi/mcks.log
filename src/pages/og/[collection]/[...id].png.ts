@@ -4,7 +4,7 @@ import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import { renderOgImage } from '../../../lib/og-image';
 
-const COLLECTIONS = ['tech', 'travel', 'memo', 'stream'] as const;
+const COLLECTIONS = ['tech', 'travel', 'memo', 'stream', 'slides'] as const;
 
 export const getStaticPaths = (async () => {
 	const paths = [];

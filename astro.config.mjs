@@ -2,10 +2,12 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import { unified } from '@astrojs/markdown-remark';
 import { defineConfig } from 'astro/config';
 import remarkLinkCard from 'remark-link-card-plus';
 import remarkDialogue from './src/lib/remark-dialogue.mjs';
 import remarkQiitaNote from './src/lib/remark-qiita-note.mjs';
+import remarkSpeakerDeck from './src/lib/remark-speaker-deck.mjs';
 import searchIndex from './src/integrations/search-index.mjs';
 
 // https://astro.build/config
@@ -14,25 +16,30 @@ export default defineConfig({
 	site: 'https://blog.ryu-ki-learn.com',
 	integrations: [mdx(), sitemap(), searchIndex()],
 	markdown: {
-		// remarkLinkCard: Qiitaと同様に「URLだけの行」をビルド時にリンクカード化する。
-		// インラインリンク（[text](url)）は変換されない。画像URLはカード化せず素通しする。
-		// remarkQiitaNote: Qiita互換の :::note 記法（src/lib/remark-qiita-note.mjs）
-		// remarkDialogue: stream対話ログ形式の @speaker: 記法（src/lib/remark-dialogue.mjs）
-		// 順序が重要: リンクカードは「親がrootの段落」しか変換しないため、
-		// noteで包む前にカード化を済ませる（= note内のURL行もカードになる）。
-		// dialogueは発言内のURL行・:::noteも変換済みの状態で包みたいので最後
-		// 見た目はいずれもglobal.css参照
-		remarkPlugins: [
-			[
-				remarkLinkCard,
-				{
-					shortenUrl: true,
-					thumbnailPosition: 'right',
-					ignoreExtensions: ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'],
-				},
+		processor: unified({
+			// remarkLinkCard: Qiitaと同様に「URLだけの行」をビルド時にリンクカード化する。
+			// インラインリンク（[text](url)）は変換されない。画像URLはカード化せず素通しする。
+			// remarkSpeakerDeck: Speaker DeckのプレイヤーURLだけをiframeに変換する。
+			// remarkQiitaNote: Qiita互換の :::note 記法（src/lib/remark-qiita-note.mjs）
+			// remarkDialogue: stream対話ログ形式の @speaker: 記法（src/lib/remark-dialogue.mjs）
+			// 順序が重要: リンクカードは「親がrootの段落」しか変換しないため、
+			// Speaker Deckの埋め込みとリンクカードをnoteで包む前に済ませる。
+			// （Speaker Deckを先に実行し、変換済みのURLをリンクカードに渡さない）
+			// dialogueは発言内のURL行・:::noteも変換済みの状態で包みたいので最後
+			// 見た目はいずれもglobal.css参照
+			remarkPlugins: [
+				remarkSpeakerDeck,
+				[
+					remarkLinkCard,
+					{
+						shortenUrl: true,
+						thumbnailPosition: 'right',
+						ignoreExtensions: ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'],
+					},
+				],
+				remarkQiitaNote,
+				remarkDialogue,
 			],
-			remarkQiitaNote,
-			remarkDialogue,
-		],
+		}),
 	},
 });

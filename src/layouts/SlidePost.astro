@@ -1,0 +1,68 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+import BlogPost from './BlogPost.astro';
+import SpeakerDeckEmbed from '../components/SpeakerDeckEmbed.astro';
+
+type Props = CollectionEntry<'slides'>['data'] & {
+	postId: string;
+	headings?: MarkdownHeading[];
+};
+
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+	tags,
+	speakerdeckId,
+	event,
+	eventUrl,
+	pdfUrl,
+	postId,
+	headings = [],
+} = Astro.props;
+---
+
+<BlogPost
+	title={title}
+	description={description}
+	pubDate={pubDate}
+	updatedDate={updatedDate}
+	heroImage={heroImage}
+	tags={tags}
+	collection="slides"
+	postId={postId}
+	headings={headings}
+>
+	<SpeakerDeckEmbed id={speakerdeckId} title={title} />
+	{
+		(event || pdfUrl) && (
+			<div class="slide-meta">
+				{event && (
+					<span>
+						登壇: {eventUrl ? <a href={eventUrl} target="_blank" rel="noopener noreferrer">{event}</a> : event}
+					</span>
+				)}
+				{pdfUrl && (
+					<a href={pdfUrl} target="_blank" rel="noopener noreferrer">PDFをダウンロード</a>
+				)}
+			</div>
+		)
+	}
+	<slot />
+</BlogPost>
+
+<style is:global>
+	.slide-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.4em 1.2em;
+		margin: -0.7em 0 1.8em;
+		font-family: var(--font-mono);
+		font-size: 0.82em;
+		color: var(--muted);
+	}
+</style>

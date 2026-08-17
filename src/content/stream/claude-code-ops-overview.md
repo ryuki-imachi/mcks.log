@@ -6,8 +6,8 @@ tags: ['ClaudeCode', '雑記']
 qiitaId: 1668e67b8d3cf43c4e0a
 importedDate: 2026-08-17
 qiitaStats:
-  views: 37
-  likes: 2
+  views: 66
+  likes: 4
   stocks: 0
   fetchedAt: 2026-08-17
 ---
@@ -20,7 +20,7 @@ qiitaStats:
 
 ## 運用の全体像
 
-![Claude Code運用の全体図](https://images.ryu-ki-learn.com/claude-code-ops-overview/ops-overview.png)
+![Claude Code運用の全体図](https://images.ryu-ki-learn.com/claude-code-ops-overview/ops-overview-v2.png)
 
 私の環境では Claude Code の居場所は2つあります。1つはローカルの Mac で動かす普通の Claude Code で、基本的に開発はここでやります。もう1つは Discord と繋いで常駐させている Claude Code で、相談ごとや記事まわりはこちらに投げることが多いです。
 

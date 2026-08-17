@@ -6,7 +6,7 @@ tags: ['ClaudeCode', '雑記']
 qiitaId: 1668e67b8d3cf43c4e0a
 importedDate: 2026-08-17
 qiitaStats:
-  views: 125
+  views: 136
   likes: 5
   stocks: 0
   fetchedAt: 2026-08-17
@@ -77,18 +77,15 @@ Discord 側は、記事のネタ・開発案件・考えごとといった種類
 
 スレッドごとに「何のためのスレッドで、いまどういう状態か」の台帳を持たせていて、Claude は返信の前にそれを確認します。
 
-台帳の中身はチャンネルごとの表で、こんな形です。
+台帳の中身はチャンネルごとの表です。例えば、スクショの一番上に写っている #記事の種 の台帳は、いまこうなっています。1行目だけ実物をそのまま貼って、2行目以降は長いので省略します（内部リンクは伏せ字にしています）。
 
-```markdown
-## #記事の種
+| スレッド名 | ID | 目的 | 状態 |
+|-----------|-----|------|------|
+| Ollamaからの乗り換え — LM Studio × llama.cpp × Strands | 1538371432751300739 | OllamaからLM Studio（MLX）+llama.cpp直へ乗り換える体験記ネタ。Strands Agentsからのローカルモデル利用（OpenAI互換API経由）とAgentCore連携も射程。#雑談 2026-08-16リュウキ発案「ollamaからいったん乗り換えようかな。ついでに記事化しよう」。動向調査レポート https://claude.ai/…（非公開） | 開始（2026-08-16作成）。環境=M4 MacBook Air 32GB / 乗り換え元=Ollama 0.32.5（gemma4:e4b/qwen3.5:9b/gpt-oss:20b、計29GB、速度比較用に残置→記事化後削除予定）。**検証完了（2026-08-16）**: LM Studio+llama.cpp導入済み・Strands連携両方成功（LlamaCppModel / OpenAIModel+base_url、gpt-oss-20Bでツールコール正答）・速度比較済み=llama.cpp直30.6 / LM Studio MLX30.2 / Ollama20.0 tok/s（ウォーム、旧Metalバックエンド）。gemma-4-E4B MLXもDL済み。検証プロジェクト ~/Desktop/work/local-llm-strands/ 作成済み（CLAUDE.mdが検証詳細の正）。残り=Ollama最新版でMLX再計測（続き検証ネタ）→記事叩き台→記事化後にOllama+旧モデル29GB削除。**2記事分割+見出し案提示済み（2026-08-16）**: ①【ローカルLLM】Ollamaから乗り換えてみた（はじめに/動作環境/Ollamaに何が起きているのか/セットアップ/速度比較/おわりに）②はリュウキ指示（2026-08-16）で「【Strands Agents】llama.cppサーバーでエージェントを動かす」に変更=過去記事「【Strands Agents】OllamaからローカルLLMを使ってみた」（qiita 600b20874a400741c20c）と被るため。LM Studio節は削除しllama.cpp主役（LlamaCppModel専用プロバイダの深掘り+過去Ollama版との違いが核）。修正版見出しOK（2026-08-16リュウキ「お願いします」）→ **①叩き台完成（2026-08-16、約3,300字、articles/drafts/20_執筆中/local-llm-ollama-migration.md、articlesコミットdcc35bf、board行追加済み、Artifact https://claude.ai/…（非公開） ）**。見出しは体言止めに微調整。残り=スクショ候補（LM Studioチャット画面/llama.cpp公式WebUI）→リュウキ確認→/review-blog。②Strands記事は見出し確定済み・未執筆。⏳リュウキ→①叩き台の確認 |
+| AI-DLC v2を実際に回してみた — 体験ベースの記事 | 1538209349661360139 | AI-DLC v2を初めて実際に回した体験の記事化。…（略） | …（略） |
+| フェリー予約エージェントLTの記事化 — Harness × Browser × Live View | 1534140490193043466 | 7/25 Lightning Sado 2026 の LT の記事化。…（略） | …（略） |
 
-| スレッド名 | 目的 | 状態 |
-|-----------|------|------|
-| Ollamaからの乗り換え | LM Studio + llama.cpp への乗り換え体験記ネタ | 検証完了。叩き台の確認待ち |
-| DuckDB Wasm検索の解説 | ブログの記事検索機能の解説記事 | 限定共有済み。本公開待ち |
-```
-
-実際にはスレッド ID やもう少し細かい経緯も一緒に記録していて、状態が動いたら Claude がその場で更新する運用です。
+状態の列には切り分けの経緯や決めごとがどんどん追記されていくので、動きの多いスレッドほど長大になります。状態が動いたら Claude がその場で更新する運用です。
 
 会話がどれだけ散らかっても、スレッドという単位で文脈が保たれるのが、チャットツールと相性のいいところだと思います。
 

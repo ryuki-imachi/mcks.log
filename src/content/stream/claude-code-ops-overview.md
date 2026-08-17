@@ -6,8 +6,8 @@ tags: ['ClaudeCode', '雑記']
 qiitaId: 1668e67b8d3cf43c4e0a
 importedDate: 2026-08-17
 qiitaStats:
-  views: 66
-  likes: 4
+  views: 125
+  likes: 5
   stocks: 0
   fetchedAt: 2026-08-17
 ---
@@ -76,6 +76,19 @@ Discord 側は、記事のネタ・開発案件・考えごとといった種類
 ![フォーラムチャンネルとスレッドの一覧](https://images.ryu-ki-learn.com/claude-code-ops-overview/forum-threads.png)
 
 スレッドごとに「何のためのスレッドで、いまどういう状態か」の台帳を持たせていて、Claude は返信の前にそれを確認します。
+
+台帳の中身はチャンネルごとの表で、こんな形です。
+
+```markdown
+## #記事の種
+
+| スレッド名 | 目的 | 状態 |
+|-----------|------|------|
+| Ollamaからの乗り換え | LM Studio + llama.cpp への乗り換え体験記ネタ | 検証完了。叩き台の確認待ち |
+| DuckDB Wasm検索の解説 | ブログの記事検索機能の解説記事 | 限定共有済み。本公開待ち |
+```
+
+実際にはスレッド ID やもう少し細かい経緯も一緒に記録していて、状態が動いたら Claude がその場で更新する運用です。
 
 会話がどれだけ散らかっても、スレッドという単位で文脈が保たれるのが、チャットツールと相性のいいところだと思います。
 

@@ -5,6 +5,8 @@
 // 結果リストはJSで生成するためスタイルはglobal.cssの .search-* にある
 ---
 
+{/* 検索エンジン(DuckDB Wasm)の配信元に事前接続してダウンロード開始を速くする（issue #26） */}
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <div class="search-box">
 	<input
 		id="search-input"
@@ -29,13 +31,39 @@
 
 	let mod: Promise<typeof import('../lib/search-client')> | null = null;
 	const load = () => (mod ??= import('../lib/search-client'));
-	// 触れた時点でエンジンの読み込みを始めておく（初回検索の待ちを減らす）
-	input.addEventListener('focus', () => void load(), { once: true });
+
+	// 初回はエンジン（30MB超）のダウンロード+初期化で時間がかかるため、表示を分ける
+	let engineReady = false;
+	// 使う気配（ホバー・フォーカス）を検知したら、エンジンの初期化まで先回りで済ませる（issue #26）。
+	// 従来のfocus時ロードは小さなJSラッパーの読み込みだけで、wasm本体のダウンロードと
+	// 初期化は初回検索の実行まで始まっていなかった
+	const warm = () => {
+		void load()
+			.then((m) => m.warmup())
+			.then((ok) => {
+				if (ok) engineReady = true;
+			});
+	};
+	input.addEventListener('focus', warm, { once: true });
+	document.querySelector('.search-box')?.addEventListener('pointerenter', warm, { once: true });
+
+	// マウス環境（≒PC・固定回線想定）では、ページ表示後のアイドル時間にエンジン実体の
+	// ダウンロードだけ先に済ませてHTTPキャッシュを温めておく（初期化はしないので
+	// CPU・メモリは使わない）。タッチ環境はモバイル通信量に配慮して見送り、
+	// データセーバー有効時も先読みしない
+	const hoverDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+	const saveData =
+		(navigator as { connection?: { saveData?: boolean } }).connection?.saveData === true;
+	if (hoverDevice && !saveData) {
+		const idle = (fn: () => void) => {
+			if ('requestIdleCallback' in window) window.requestIdleCallback(fn);
+			else window.setTimeout(fn, 2500);
+		};
+		idle(() => void load().then((m) => m.prefetchEngineAssets()));
+	}
 
 	let timer: number | undefined;
 	let seq = 0;
-	// 初回はエンジン（30MB超）のダウンロード+初期化で時間がかかるため、表示を分ける
-	let engineReady = false;
 	input.addEventListener('input', () => {
 		clearTimeout(timer);
 		timer = window.setTimeout(run, 250);

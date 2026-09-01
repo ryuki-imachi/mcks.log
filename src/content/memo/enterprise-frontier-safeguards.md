@@ -1,5 +1,5 @@
 ---
-title: '【Claude】Enterprise Frontier Safeguards（EFS）とは？ ── データを自社クラウドに置いたまま悪用検知だけ任せる仕組み'
+title: '【Claude】Enterprise Frontier Safeguards（EFS）とは？'
 description: 'Claude Fable 5.1 と同時に発表された Enterprise Frontier Safeguards（EFS）について、ゼロデータ保持と悪用検知をどう両立しているのかを図で整理しました。'
 pubDate: 2026-09-02
 tags: ['生成AI', 'Claude']

@@ -124,5 +124,6 @@
 	"sse-streaming-basics": "sse-streaming-basics",
 	"stackoverflow-for-agents": "stackoverflow-for-agents",
 	"strands-devops-agent-tools": "strands-devops-agent-tools",
-	"visitor-counter-lambda-dynamodb": "visitor-counter-lambda-dynamodb"
+	"visitor-counter-lambda-dynamodb": "visitor-counter-lambda-dynamodb",
+	"endless-eight-agentcore-memory": "endless-eight-agentcore-memory"
 }

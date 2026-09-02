@@ -17,15 +17,6 @@ qiitaStats:
 **本記事は「涼宮ハルヒの憂鬱」に関する禁則事項（ネタバレ）を含みます。閲覧は自己責任でお願いします。**
 :::
 
-:::note
-この記事は「2026 Japan AWS Jr. Champions 真夏のQiitaリレー」の33日目の記事となります。
-過去の投稿（リンク集）・昨日の投稿は以下リンクからご覧ください。
-:::
-
-https://qiita.com/ys-yoshida/items/6f7c7f85155a993e2c86
-
-https://qiita.com/nbsat/items/de81ca463a4d0e10464a
-
 ## はじめに
 
 みなさん、本日は何月何日でしょうか？

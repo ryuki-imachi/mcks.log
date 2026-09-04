@@ -2,6 +2,7 @@
 title: "【雑記】Claude Code の居場所を整理し直している様子をそのまま公開してみる"
 description: "Discord に常駐させた Claude Code とスマホの Remote Control で窓口が二重になったので、役割分担を決め直したやりとりを問答形式でそのまま載せます。"
 pubDate: 2026-09-04
+updatedDate: 2026-09-04
 tags: ['ClaudeCode', '雑記']
 format: dialogue
 ---

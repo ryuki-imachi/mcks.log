@@ -12,6 +12,9 @@
 //
 // 話者名は Unicode の文字と数字（日本語を含む）・アンダースコア・ハイフン。
 //
+// 発言は次の発言か見出し（h1-h6）までで終わる。見出しは記事の構造なので
+// 発言には含めない（含めると「おわりに」以降が最後の発言の中に入ってしまう）。
+//
 // 制約: 発言の開始は「トップレベル段落の先頭」のみ判定する。段落の途中の
 // 行にある @xxx: は本文扱い。コードブロック内の @xxx: 行は段落ではないため
 // 誤検知しない。
@@ -76,11 +79,23 @@ export default function remarkDialogue() {
 			i++;
 		}
 		while (i < nodes.length) {
+			// 見出しは記事の構造なので発言には含めず、そのまま通す
+			if (nodes[i].type === 'heading') {
+				result.push(nodes[i]);
+				i++;
+				continue;
+			}
 			const speaker = speakerOf(nodes[i]);
+			// 見出しの直後など、発言の外にある通常ノードもそのまま通す
+			if (speaker === null) {
+				result.push(nodes[i]);
+				i++;
+				continue;
+			}
 			stripMarker(nodes[i]);
 			const content = nodes[i].children.length > 0 ? [nodes[i]] : [];
 			let j = i + 1;
-			while (j < nodes.length && speakerOf(nodes[j]) === null) {
+			while (j < nodes.length && speakerOf(nodes[j]) === null && nodes[j].type !== 'heading') {
 				content.push(nodes[j]);
 				j++;
 			}

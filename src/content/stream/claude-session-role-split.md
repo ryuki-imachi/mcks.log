@@ -65,7 +65,7 @@ https://code.claude.com/docs/en/memory
 
 補足として、セッション中に `/remote-control`（略して `/rc`）でその場のオンオフ切り替えもできるので、「今日だけ常駐をアプリから覗きたい」ときはそれで一時的に付けられる。あと会話が claude.ai 側に見えるのは Remote Control 接続中に転送が保存される仕組みで、切れば以降は送られない。
 
-出典はこの2つ。
+出典はこの2つです。
 
 https://code.claude.com/docs/en/remote-control.md
 

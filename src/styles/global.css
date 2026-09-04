@@ -19,9 +19,10 @@
 	--c-travel: #b0713f;
 	--c-stream: #6b7aa1;
 	--c-slides: #8b6f9e;
-	/* 対話ログの発言の背景。話者の色を薄く敷く */
-	--c-stream-soft: rgba(107, 122, 161, 0.1);
-	--c-travel-soft: rgba(176, 113, 63, 0.1);
+	/* 対話ログの発言の背景。話者の色を薄く敷く。
+	   Claude 側は発言が長く面積が大きいぶん色が強く出るので、こちらだけ薄い */
+	--c-stream-soft: rgba(107, 122, 161, 0.09);
+	--c-travel-soft: rgba(176, 113, 63, 0.03);
 
 	/* :::note の識別色 */
 	--note-info: #4a7ca0;
@@ -53,8 +54,8 @@
 		--c-travel: #cf9a6a;
 		--c-stream: #93a3c8;
 		--c-slides: #b59acb;
-		--c-stream-soft: rgba(147, 163, 200, 0.13);
-		--c-travel-soft: rgba(207, 154, 106, 0.13);
+		--c-stream-soft: rgba(147, 163, 200, 0.12);
+		--c-travel-soft: rgba(207, 154, 106, 0.05);
 		--note-info: #7fa8c8;
 		--note-warn: #c9a95e;
 		--note-alert: #c98080;

@@ -19,6 +19,8 @@
 	--c-travel: #b0713f;
 	--c-stream: #6b7aa1;
 	--c-slides: #8b6f9e;
+	/* 対話ログの発言の背景。--accent-soft と同じ濃さ */
+	--c-stream-soft: rgba(107, 122, 161, 0.09);
 
 	/* :::note の識別色 */
 	--note-info: #4a7ca0;
@@ -50,6 +52,7 @@
 		--c-travel: #cf9a6a;
 		--c-stream: #93a3c8;
 		--c-slides: #b59acb;
+		--c-stream-soft: rgba(147, 163, 200, 0.12);
 		--note-info: #7fa8c8;
 		--note-warn: #c9a95e;
 		--note-alert: #c98080;
@@ -266,11 +269,15 @@ hr {
 }
 
 /* 対話ログ形式（remark-dialogue、format: dialogue のstream記事）。
-   発言者ラベル行 + 本文のぶら下げインデントによるフラット表示（ボックスなし）。
-   装飾は発言ごとに繰り返されて圧になるため最小限にしている。
-   speakerごとの色は --dialogue-color で切り替える（未定義speakerはmuted） */
+   発言者ラベル行 + 発言ごとの薄い背景。長い発言が続くとどこまでが誰の話か
+   分からなくなるため、背景で範囲を示す（2026-09-04リュウキ選択）。
+   speakerごとの色は --dialogue-color、背景は --turn-bg で切り替える
+   （未定義speakerはラベルがmuted・背景なし） */
 .dialogue-turn {
-	margin: 1.7em 0;
+	margin: 0.8em 0;
+	padding: 0.85em 1.1em;
+	border-radius: 3px;
+	background: var(--turn-bg, transparent);
 }
 .dialogue-speaker {
 	font-family: var(--font-mono);
@@ -280,7 +287,7 @@ hr {
 	margin-bottom: 0.1em;
 }
 .dialogue-body {
-	padding-left: 1.2em;
+	padding-left: 0;
 }
 .dialogue-body > :last-child {
 	margin-bottom: 0;
@@ -288,14 +295,24 @@ hr {
 .dialogue-body p {
 	margin-bottom: 0.9em;
 }
-/* 既知speakerの色割り当て。増えたらここに足す */
-.dialogue-turn[data-speaker='ryuki'] {
+/* 既知speakerの色と背景。増えたらここに足す。
+   話者名は日本語も使えるので、記事で使う表記をそのまま書く */
+.dialogue-turn[data-speaker='ryuki'],
+.dialogue-turn[data-speaker='筆者'] {
 	--dialogue-color: var(--accent);
+	--turn-bg: var(--accent-soft);
 }
 .dialogue-turn[data-speaker='claude'] {
 	--dialogue-color: var(--c-stream);
+	--turn-bg: var(--c-stream-soft);
 }
-/* @note: は対話の合間の地の文（ナレーション）。控えめに */
+/* @note: は対話の合間の地の文（ナレーション）。発言と違って対話の外側からの
+   声なので、背景も線も持たせず素のまま流す（線は blockquote と紛らわしい）。
+   左右のpaddingを外すぶん、発言より少し左に出る */
+.dialogue-turn[data-speaker='note'] {
+	padding: 0;
+	margin: 1.5em 0;
+}
 .dialogue-turn[data-speaker='note'] .dialogue-body {
 	color: var(--muted);
 	font-size: 0.92em;

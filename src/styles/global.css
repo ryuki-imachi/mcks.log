@@ -19,8 +19,9 @@
 	--c-travel: #b0713f;
 	--c-stream: #6b7aa1;
 	--c-slides: #8b6f9e;
-	/* 対話ログの発言の背景。--accent-soft と同じ濃さ */
-	--c-stream-soft: rgba(107, 122, 161, 0.09);
+	/* 対話ログの発言の背景。話者の色を薄く敷く */
+	--c-stream-soft: rgba(107, 122, 161, 0.1);
+	--c-travel-soft: rgba(176, 113, 63, 0.1);
 
 	/* :::note の識別色 */
 	--note-info: #4a7ca0;
@@ -52,7 +53,8 @@
 		--c-travel: #cf9a6a;
 		--c-stream: #93a3c8;
 		--c-slides: #b59acb;
-		--c-stream-soft: rgba(147, 163, 200, 0.12);
+		--c-stream-soft: rgba(147, 163, 200, 0.13);
+		--c-travel-soft: rgba(207, 154, 106, 0.13);
 		--note-info: #7fa8c8;
 		--note-warn: #c9a95e;
 		--note-alert: #c98080;
@@ -296,16 +298,30 @@ hr {
 	margin-bottom: 0.9em;
 }
 /* 既知speakerの色と背景。増えたらここに足す。
-   話者名は日本語も使えるので、記事で使う表記をそのまま書く */
+   話者名は日本語も使えるので、記事で使う表記をそのまま書く。
+   人が寒色、AIが暖色。同系色どうしだと発言の切り替わりが見分けにくいため */
 .dialogue-turn[data-speaker='ryuki'],
 .dialogue-turn[data-speaker='筆者'] {
-	--dialogue-color: var(--accent);
-	--turn-bg: var(--accent-soft);
-}
-.dialogue-turn[data-speaker='claude'] {
 	--dialogue-color: var(--c-stream);
 	--turn-bg: var(--c-stream-soft);
 }
+.dialogue-turn[data-speaker='claude'] {
+	--dialogue-color: var(--c-travel);
+	--turn-bg: var(--c-travel-soft);
+}
+/* 発言の中の表とコードは、背景を敷かないと発言の色が透けて罫線が沈む。
+   紙色を敷いて浮かせ、表の見出しは --line まで濃くして行を見分けやすくする */
+.dialogue-body table {
+	background: var(--bg);
+}
+.dialogue-body th {
+	background: var(--line);
+}
+.dialogue-body pre {
+	background: var(--bg);
+	border: 1px solid var(--line);
+}
+
 /* @note: は対話の合間の地の文（ナレーション）。発言と違って対話の外側からの
    声なので、背景も線も持たせず素のまま流す（線は blockquote と紛らわしい）。
    左右のpaddingを外すぶん、発言より少し左に出る */

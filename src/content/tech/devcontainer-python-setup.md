@@ -216,7 +216,7 @@ code .
 ```md
 # 新規プロジェクト作成スキル
 
-GitHub テンプレート `ryuki-imachi/python-devcontainer-template` から新しいプロジェクトを作成します。
+GitHub テンプレート `umitsu-tech/python-devcontainer-template` から新しいプロジェクトを作成します。
 
 ## 使い方
 
@@ -226,7 +226,7 @@ GitHub テンプレート `ryuki-imachi/python-devcontainer-template` から新�
 
 1. **リポジトリ作成**: GitHub テンプレートからプライベートリポジトリを作成してクローン
 
-gh repo create $ARGUMENTS --private --template ryuki-imachi/python-devcontainer-template --clone
+gh repo create $ARGUMENTS --private --template umitsu-tech/python-devcontainer-template --clone
 
 2. **ディレクトリ移動**: 作成したプロジェクトに移動
 

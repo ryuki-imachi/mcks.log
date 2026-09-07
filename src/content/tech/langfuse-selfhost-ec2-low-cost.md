@@ -23,7 +23,7 @@ Langfuse はこの両方を提供してくれるオープンソースのプラ�
 
 以下がリポジトリです。
 
-https://github.com/ryuki-imachi/langfuse-on-ec2
+https://github.com/umitsu-tech/langfuse-on-ec2
 
 :::note warn
 本記事の構成は PoC 向けです。本番運用では ALB + HTTPS、プライベートサブネット、Aurora 等の検討が必要です。

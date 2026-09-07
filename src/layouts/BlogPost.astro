@@ -6,6 +6,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import ImageLightbox from '../components/ImageLightbox.astro';
 import ShareOnX from '../components/ShareOnX.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 
@@ -196,6 +197,7 @@ const hasToc = tocHeadings.length > 0;
 			}
 		</main>
 		<Footer />
+		<ImageLightbox />
 		<script>
 			// ```mermaid ブロックをブラウザ側でSVGに描画する。
 			// mermaid本体（重い）は図があるページでだけ遅延読み込みされる

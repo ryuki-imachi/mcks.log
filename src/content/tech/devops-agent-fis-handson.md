@@ -300,7 +300,7 @@ https://docs.aws.amazon.com/ja_jp/signin/latest/userguide/command-line-sign-in.h
 
 ハンズオン用のリポジトリをクローンして、セットアップスクリプトを実行します。
 
-https://github.com/ryuki-imachi/devops-agent-handson
+https://github.com/umitsu-tech/devops-agent-handson
 
 リポジトリの構造は以下の通りです。
 
@@ -317,7 +317,7 @@ devops-agent-handson/
 ```bash
 # リポジトリをクローン
 
-git clone https://github.com/ryuki-imachi/devops-agent-handson.git
+git clone https://github.com/umitsu-tech/devops-agent-handson.git
 cd devops-agent-handson
 
 # セットアップスクリプトを実行（3〜5分かかります）

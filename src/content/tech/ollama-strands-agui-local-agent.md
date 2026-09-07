@@ -23,7 +23,7 @@ Amazon Bedrock AgentCore をはじめとしたマネージドなエージェン�
 
 以下がリポジトリです。
 
-https://github.com/ryuki-imachi/agentcore-local
+https://github.com/umitsu-tech/agentcore-local
 
 :::note warn
 本リポジトリは Claude Code で作成しました。動作確認は行っていますが、筆者の知識不足により、実装方法が不適切な場合やより良い方法がある可能性があります。
@@ -70,7 +70,7 @@ https://ollama.com/
 
 ### Step 1: リポジトリのクローン
 ```bash
-git clone https://github.com/ryuki-imachi/agentcore-local.git
+git clone https://github.com/umitsu-tech/agentcore-local.git
 cd agentcore-local
 ```
 

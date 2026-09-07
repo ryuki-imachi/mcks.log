@@ -54,8 +54,9 @@ npm run build
 
 ## 現在の状況
 
-最終更新: 2026-09-02（EFS解説のmemo記事を投稿）
+最終更新: 2026-09-07（記事内画像の拡大表示を追加）
 
+- 直近の動き（2026-09-07）: **記事内画像の拡大表示（issue #46）**。本文の画像（`.prose img:not([class])`）とヒーロー画像を押すと画面いっぱいのオーバーレイに表示し、もう一度押すか × か Esc で閉じる。ライブラリ無しで `src/components/ImageLightbox.astro` 1 つに閉じ、`BlogPost.astro` の Footer の後ろに差し込んでいる（SlidePost は BlogPost 経由で効く）。オーバーレイは position: fixed がレイアウトの枠に閉じ込められないよう、スクリプトで body 直下へ移している
 - 直近の動き（2026-09-02）: **エンドレスエイト×AgentCore Memory記事をQiita本公開当日にtechへ個別移植**（`--only endless-eight-agentcore-memory --pub-date 2026-09-02`、slug-mapに追加。画像はCDN既存のため転送なし）。同日、**memo記事「Enterprise Frontier Safeguards（EFS）とは？」を投稿**（`src/content/memo/enterprise-frontier-safeguards.md`、図3枚はCDN `enterprise-frontier-safeguards/` 配下。Claude Fable 5.1発表に合わせた解説で、Discord #ざっくりメモ のスレッド経由・AI執筆＋レビュー全件反映。drawio原本はdiscord-workspace/tmp-diagrams/efs-*）
 - 直近の動き（2026-08-29）: **Qiita本公開済みの未移植2本を個別移植**（ハイクの日俳句記事 `--only claude-haiku-575 --pub-date 2026-08-20` / AgentCore Runtime命名記事 `--only agentcore-runtime-naming-rules --pub-date 2026-08-25`、いずれも画像なし・tech行き）。これで**本公開済みQiita記事の未移植はゼロ**。限定共有中の2本（wasm-overview / duckdb-wasm-blog-search）はQiita本公開後に `--only <basename> --pub-date <本公開日>` で個別移植する（issue #35の運用）
 

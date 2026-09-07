@@ -1,12 +1,13 @@
 ---
 // 記事内の画像を押すと画面いっぱいに表示する（issue #46）。
+// 拡大した画像はホイール / ピンチでさらに寄り、ドラッグ / 2 本指で動かせる（issue #48）。
 // 対象は本文の画像（.prose img:not([class])）とヒーロー画像。リンクカードのサムネイルなど
 // class 付きの画像には付けない（枠線と同じ範囲）。ライブラリは使わず、この 1 ファイルで完結させる。
 // 押した画像だけを出し、前後の画像を送る機能は付けない。
 ---
 
 <div id="image-lightbox" class="lightbox" hidden role="dialog" aria-modal="true" aria-label="画像の拡大表示">
-	<img alt="" />
+	<img alt="" draggable="false" />
 	<button type="button" class="close" aria-label="閉じる">×</button>
 </div>
 
@@ -25,9 +26,11 @@
 		padding: 2rem;
 		background: color-mix(in srgb, var(--ink-strong) 82%, transparent);
 		cursor: zoom-out;
-		/* スマホではピンチで寄れるようにする */
-		touch-action: pinch-zoom;
-		overflow: auto;
+		/* ピンチやドラッグを自前で扱うので、ブラウザ側のスクロールとズームは止める */
+		touch-action: none;
+		overflow: hidden;
+		overscroll-behavior: contain;
+		user-select: none;
 	}
 	.lightbox[hidden] {
 		display: none;
@@ -39,6 +42,19 @@
 		background: var(--bg);
 		border-radius: 6px;
 		box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+		transform-origin: center center;
+		will-change: transform;
+		cursor: zoom-in;
+	}
+	/* 拡大中は画像を押しても閉じず、つかんで動かす */
+	.lightbox.zoomed {
+		cursor: default;
+	}
+	.lightbox.zoomed img {
+		cursor: grab;
+	}
+	.lightbox.dragging img {
+		cursor: grabbing;
 	}
 	.lightbox .close {
 		position: fixed;
@@ -70,28 +86,176 @@
 <script>
 	const box = document.getElementById('image-lightbox') as HTMLDivElement | null;
 	const big = box?.querySelector('img') as HTMLImageElement | null;
-	if (box && big) {
+	const closeButton = box?.querySelector('.close') as HTMLButtonElement | null;
+
+	if (box && big && closeButton) {
 		// レイアウトの枠の中に置いたままだと position: fixed が枠に閉じ込められることがあるので body 直下に移す
 		document.body.appendChild(box);
+
+		const MIN = 1;
+		const MAX = 8;
+		const DOUBLE = 2.5;
+
+		// 拡大率と、画面中央からのずれ（px）。transform に流し込む
+		let scale = 1;
+		let tx = 0;
+		let ty = 0;
+
+		const apply = () => {
+			big.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+			box.classList.toggle('zoomed', scale > 1);
+		};
+
+		const reset = () => {
+			scale = 1;
+			tx = 0;
+			ty = 0;
+			apply();
+		};
+
+		// 画面上の点 (px, py) を動かさないように拡大率を next に変える
+		const zoomAt = (next: number, px: number, py: number) => {
+			const clamped = Math.min(MAX, Math.max(MIN, next));
+			if (clamped === scale) return;
+			const rect = big.getBoundingClientRect();
+			const cx = rect.left + rect.width / 2;
+			const cy = rect.top + rect.height / 2;
+			const k = clamped / scale;
+			tx += (px - cx) * (1 - k);
+			ty += (py - cy) * (1 - k);
+			scale = clamped;
+			if (scale === MIN) {
+				tx = 0;
+				ty = 0;
+			}
+			apply();
+		};
+
 		const open = (src: string, alt: string) => {
 			big.src = src;
 			big.alt = alt;
+			reset();
 			box.hidden = false;
 			document.body.style.overflow = 'hidden';
 		};
+
 		const close = () => {
 			box.hidden = true;
 			big.removeAttribute('src');
+			reset();
 			document.body.style.overflow = '';
 		};
+
 		document
 			.querySelectorAll<HTMLImageElement>('.prose img:not([class]), .hero-image img')
 			.forEach((img) => {
 				img.addEventListener('click', () => open(img.currentSrc || img.src, img.alt));
 			});
-		box.addEventListener('click', close);
+
+		closeButton.addEventListener('click', (e) => {
+			e.stopPropagation();
+			close();
+		});
 		document.addEventListener('keydown', (e) => {
 			if (e.key === 'Escape' && !box.hidden) close();
 		});
+
+		// ホイールで拡大縮小。マウスの位置を中心に寄る
+		box.addEventListener(
+			'wheel',
+			(e) => {
+				e.preventDefault();
+				const factor = Math.exp(-e.deltaY * 0.0015);
+				zoomAt(scale * factor, e.clientX, e.clientY);
+			},
+			{ passive: false },
+		);
+
+		// ダブルクリック / ダブルタップで等倍と 2.5 倍を切り替える
+		big.addEventListener('dblclick', (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			zoomAt(scale > 1 ? MIN : DOUBLE, e.clientX, e.clientY);
+		});
+
+		// ポインタ（マウスと指）の追跡。1 本ならドラッグ、2 本ならピンチ
+		const pointers = new Map<number, { x: number; y: number }>();
+		let moved = false;
+		let pinchStart: { dist: number; scale: number } | null = null;
+		let lastTap = 0;
+
+		const distance = () => {
+			const [a, b] = [...pointers.values()];
+			return Math.hypot(a.x - b.x, a.y - b.y);
+		};
+		const midpoint = () => {
+			const [a, b] = [...pointers.values()];
+			return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+		};
+
+		box.addEventListener('pointerdown', (e) => {
+			if (e.target === closeButton) return;
+			pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+			moved = false;
+			try {
+				box.setPointerCapture(e.pointerId);
+			} catch {
+				// 合成イベントなどで ID が無効なときは捕捉せずに進める
+			}
+			if (pointers.size === 2) {
+				pinchStart = { dist: distance(), scale };
+			} else if (pointers.size === 1 && e.pointerType === 'touch') {
+				// ダブルタップ（touch は dblclick が来ない）
+				const now = Date.now();
+				if (now - lastTap < 300) {
+					zoomAt(scale > 1 ? MIN : DOUBLE, e.clientX, e.clientY);
+					lastTap = 0;
+				} else {
+					lastTap = now;
+				}
+			}
+			if (scale > 1) box.classList.add('dragging');
+		});
+
+		box.addEventListener('pointermove', (e) => {
+			const prev = pointers.get(e.pointerId);
+			if (!prev) return;
+			const cur = { x: e.clientX, y: e.clientY };
+			if (pointers.size === 2 && pinchStart) {
+				const before = midpoint();
+				pointers.set(e.pointerId, cur);
+				const after = midpoint();
+				// 2 本指の間隔で拡大率、中点の移動で位置を動かす
+				zoomAt((pinchStart.scale * distance()) / pinchStart.dist, after.x, after.y);
+				tx += after.x - before.x;
+				ty += after.y - before.y;
+				apply();
+				moved = true;
+				return;
+			}
+			pointers.set(e.pointerId, cur);
+			const dx = cur.x - prev.x;
+			const dy = cur.y - prev.y;
+			if (Math.abs(dx) + Math.abs(dy) > 0 && scale > 1) {
+				tx += dx;
+				ty += dy;
+				apply();
+			}
+			if (Math.hypot(cur.x - prev.x, cur.y - prev.y) > 3) moved = true;
+		});
+
+		const release = (e: PointerEvent) => {
+			const had = pointers.has(e.pointerId);
+			pointers.delete(e.pointerId);
+			if (pointers.size < 2) pinchStart = null;
+			if (pointers.size === 0) box.classList.remove('dragging');
+			if (!had || e.type === 'pointercancel') return;
+			// 等倍で動かさずに離したら閉じる（拡大中は画像の外側を押したときだけ閉じる）
+			if (!moved && pointers.size === 0) {
+				if (scale === 1 || e.target !== big) close();
+			}
+		};
+		box.addEventListener('pointerup', release);
+		box.addEventListener('pointercancel', release);
 	}
 </script>

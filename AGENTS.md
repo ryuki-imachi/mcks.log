@@ -54,7 +54,9 @@ npm run build
 
 ## 現在の状況
 
-最終更新: 2026-09-27（Wasm 概要記事を tech へ個別移植）
+最終更新: 2026-09-27（Qiita 本公開済みの未移植 3 本を tech へ個別移植）
+
+- 直近の動き（2026-09-27）: **Qiita で本公開済みだった未移植の 3 本を tech へ個別移植**（agentcore-handson-env-design `--pub-date 2026-09-07` / github-username-change-oidc-immutable-sub `--pub-date 2026-09-14` / typesafe-jev-ops `--pub-date 2026-09-18`、slug-map に追加。画像は CDN 既存のため転送なし）。agentcore-handson-env-design は冒頭の Qiita リレー告知を mcks.log 側で削除（エンドレスエイト記事と同じ扱い）。**本公開日は Qiita の記事ページの HTML に埋め込まれた `publishedAt`（UTC）で確かめられる**（API v2 の created_at は限定共有した日のまま）。これで本公開済み Qiita 記事の未移植はゼロ。限定共有中は duckdb-wasm-blog-search と grafana-otel-lgtm-anatomy の 2 本
 
 - 直近の動き（2026-09-27）: **Wasm 概要記事「【Wasm】WebAssemblyとは？〜ひとまずざっくり調べてみた〜」を tech へ個別移植**（`--only wasm-overview --pub-date 2026-09-25`、slug-map に追加。画像は CDN 既存のため転送なし、views:234 引き継ぎ）。限定共有中の残り 1 本（duckdb-wasm-blog-search）も Qiita 本公開後に同じ手順で移植する
 - 直近の動き（2026-09-07）: **GitHub ユーザー名を ryuki-imachi から umitsu-tech に変更**。リポジトリは https://github.com/umitsu-tech/mcks.log になった（旧 URL はリダイレクトされるが、旧名が第三者に取られる前提で参照は新名に揃える）。記事内のリポジトリリンクと clone コマンドを新名に更新（issue #50 / PR #51、tech 4 本: devcontainer-python-setup / devops-agent-fis-handson / langfuse-selfhost-ec2-low-cost / ollama-strands-agui-local-agent）。マージ後 90 秒で本番に反映され、**Cloudflare Workers Builds の GitHub 連携はユーザー名変更後も再接続なしで動くことを確認**。手順と経緯は discord-workspace/docs/github-org-rename.md

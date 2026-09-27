@@ -126,5 +126,8 @@
 	"strands-devops-agent-tools": "strands-devops-agent-tools",
 	"visitor-counter-lambda-dynamodb": "visitor-counter-lambda-dynamodb",
 	"endless-eight-agentcore-memory": "endless-eight-agentcore-memory",
-	"wasm-overview": "wasm-overview"
+	"wasm-overview": "wasm-overview",
+	"agentcore-handson-env-design": "agentcore-handson-env-design",
+	"github-username-change-oidc-immutable-sub": "github-username-change-oidc-immutable-sub",
+	"typesafe-jev-ops": "typesafe-jev-ops"
 }

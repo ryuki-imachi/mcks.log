@@ -54,8 +54,9 @@ npm run build
 
 ## 現在の状況
 
-最終更新: 2026-09-07（GitHub ユーザー名の変更に伴う記事内リンクの更新）
+最終更新: 2026-09-27（Wasm 概要記事を tech へ個別移植）
 
+- 直近の動き（2026-09-27）: **Wasm 概要記事「【Wasm】WebAssemblyとは？〜ひとまずざっくり調べてみた〜」を tech へ個別移植**（`--only wasm-overview --pub-date 2026-09-25`、slug-map に追加。画像は CDN 既存のため転送なし、views:234 引き継ぎ）。限定共有中の残り 1 本（duckdb-wasm-blog-search）も Qiita 本公開後に同じ手順で移植する
 - 直近の動き（2026-09-07）: **GitHub ユーザー名を ryuki-imachi から umitsu-tech に変更**。リポジトリは https://github.com/umitsu-tech/mcks.log になった（旧 URL はリダイレクトされるが、旧名が第三者に取られる前提で参照は新名に揃える）。記事内のリポジトリリンクと clone コマンドを新名に更新（issue #50 / PR #51、tech 4 本: devcontainer-python-setup / devops-agent-fis-handson / langfuse-selfhost-ec2-low-cost / ollama-strands-agui-local-agent）。マージ後 90 秒で本番に反映され、**Cloudflare Workers Builds の GitHub 連携はユーザー名変更後も再接続なしで動くことを確認**。手順と経緯は discord-workspace/docs/github-org-rename.md
 - 直近の動き（2026-09-07）: **記事内画像の拡大表示（issue #46）と、拡大中のズーム・移動（issue #48）**。拡大した画像はホイール / ピンチで等倍〜8 倍（マウスや 2 本指の中点を中心に寄る）、ドラッグ / 2 本指で移動、ダブルクリック / ダブルタップで等倍と 2.5 倍の切り替え。等倍で画像を押すと閉じ、拡大中は × か Esc か画像の外側で閉じる。Pointer Events で自前実装（`touch-action: none`）。本文の画像（`.prose img:not([class])`）とヒーロー画像を押すと画面いっぱいのオーバーレイに表示し、もう一度押すか × か Esc で閉じる。ライブラリ無しで `src/components/ImageLightbox.astro` 1 つに閉じ、`BlogPost.astro` の Footer の後ろに差し込んでいる（SlidePost は BlogPost 経由で効く）。オーバーレイは position: fixed がレイアウトの枠に閉じ込められないよう、スクリプトで body 直下へ移している
 - 直近の動き（2026-09-02）: **エンドレスエイト×AgentCore Memory記事をQiita本公開当日にtechへ個別移植**（`--only endless-eight-agentcore-memory --pub-date 2026-09-02`、slug-mapに追加。画像はCDN既存のため転送なし）。同日、**memo記事「Enterprise Frontier Safeguards（EFS）とは？」を投稿**（`src/content/memo/enterprise-frontier-safeguards.md`、図3枚はCDN `enterprise-frontier-safeguards/` 配下。Claude Fable 5.1発表に合わせた解説で、Discord #ざっくりメモ のスレッド経由・AI執筆＋レビュー全件反映。drawio原本はdiscord-workspace/tmp-diagrams/efs-*）

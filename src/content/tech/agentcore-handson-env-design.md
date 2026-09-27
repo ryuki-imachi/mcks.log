@@ -43,7 +43,7 @@ https://strandsagents.com/
 
 受講者はブラウザで `user01.handson.example.com` のような自分専用の URL を開きます。
 
-ALB が ホスト名を見て受講者ごとの EC2 に転送します。
+ALB がホスト名を見て受講者ごとの EC2 に転送します。
 
 EC2 では code-server が動いていて、パスワードを入れるとブラウザの中に VS Code が出ます。
 

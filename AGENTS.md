@@ -54,7 +54,9 @@ npm run build
 
 ## 現在の状況
 
-最終更新: 2026-09-27（Qiita 本公開済みの未移植 3 本を tech へ個別移植）
+最終更新: 2026-09-29（otel-lgtm 記事を tech へ個別移植）
+
+- 直近の動き（2026-09-29）: **otel-lgtm 記事「【OpenTelemetry】grafana/otel-lgtm から OTel 入門してみたい」を tech へ個別移植**（`--only grafana-otel-lgtm-anatomy --pub-date 2026-09-28`、slug-map に追加。画像 3 枚は CDN 既存のため転送なし、views:79 引き継ぎ）。migrate.mjs の importedDate / fetchedAt は UTC の日付になるため、JST の日付（2026-09-29）に手で直した。限定共有中の残りは duckdb-wasm-blog-search の 1 本
 
 - 直近の動き（2026-09-27）: **Qiita で本公開済みだった未移植の 3 本を tech へ個別移植**（agentcore-handson-env-design `--pub-date 2026-09-07` / github-username-change-oidc-immutable-sub `--pub-date 2026-09-14` / typesafe-jev-ops `--pub-date 2026-09-18`、slug-map に追加。画像は CDN 既存のため転送なし）。agentcore-handson-env-design は冒頭の Qiita リレー告知を mcks.log 側で削除（エンドレスエイト記事と同じ扱い）。**本公開日は Qiita の記事ページの HTML に埋め込まれた `publishedAt`（UTC）で確かめられる**（API v2 の created_at は限定共有した日のまま）。これで本公開済み Qiita 記事の未移植はゼロ。限定共有中は duckdb-wasm-blog-search と grafana-otel-lgtm-anatomy の 2 本
 
